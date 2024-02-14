@@ -6,7 +6,7 @@
 #    By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/02/14 17:58:41 by padam            ###   ########.fr        #
+#    Updated: 2024/02/14 18:01:04 by padam            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,6 +62,4 @@ fclean: clean
 
 re: fclean all
 
-bonus: all
-
-.PHONY: all, $(LIBFT_DIR)/libft.a, $(OBJ_PATH), clean, fclean, re, bonus
+.PHONY: all, $(NAME), $(LIBFT_DIR)/libft.a, $(OBJ_PATH), $(OBJ_PATH), clean, fclean, re
