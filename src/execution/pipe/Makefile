@@ -6,7 +6,7 @@
 #    By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 16:57:44 by aweizman          #+#    #+#              #
-#    Updated: 2024/02/14 16:54:55 by aweizman         ###   ########.fr        #
+#    Updated: 2024/02/14 17:12:58 by aweizman         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME		= pipex
 
 NAME_BONUS	= pipex_bonus
 
-LIBFT		= ../../libft
+LIBFT		= ../libft
 
 CC			= cc
 
