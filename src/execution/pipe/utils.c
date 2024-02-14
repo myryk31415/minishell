@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 09:19:40 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/02/14 13:57:55 by aweizman         ###   ########.fr       */
+/*   Updated: 2024/02/14 17:30:17 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*get_env(char **envp)
 		tmp = ft_substr(envp[i], 0, j);
 		if (!tmp)
 			break ;
-		if (ft_strcmp(tmp, "PATH") == 0)
+		if (ft_strncmp(tmp, "PATH", 4) == 0)
 		{
 			free(tmp);
 			return (envp[i] + j + 1);

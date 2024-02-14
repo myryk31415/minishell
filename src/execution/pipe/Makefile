@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+         #
+#    By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 16:57:44 by aweizman          #+#    #+#              #
-#    Updated: 2024/02/14 17:12:58 by aweizman         ###   ########.fr        #
+#    Updated: 2024/02/14 17:31:10 by padam            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,13 +14,13 @@ NAME		= pipex
 
 NAME_BONUS	= pipex_bonus
 
-LIBFT		= ../libft
+LIBFT		= ../../../libft
 
 CC			= cc
 
 CFLAGS		= -Wall -Wextra -Werror
 
-HEADERS		= -I./pipex.h -I$(LIBFT)/include/libft.h
+HEADERS		= -I./includes -I$(LIBFT)/includes/libft.h
 
 SRCS		= main utils fork
 
@@ -36,14 +36,14 @@ OBJ_CHECK	=	.cache_exists
 
 all : $(NAME)
 
-$(NAME): $(SRC) $(LIBFT)/libftprintf.a $(OBJ)
+$(NAME): $(SRC) $(LIBFT)/libft.a $(OBJ)
 	@echo "compiling pipex.."
-	@$(CC) $(CFLAGS) -o $(NAME) $(SRC) $(LIBFT)/libftprintf.a $(HEADERS)
+	@$(CC) $(CFLAGS) -o $(NAME) $(SRC) $(LIBFT)/libft.a $(HEADERS)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJ_CHECK)
 		@$(CC) $(CFLAGS) $(HEADERS) -c $< -o $@
 
-$(LIBFT)/libftprintf.a:
+$(LIBFT)/libft.a:
 	@make -C $(LIBFT)
 
 $(OBJ_CHECK):
