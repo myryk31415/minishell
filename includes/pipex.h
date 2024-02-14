@@ -6,14 +6,14 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 09:20:05 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/02/14 17:28:56 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/14 17:53:12 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 
-# include "../../../../libft/includes/libft.h"
+# include "../libft/includes/libft.h"
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdio.h>
