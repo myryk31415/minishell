@@ -6,7 +6,7 @@
 #    By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/02/14 20:32:50 by padam            ###   ########.fr        #
+#    Updated: 2024/02/14 21:27:27 by padam            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,8 +50,11 @@ $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c | $(OBJ_PATH)
 	@printf "%-200s\r" "$(CC) $(CFLAGS) -o $@"
 	@$(CC) $(CFLAGS) -o $@ -c $<
 
-init:
+init_submodules:
 	git submodule update --init --recursive
+
+update_submodules:
+	git submodule update --recursive --remote
 
 clean:
 	rm -rf $(OBJ_PATH)
