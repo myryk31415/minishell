@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/02/15 15:09:19 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/15 17:02:25 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@ typedef enum e_node_type
 
 typedef struct s_node
 {
-	t_node_type		type;
-	char			*command;
-	struct s_node	*left;
-	struct s_node	*right;
+	void		*left;
+	t_node_type	type_left;
+	void		*right;
+	t_node_type	type_right;
 }	t_node;
 
 #endif
