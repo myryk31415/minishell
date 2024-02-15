@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/02/14 19:37:13 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/15 15:09:19 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,25 @@
 # define MINISHELL_H
 
 # include "../libft/includes/libft.h"
+# include <stdbool.h>
+
+typedef struct s_redirect_in
+{
+	char	*string;
+	bool	heredoc;
+}	t_redirect;
+
+typedef struct s_redirect_out
+{
+	char	*string;
+	bool	append;
+}	t_redirect_out;
 
 typedef enum e_node_type
 {
 	AND,
 	OR,
 	PIPE,
-	REDIR_IN,
-	REDIR_DELIM,
-	REDIR_OUT,
-	REDIR_APPEND,
 	CMD
 }	t_node_type;
 
