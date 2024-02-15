@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+         #
+#    By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 16:57:44 by aweizman          #+#    #+#              #
-#    Updated: 2024/02/14 17:31:10 by padam            ###   ########.fr        #
+#    Updated: 2024/02/15 16:25:35 by aweizman         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ CFLAGS		= -Wall -Wextra -Werror
 
 HEADERS		= -I./includes -I$(LIBFT)/includes/libft.h
 
-SRCS		= main utils fork
+SRCS		= pipe utils fork
 
 SRCS_BONUS 	= main_bonus utils_bonus fork_bonus
 
