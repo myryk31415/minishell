@@ -6,7 +6,7 @@
 #    By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/02/14 21:27:27 by padam            ###   ########.fr        #
+#    Updated: 2024/02/15 21:22:04 by padam            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,19 +15,25 @@ NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror $(INCLUDES)
 INCLUDES = -I./includes
+LIBS = -lreadline
 LIBFT_DIR = libft
 
 SRC_PATH = src
 OBJ_PATH = obj
 
-OBJ_DIRS =	execution	execution/pipe	main
+OBJ_DIRS =	execution	execution/pipe	main	parser
 
-MAIN = main.c
+SRCS_MAIN =			main.c
+
+SRCS_PARSER =		parser.c
+
 SRCS_EXECUTION =
-SRCS_PIPE =	fork.c	pipe.c	utils.c
 
-SRC_NAME =	$(addprefix main/,				$(MAIN))			\
-			$(addprefix execution/,			$(SRCS_EXECUTION))	\
+SRCS_PIPE =			fork.c			pipe.c			utils.c
+
+SRC_NAME =	$(addprefix main/,				$(SRCS_MAIN))			\
+			$(addprefix parser/,			$(SRCS_PARSER))		\
+#			$(addprefix execution/,			$(SRCS_EXECUTION))	\
 			$(addprefix execution/pipe/,	$(SRCS_PIPE))		\
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
@@ -36,7 +42,7 @@ OBJS = $(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
 all: $(NAME)
 
 $(NAME): $(LIBFT_DIR)/libft.a $(OBJS)
-	@$(CC) -o $(NAME) $(CFLAGS) $(OBJS) $(LIBFT_DIR)/libft.a
+	@$(CC) -o $(NAME) $(CFLAGS) $(LIBS) $(OBJS) $(LIBFT_DIR)/libft.a
 	@printf "%-100s\n" "$(NAME) compiled"
 
 $(LIBFT_DIR)/libft.a:
