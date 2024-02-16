@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:14:04 by padam             #+#    #+#             */
-/*   Updated: 2024/02/15 21:34:00 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/15 21:55:29 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,7 @@
 # define BLUE "\033[1;34m"
 # define MAGENTA "\033[1;35m"
 # define CYAN "\033[1;36m"
+
+typedef struct s_
 
 #endif

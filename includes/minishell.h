@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/02/15 21:26:55 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/16 14:38:11 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 typedef struct s_redirect_in
 {
 	char	*string;
-	bool	heredoc;
+	bool	*heredoc;
 }	t_redirect_in;
 
 typedef struct s_redirect_out
@@ -32,6 +32,7 @@ typedef struct s_redirect_out
 
 typedef enum e_node_type
 {
+	GROUP,
 	AND,
 	OR,
 	PIPE,
@@ -47,6 +48,12 @@ typedef struct s_node
 	void		*right;
 	t_node_type	type_right;
 }	t_node;
+
+typedef struct s_group
+{
+	t_node		*node;
+	t_node_type	*type;
+}	t_group;
 
 void	parser(void);
 
