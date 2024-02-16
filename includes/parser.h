@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:14:04 by padam             #+#    #+#             */
-/*   Updated: 2024/02/15 21:55:29 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/16 17:58:15 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,25 @@
 # define MAGENTA "\033[1;35m"
 # define CYAN "\033[1;36m"
 
-typedef struct s_
+typedef enum e_tokens
+{
+	T_COMMAND,
+	T_PIPE,
+	T_AND,
+	T_OR,
+	T_PARENTHESIS_OPEN,
+	T_PARENTHESIS_CLOSE,
+	T_REDIR_IN,
+	T_REDIR_OUT,
+	T_REDIR_APPEND,
+	T_REDIR_HEREDOC,
+}	t_tokens;
 
+typedef struct s_token
+{
+	t_tokens	type;
+	char		*value;
+	struct s_token	*next;
+	struct s_token	*prev;
+}	t_token;
 #endif
