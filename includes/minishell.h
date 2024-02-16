@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/02/16 14:38:11 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/16 17:26:36 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef struct s_node
 	t_node_type	type_right;
 }	t_node;
 
-typedef struct s_group
+typedef struct s_node_group
 {
 	t_node		*node;
 	t_node_type	*type;

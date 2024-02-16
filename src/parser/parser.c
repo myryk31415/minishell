@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/02/15 22:00:53 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/16 19:01:45 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,11 @@ char	*new_prompt(void)
 	char	*prompt;
 	char	*command;
 
-	prompt = ft_strjoin(YELLOW, getenv("USER"));
-	prompt = ft_strjoin(prompt, "@minishell: ");
+	prompt = ft_strjoin(getenv("USER"), "@minishell:");
 	prompt = ft_strjoin(prompt, CYAN);
 	prompt = ft_strjoin(prompt, get_current_folder());
-	prompt = ft_strjoin(prompt, YELLOW);
-	prompt = ft_strjoin(prompt, " $ ");
 	prompt = ft_strjoin(prompt, RESET);
+	prompt = ft_strjoin(prompt, "$ ");
 	command = readline(prompt);
 	free(prompt);
 	if (command)
@@ -54,6 +52,7 @@ void	parser(void)
 		if (ft_strncmp(command, "exit", 4) == 0)
 			break ;
 		ft_printf("%s\n", command);
+		// tokenize_command(command);
 		free(command);
 	}
 }
