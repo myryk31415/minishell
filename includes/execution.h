@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:29 by aweizman          #+#    #+#             */
-/*   Updated: 2024/02/15 16:33:46 by aweizman         ###   ########.fr       */
+/*   Updated: 2024/02/17 16:14:07 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,13 @@
 
 # include "minishell.h"
 # include <fcntl.h>
+
+typedef struct s_execution
+{
+	int		input_pipe[2];
+	void	here_doc(t_args *args);
+}	t_execution;
+
 
 void	exec(char *cmd);
 #endif

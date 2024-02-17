@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_execution.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/02/15 16:32:51 by aweizman         ###   ########.fr       */
+/*   Updated: 2024/02/17 16:16:28 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,26 @@ void	exec(char *cmd)
 	cmd_path = get_path(cmd_arg[0], environ);
 	if (execve(cmd_path, cmd_arg, environ) == -1)
 		perror("Command not found\n");
+}
+
+void	here_doc(t_execution *input)
+{
+	char	*str;
+
+	while (1)
+	{
+		str = get_next_line(STDIN_FILENO);
+		if (str && *str)
+		{
+			if (!ft_strncmp(str, args->argv[2], ft_strlen(args->argv[2]))
+				&& !ft_strncmp(str, args->argv[2], ft_strlen(str) - 1))
+			{
+				free(str);
+				break ;
+			}
+			write(args->here_doc_pipe[1], str, ft_strlen(str));
+			free(str);
+		}
+	}
+	close(args->here_doc_pipe[1]);
 }
