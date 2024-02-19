@@ -6,7 +6,7 @@
 /*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/02/19 13:05:13 by aweizman         ###   ########.fr       */
+/*   Updated: 2024/02/19 15:25:40 by aweizman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,51 +31,6 @@ void	cmd(char *cmd, int *fd, int *pre_fd)
 	exec(cmd);
 }
 
-void	input_files(char *file_str, int *fd)
-{
-	char	*str;
-	int		file;
-
-	file = open(file_str, O_RDONLY, 0666);
-	if (file == -1)
-	{
-		perror("Infile");
-	}
-	str = NULL;
-	while (1)
-	{
-		str = get_next_line(file);
-		if (str && *str)
-		{
-			write(fd[1], str, ft_strlen(str));
-			free(str);
-		}
-		else
-			break ;
-	}
-	close(file);
-}
-
-void	input(t_redirect_in *token, int *fd, int i)
-{
-	int			j;
-
-	j = -1;
-	if (i == 1)
-	{
-		while (++j < 4)
-		{
-			// ft_printf("%i", j);
-			// ft_printf("%s\n", token->string[j]);
-			if (token->heredoc[j] == false)
-				input_files(token->string[j], fd);
-			else
-				here_doc(token->string[j], fd);
-		}
-		close(fd[1]);
-	}
-}
-
 void	create_tree(int *pre_fd, t_node *token, int commands)
 {
 	int	fd[2];
@@ -90,8 +45,8 @@ void	create_tree(int *pre_fd, t_node *token, int commands)
 		create_tree(fd, (t_node *)token->right, commands);
 	else if (pid != 0 && commands == 1)
 		input((t_redirect_in *)token->left, fd, (token->type_left == REDIR_IN));
-	// else if (pid != 0 && token->type_right == REDIR_OUT)
-	// 	output((t_redirect_out *)token->right, fd);
+	else if (pid != 0 && token->type_right == REDIR_OUT)
+		output((t_redirect_out *)token->right, fd);
 	else
 		cmd((char *)token->left, fd, pre_fd);
 }
