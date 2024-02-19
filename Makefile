@@ -6,7 +6,7 @@
 #    By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/02/15 21:22:04 by padam            ###   ########.fr        #
+#    Updated: 2024/02/19 13:48:36 by padam            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ OBJ_DIRS =	execution	execution/pipe	main	parser
 
 SRCS_MAIN =			main.c
 
-SRCS_PARSER =		parser.c
+SRCS_PARSER =		parser.c		tokenizer.c
 
 SRCS_EXECUTION =
 

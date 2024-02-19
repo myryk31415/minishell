@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:14:04 by padam             #+#    #+#             */
-/*   Updated: 2024/02/19 12:28:36 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/19 18:05:16 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@
 
 typedef enum e_token_type
 {
-	T_NEW,
 	T_COMMAND,
 	T_PIPE,
 	T_AND,
@@ -47,4 +46,6 @@ typedef struct s_token
 	char				*value;
 	struct s_token		*next;
 }	t_token;
+
+void	tokenize_command(char *command);
 #endif
