@@ -6,7 +6,7 @@
 #    By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/02/19 12:18:25 by aweizman         ###   ########.fr        #
+#    Updated: 2024/02/19 16:13:11 by aweizman         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ SRCS_MAIN =			main.c
 
 SRCS_PARSER =		parser.c
 
-SRCS_EXECUTION =	execution.c	utils_execution.c
+SRCS_EXECUTION =	execution.c	utils_execution.c	input_output.c
 
 SRCS_PIPE =			fork.c			pipe.c			utils.c
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/02/17 18:30:03 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/02/19 16:40:49 by aweizman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,9 @@ typedef struct s_redirect_in
 
 typedef struct s_redirect_out
 {
-	char	*string;
-	bool	append;
+	char	**string;
+	bool	*append;
+	char	*cmd;
 }	t_redirect_out;
 
 typedef enum e_node_type
