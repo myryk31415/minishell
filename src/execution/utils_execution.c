@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_execution.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/02/18 14:16:53 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/02/19 12:40:37 by aweizman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	exec(char *cmd)
 		perror("Command not found\n");
 }
 
-void	here_doc(char *limiter, t_execution *input)
+void	here_doc(char *limiter, int *fd)
 {
 	char	*str;
 
@@ -94,9 +94,18 @@ void	here_doc(char *limiter, t_execution *input)
 				free(str);
 				break ;
 			}
-			write(input->input_pipe[1], str, ft_strlen(str));
+			write(fd[1], str, ft_strlen(str));
 			free(str);
 		}
 	}
-	close(input->input_pipe[1]);
+}
+
+void	free_array(char **arr)
+{
+	int	i;
+
+	i = -1;
+	while (arr[++i])
+		free(arr[i]);
+	free(arr);
 }

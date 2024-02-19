@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+         #
+#    By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/02/15 21:22:04 by padam            ###   ########.fr        #
+#    Updated: 2024/02/19 12:18:25 by aweizman         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,14 +27,14 @@ SRCS_MAIN =			main.c
 
 SRCS_PARSER =		parser.c
 
-SRCS_EXECUTION =
+SRCS_EXECUTION =	execution.c	utils_execution.c
 
 SRCS_PIPE =			fork.c			pipe.c			utils.c
 
 SRC_NAME =	$(addprefix main/,				$(SRCS_MAIN))			\
-			$(addprefix parser/,			$(SRCS_PARSER))		\
-#			$(addprefix execution/,			$(SRCS_EXECUTION))	\
-			$(addprefix execution/pipe/,	$(SRCS_PIPE))		\
+			$(addprefix execution/,			$(SRCS_EXECUTION))	\
+			# $(addprefix parser/,			$(SRCS_PARSER))		\
+			# $(addprefix execution/pipe/,	$(SRCS_PIPE))		\
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 OBJS = $(addprefix $(OBJ_PATH)/,$(OBJ_NAME))

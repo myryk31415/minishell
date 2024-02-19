@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/02/18 14:15:20 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/02/19 13:05:13 by aweizman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,51 +31,48 @@ void	cmd(char *cmd, int *fd, int *pre_fd)
 	exec(cmd);
 }
 
-void	input_files(char *file_str, t_execution *input)
+void	input_files(char *file_str, int *fd)
 {
 	char	*str;
-	int		i;
 	int		file;
 
 	file = open(file_str, O_RDONLY, 0666);
 	if (file == -1)
+	{
 		perror("Infile");
-	i = -1;
+	}
 	str = NULL;
 	while (1)
 	{
 		str = get_next_line(file);
 		if (str && *str)
 		{
-			write(input->input_pipe[1], str, ft_strlen(str));
+			write(fd[1], str, ft_strlen(str));
 			free(str);
 		}
 		else
 			break ;
 	}
-	close(input->input_pipe[1]);
+	close(file);
 }
 
 void	input(t_redirect_in *token, int *fd, int i)
 {
-	int			file;
-	t_execution	*input;
 	int			j;
 
 	j = -1;
-	input = malloc(sizeof(t_execution));
-	file = 0;
 	if (i == 1)
 	{
-		if (pipe(input->input_pipe[2]) == -1)
-			perror("Pipe");
-		while (token->string[++j])
+		while (++j < 4)
 		{
+			// ft_printf("%i", j);
+			// ft_printf("%s\n", token->string[j]);
 			if (token->heredoc[j] == false)
-				input_files(token->string[j], input);
+				input_files(token->string[j], fd);
 			else
-				here_doc(token->string[j], input);
+				here_doc(token->string[j], fd);
 		}
+		close(fd[1]);
 	}
 }
 
@@ -93,21 +90,8 @@ void	create_tree(int *pre_fd, t_node *token, int commands)
 		create_tree(fd, (t_node *)token->right, commands);
 	else if (pid != 0 && commands == 1)
 		input((t_redirect_in *)token->left, fd, (token->type_left == REDIR_IN));
-	else if (pid != 0 && token->type_right == REDIR_OUT)
-		output((t_redirect_out *)token->right, fd);
+	// else if (pid != 0 && token->type_right == REDIR_OUT)
+	// 	output((t_redirect_out *)token->right, fd);
 	else
 		cmd((char *)token->left, fd, pre_fd);
-
-}
-
-int	main(int argc, char **argv)
-{
-	t_redirect_in	*input;
-
-	input = malloc(sizeof(t_redirect_in *));
-	input->heredoc = false;
-	input->string[0] = "test1.txt"
-
-	argc = 0;
-
 }
