@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/02/17 17:26:25 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/02/17 18:30:03 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 
 typedef struct s_redirect_in
 {
-	char	*string;
-	char	*heredoc;
+	char	**string;
+	bool	*heredoc;
 }	t_redirect_in;
 
 typedef struct s_redirect_out

@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/02/17 16:16:28 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/02/18 14:16:53 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	exec(char *cmd)
 		perror("Command not found\n");
 }
 
-void	here_doc(t_execution *input)
+void	here_doc(char *limiter, t_execution *input)
 {
 	char	*str;
 
@@ -88,15 +88,15 @@ void	here_doc(t_execution *input)
 		str = get_next_line(STDIN_FILENO);
 		if (str && *str)
 		{
-			if (!ft_strncmp(str, args->argv[2], ft_strlen(args->argv[2]))
-				&& !ft_strncmp(str, args->argv[2], ft_strlen(str) - 1))
+			if (!ft_strncmp(str, limiter, ft_strlen(limiter))
+				&& !ft_strncmp(str, limiter, ft_strlen(str) - 1))
 			{
 				free(str);
 				break ;
 			}
-			write(args->here_doc_pipe[1], str, ft_strlen(str));
+			write(input->input_pipe[1], str, ft_strlen(str));
 			free(str);
 		}
 	}
-	close(args->here_doc_pipe[1]);
+	close(input->input_pipe[1]);
 }
