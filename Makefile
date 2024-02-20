@@ -6,7 +6,7 @@
 #    By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/02/19 16:13:11 by aweizman         ###   ########.fr        #
+#    Updated: 2024/02/20 15:53:30 by aweizman         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,16 +25,16 @@ OBJ_DIRS =	execution	execution/pipe	main	parser
 
 SRCS_MAIN =			main.c
 
-SRCS_PARSER =		parser.c
+SRCS_PARSER =		parser.c		tokenizer.c
 
-SRCS_EXECUTION =	execution.c	utils_execution.c	input_output.c
+SRCS_EXECUTION =
 
 SRCS_PIPE =			fork.c			pipe.c			utils.c
 
 SRC_NAME =	$(addprefix main/,				$(SRCS_MAIN))			\
-			$(addprefix execution/,			$(SRCS_EXECUTION))	\
-			# $(addprefix parser/,			$(SRCS_PARSER))		\
-			# $(addprefix execution/pipe/,	$(SRCS_PIPE))		\
+			$(addprefix parser/,			$(SRCS_PARSER))		\
+#			$(addprefix execution/,			$(SRCS_EXECUTION))	\
+			$(addprefix execution/pipe/,	$(SRCS_PIPE))		\
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 OBJS = $(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
