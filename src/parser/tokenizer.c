@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:40:50 by padam             #+#    #+#             */
-/*   Updated: 2024/02/19 18:08:12 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/20 18:31:00 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_token	*add_token(t_token *token_last, t_token_type token_type)
 {
 	t_token	*new_token;
 
-	if (token_last && token_last->type == T_COMMAND && token_type == T_COMMAND)
+	if (token_last && token_last->type == T_WORD && token_type == T_WORD)
 		return (token_last);
 	new_token = malloc(sizeof(t_token));
 	new_token->next = NULL;
@@ -32,7 +32,9 @@ t_token_type	get_token_type(char *string)
 {
 	t_token_type	token;
 
-	if (!ft_strncmp(string, "&&", 2))
+	if (is_separator(*string))
+		token = T_SEPARATOR;
+	else if (!ft_strncmp(string, "&&", 2))
 		token = T_AND;
 	else if (!ft_strncmp(string, "||", 2))
 		token = T_OR;
@@ -51,7 +53,7 @@ t_token_type	get_token_type(char *string)
 	else if (!ft_strncmp(string, "<", 1))
 		token = T_REDIR_IN;
 	else
-		token = T_COMMAND;
+		token = T_WORD;
 	return (token);
 }
 
@@ -62,7 +64,6 @@ t_token	*handle_quotes(char **string, t_token *token_last)
 	int		i;
 
 	i = 0;
-	ft_printf("string: %s\n", *string);
 	quote = **string;
 	(*string)++;
 	if (!**string)
@@ -71,21 +72,16 @@ t_token	*handle_quotes(char **string, t_token *token_last)
 		i++;
 	if ((*string)[i] != quote)
 		return (NULL);
-	if (token_last && token_last->type == T_COMMAND)
+	if (token_last && token_last->type == T_WORD)
 		token_last->value = ft_strjoin(token_last->value,
 				ft_substr(*string, 0, i));
 	else
 	{
-		token_last = add_token(token_last, T_COMMAND);
+		token_last = add_token(token_last, T_WORD);
 		token_last->value = ft_substr(*string, 0, i);
 	}
 	*string += i;
 	return (token_last);
-}
-
-int	is_quote(char c)
-{
-	return (c == '\'' || c == '\"');
 }
 
 t_token	*handle_command(char **string, t_token *token_last)
@@ -94,44 +90,49 @@ t_token	*handle_command(char **string, t_token *token_last)
 	int				i;
 
 	i = 1;
-	token_type = T_COMMAND;
-	while (token_type == T_COMMAND && (*string)[i] && !is_quote((*string)[i]))
+	token_type = T_WORD;
+	while (token_type == T_WORD && (*string)[i] && !is_quote((*string)[i]))
 	{
 		token_type = get_token_type((*string) + i);
 		i++;
 	}
-	// ft_printf("string: %s\n", (*string) + i);
 	//careful
 	if ((*string)[i] && !is_quote((*string)[i]))
 		i--;
-	if (token_last && token_last->type == T_COMMAND)
+	// if (token_type == T_SEPARATOR)
+	// 	i--;
+	if (token_last && token_last->type == T_WORD)
 		token_last->value = ft_strjoin(token_last->value,
 				ft_substr(*string, 0, i));
 	else
 	{
-		token_last = add_token(token_last, T_COMMAND);
+		token_last = add_token(token_last, T_WORD);
 		token_last->value = ft_substr(*string, 0, i);
 	}
 	*string += i - 1;
 	return (token_last);
 }
 
-
 t_token	*get_next_token(char *string, t_token *token_last)
 {
 	t_token_type	token_type;
 	int				i;
 
-	i = 1;
 	token_type = get_token_type(string);
 	token_last = add_token(token_last, token_type);
+	i = 1;
 	if (is_quote(*string))
 		token_last = handle_quotes(&string, token_last);
-	else if (token_type == T_COMMAND)
+	else if (token_type == T_WORD)
 		token_last = handle_command(&string, token_last);
 	else if (token_type == T_AND || token_type == T_OR
 		|| token_type == T_REDIR_APPEND || token_type == T_REDIR_HEREDOC)
 		i += 1;
+	// else if (token_type == T_SEPARATOR)
+	// {
+	// 	while (is_separator(string[i - 1]))
+	// 		i++;
+	// }
 	if (string[i])
 		get_next_token(string + i, token_last);
 	return (token_last);

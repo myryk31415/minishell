@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:14:04 by padam             #+#    #+#             */
-/*   Updated: 2024/02/19 18:05:16 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/20 18:02:32 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@
 
 typedef enum e_token_type
 {
-	T_COMMAND,
+	T_WORD,
+	T_SEPARATOR,
 	T_PIPE,
 	T_AND,
 	T_OR,
@@ -48,4 +49,9 @@ typedef struct s_token
 }	t_token;
 
 void	tokenize_command(char *command);
+
+//utils
+int		is_quote(char c);
+int		is_separator(char c);
+
 #endif
