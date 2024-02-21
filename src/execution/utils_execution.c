@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_execution.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/02/19 12:40:37 by aweizman         ###   ########.fr       */
+/*   Updated: 2024/02/21 16:37:15 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,25 +67,26 @@ char	*get_path(char *cmd, char **envp)
 	return (NULL);
 }
 
-void	exec(char *cmd)
+void	exec(char **cmd_arg)
 {
 	char		*cmd_path;
-	char		**cmd_arg;
 	extern char	**environ;
 
-	cmd_arg = ft_split(cmd, ' ');
 	cmd_path = get_path(cmd_arg[0], environ);
 	if (execve(cmd_path, cmd_arg, environ) == -1)
 		perror("Command not found\n");
 }
 
-void	here_doc(char *limiter, int *fd)
+int	here_doc(char *limiter)
 {
 	char	*str;
+	int		fd[2];
 
+	if (pipe(fd) == -1)
+		perror("Pipe");
 	while (1)
 	{
-		str = get_next_line(STDIN_FILENO);
+		str = readline(">");
 		if (str && *str)
 		{
 			if (!ft_strncmp(str, limiter, ft_strlen(limiter))
@@ -98,6 +99,8 @@ void	here_doc(char *limiter, int *fd)
 			free(str);
 		}
 	}
+	close(fd[1]);
+	return (fd[0]);
 }
 
 void	free_array(char **arr)
