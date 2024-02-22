@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:40:50 by padam             #+#    #+#             */
-/*   Updated: 2024/02/22 15:11:46 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/22 19:32:21 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,11 +117,13 @@ t_token	*get_next_token(char *string, t_token *token_last)
 	t_token_type	token_type;
 	int				i;
 
-	if (is_separator(*string) && !(*string + 1))
+	i = 1;
+	if (is_separator(*string) && !(*(string + 1)))
 		return (token_last);
 	token_type = get_token_type(string);
+	if (is_separator(*string) && is_separator(*(string + 1)))
+		return (get_next_token(string + 1, token_last));
 	token_last = add_token(token_last, token_type);
-	i = 1;
 	if (is_quote(*string))
 		token_last = handle_quotes(&string, token_last);
 	else if (token_type == T_WORD)
@@ -129,29 +131,25 @@ t_token	*get_next_token(char *string, t_token *token_last)
 	else if (token_type == T_AND || token_type == T_OR
 		|| token_type == T_REDIR_APPEND || token_type == T_REDIR_HEREDOC)
 		i += 1;
-	else if (token_type == T_SEPARATOR)
-	{
-		while (is_separator(string[i]))
-			i++;
-	}
 	if (string[i])
 		get_next_token(string + i, token_last);
 	return (token_last);
 }
 
-void	debug_print_token_array(t_token *token_first)
-{
-	while (token_first)
-	{
-		printf("type: %d, value: %s\n", token_first->type, token_first->value);
-		token_first = token_first->next;
-	}
-}
+// void	debug_print_token_array(t_token *token_first)
+// {
+// 	while (token_first)
+// 	{
+// 		printf("type: %d, value: %s\n", token_first->type, token_first->value);
+// 		token_first = token_first->next;
+// 	}
+// }
 
+//just call get_next_token directly
 void	tokenize_command(char *command)
 {
 	t_token			*tokens;
 
 	tokens = get_next_token(command, NULL);
-	debug_print_token_array(tokens);
+	return (tokens);
 }
