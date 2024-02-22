@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   input_output.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/02/21 15:16:51 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/02/22 14:58:06 by aweizman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-void	input(t_redirect_in *token)
+int	input(t_redirect_in *token)
 {
 	int			j;
 	int			file;
@@ -27,7 +27,7 @@ void	input(t_redirect_in *token)
 		{
 			file = open(token->string[j], O_RDONLY, 0666);
 			if (file == -1)
-				perror("File Permissions");
+				return (perror(error_msg("bash: ", token->string[j])), -1);
 		}
 		else
 			file = here_doc(token->string[j]);
@@ -35,9 +35,10 @@ void	input(t_redirect_in *token)
 	}
 	dup2(file, STDIN_FILENO);
 	close(file);
+	return (0);
 }
 
-void	output(t_redirect_out *token)
+int	output(t_redirect_out *token)
 {
 	int		file;
 	int		j;
@@ -55,9 +56,18 @@ void	output(t_redirect_out *token)
 			file = open(token->string[j],
 					O_WRONLY | O_APPEND | O_CREAT, 0666);
 		if (file == -1)
-			perror("File Permissions");
+			return (perror(error_msg("bash: ", token->string[j])), -1);
 		j++;
 	}
 	dup2(file, STDOUT_FILENO);
 	close(file);
+	return (0);
+}
+
+char	*error_msg(char *cmd, char *file)
+{
+	char	*tmp;
+
+	tmp = ft_strjoin(cmd, file);
+	return (tmp);
 }

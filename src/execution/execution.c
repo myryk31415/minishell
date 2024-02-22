@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/02/21 15:16:27 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/02/22 15:03:38 by aweizman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,20 @@
 
 void	command(t_cmd *token, int *fd, int *pre_fd)
 {
+	int	err;
+
+	err = 0;
 	if (token->redirect_in)
-		input(token->redirect_in);
+		err = input(token->redirect_in);
 	else
 	{
 		dup2(pre_fd[0], STDIN_FILENO);
 		close(pre_fd[0]);
 		close(pre_fd[1]);
 	}
-	if (token->redirect_out)
+	if (token->redirect_out && !err)
 	{
-		output(token->redirect_out);
+		err = output(token->redirect_out);
 		fd[1] = 0;
 	}
 	else
@@ -33,7 +36,8 @@ void	command(t_cmd *token, int *fd, int *pre_fd)
 		close(fd[0]);
 		close(fd[1]);
 	}
-	exec(token->args);
+	if (!err)
+		exec(token->args);
 }
 
 void	create_tree(int *pre_fd, t_node *token)
