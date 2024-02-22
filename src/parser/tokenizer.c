@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:40:50 by padam             #+#    #+#             */
-/*   Updated: 2024/02/22 14:53:29 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/22 15:11:46 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,11 @@ t_token	*add_token(t_token *token_last, t_token_type token_type)
 
 	if (token_last && token_last->type == T_WORD && token_type == T_WORD)
 		return (token_last);
+	if (token_last && token_last->type == T_SEPARATOR)
+	{
+		token_last->type = token_type;
+		return (token_last);
+	}
 	new_token = malloc(sizeof(t_token));
 	new_token->next = NULL;
 	new_token->type = token_type;
@@ -112,6 +117,8 @@ t_token	*get_next_token(char *string, t_token *token_last)
 	t_token_type	token_type;
 	int				i;
 
+	if (is_separator(*string) && !(*string + 1))
+		return (token_last);
 	token_type = get_token_type(string);
 	token_last = add_token(token_last, token_type);
 	i = 1;
@@ -122,11 +129,11 @@ t_token	*get_next_token(char *string, t_token *token_last)
 	else if (token_type == T_AND || token_type == T_OR
 		|| token_type == T_REDIR_APPEND || token_type == T_REDIR_HEREDOC)
 		i += 1;
-	// else if (token_type == T_SEPARATOR)
-	// {
-	// 	while (is_separator(string[i - 1]))
-	// 		i++;
-	// }
+	else if (token_type == T_SEPARATOR)
+	{
+		while (is_separator(string[i]))
+			i++;
+	}
 	if (string[i])
 		get_next_token(string + i, token_last);
 	return (token_last);
