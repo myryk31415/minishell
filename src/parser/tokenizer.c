@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:40:50 by padam             #+#    #+#             */
-/*   Updated: 2024/02/20 18:31:00 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/22 14:53:29 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,15 +92,9 @@ t_token	*handle_command(char **string, t_token *token_last)
 	i = 1;
 	token_type = T_WORD;
 	while (token_type == T_WORD && (*string)[i] && !is_quote((*string)[i]))
-	{
-		token_type = get_token_type((*string) + i);
-		i++;
-	}
-	//careful
-	if ((*string)[i] && !is_quote((*string)[i]))
+		token_type = get_token_type((*string) + i++);
+	if (token_type != T_WORD)
 		i--;
-	// if (token_type == T_SEPARATOR)
-	// 	i--;
 	if (token_last && token_last->type == T_WORD)
 		token_last->value = ft_strjoin(token_last->value,
 				ft_substr(*string, 0, i));
@@ -154,31 +148,3 @@ void	tokenize_command(char *command)
 	tokens = get_next_token(command, NULL);
 	debug_print_token_array(tokens);
 }
-
-	// while (*command)
-	// {
-	// 	i = 0;
-	// 	while (command[i])
-	// 	{
-	// 		token_type = get_token(&command + i);
-	// 		if (token_type != T_COMMAND)
-	// 			break ;
-	// 		i++;
-	// 	}
-	// 	if (i)
-	// 	{
-	// 		add_token(&token_last, T_COMMAND);
-	// 		token_last->value = ft_substr(command, 0, i);
-	// 		command += i;
-	// 	}
-	// 	if (token_type != T_COMMAND)
-	// 	{
-	// 		add_token(&token_last, token_type);
-	// 		command += 1;
-	// 	}
-	// 	if (token_type == T_AND || token_type == T_OR
-	// 		|| token_type == T_REDIR_APPEND || token_type == T_REDIR_HEREDOC)
-	// 		command += 1;
-	// 	if (*command)
-	// 		token_type = get_token(&command);
-	// }
