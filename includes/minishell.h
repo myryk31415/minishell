@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/02/22 19:41:16 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/23 17:39:31 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,17 @@ typedef struct s_node
 {
 	void		*left;
 	t_node_type	type_left;
+	bool		new_process_left;
 	void		*right;
 	t_node_type	type_right;
+	bool		new_process_right;
 }	t_node;
 
-typedef struct s_node_group
-{
-	t_node		*node;
-	t_node_type	*type;
-}	t_node_group;
+// typedef struct s_node_group
+// {
+// 	t_node		*node;
+// 	t_node_type	*type;
+// }	t_node_group;
 
 void	parser(void);
 
