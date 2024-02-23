@@ -6,7 +6,7 @@
 #    By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/02/20 17:49:01 by padam            ###   ########.fr        #
+#    Updated: 2024/02/23 00:51:40 by padam            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,14 +25,15 @@ OBJ_DIRS =	execution	execution/pipe	main	parser
 
 SRCS_MAIN =			main.c
 
-SRCS_PARSER =		parser.c		tokenizer.c		utils.c
+SRCS_PARS =	node_struct.c		node_utils.c		parser_utils.c	\
+			parser.c			tokenizer.c
 
 SRCS_EXECUTION =
 
 SRCS_PIPE =			fork.c			pipe.c			utils.c
 
-SRC_NAME =	$(addprefix main/,				$(SRCS_MAIN))			\
-			$(addprefix parser/,			$(SRCS_PARSER))		\
+SRC_NAME =	$(addprefix main/,				$(SRCS_MAIN))		\
+			$(addprefix parser/,			$(SRCS_PARS))		\
 #			$(addprefix execution/,			$(SRCS_EXECUTION))	\
 			$(addprefix execution/pipe/,	$(SRCS_PIPE))		\
 

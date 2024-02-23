@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/02/19 15:18:18 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/23 00:54:18 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,13 @@ char	*new_prompt(void)
 void	parser(void)
 {
 	char	*command;
+	t_token	*tokens;
 
 	while (1)
 	{
 		command = new_prompt();
-		// if (ft_strncmp(command, "exit", 4) == 0)
-		// 	break ;
-		// ft_printf("%s\n", command);
-		tokenize_command(command);
+		tokens = tokenize_command(command);
 		free(command);
+		
 	}
 }

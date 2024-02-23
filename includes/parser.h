@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:14:04 by padam             #+#    #+#             */
-/*   Updated: 2024/02/20 18:02:32 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/23 01:10:50 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,19 @@ typedef struct s_token
 	struct s_token		*next;
 }	t_token;
 
-void	tokenize_command(char *command);
+//node_struct
+t_node_group	*tokens_to_tree(t_token *tokens);
 
-//utils
-int		is_quote(char c);
-int		is_separator(char c);
+//node_utils
+t_node			*new_node(void);
+t_node_group	*new_node_group(int nodes);
+int				count_operators(t_token *tokens);
+
+//parser_utils
+int				is_quote(char c);
+int				is_separator(char c);
+
+//tokenizer
+t_token			*tokenize_command(char *command);
 
 #endif
