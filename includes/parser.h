@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:14:04 by padam             #+#    #+#             */
-/*   Updated: 2024/02/23 01:10:50 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/23 19:22:38 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ typedef enum e_token_type
 	T_PIPE,
 	T_AND,
 	T_OR,
-	T_PARENTHESIS_OPEN,
-	T_PARENTHESIS_CLOSE,
+	T_LPAREN,
+	T_RPAREN,
 	T_REDIR_IN,
 	T_REDIR_OUT,
 	T_REDIR_APPEND,

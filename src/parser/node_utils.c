@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:44:23 by padam             #+#    #+#             */
-/*   Updated: 2024/02/23 17:45:56 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/23 19:24:18 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,42 +24,48 @@ t_node	*new_node(void)
 	return (node);
 }
 
-t_node_group	*new_node_group(int operator_count)
-{
-	t_node_group	*node_group;
-
-	node_group = ft_calloc(1, sizeof(t_node_group));
-	if (!node_group)
-		return (NULL);
-	node_group->node = ft_calloc(operator_count, sizeof(t_node));
-	if (!node_group->node)
-	{
-		free(node_group);
-		return (NULL);
-	}
-	node_group->type = ft_calloc(operator_count, sizeof(t_token_type));
-	if (!node_group->type)
-	{
-		free(node_group->node);
-		free(node_group);
-		return (NULL);
-	}
-	return (node_group);
-}
-
 /*
  * @brief Counts "T_AND" and "T_OR" tokens in the token list
 */
 int	count_operators(t_token *tokens)
 {
-	int	count;
+	int	operator_count;
+	int	parenthesis_level;
 
-	count = 0;
+	operator_count = 0;
+	parenthesis_level = 0;
 	while (tokens)
 	{
-		if (tokens->type == T_AND || tokens->type == T_OR)
-			count++;
+		if (parenthesis_level == 0 && (tokens->type == T_AND || tokens->type == T_OR))
+			operator_count++;
+		else if (tokens->type == T_LPAREN)
+			parenthesis_level++;
+		else if (tokens->type == T_RPAREN)
+			parenthesis_level--;
 		tokens = tokens->next;
 	}
-	return (count);
+	return (operator_count);
 }
+
+// t_node_group	*new_node_group(int operator_count)
+// {
+// 	t_node_group	*node_group;
+
+// 	node_group = ft_calloc(1, sizeof(t_node_group));
+// 	if (!node_group)
+// 		return (NULL);
+// 	node_group->node = ft_calloc(operator_count, sizeof(t_node));
+// 	if (!node_group->node)
+// 	{
+// 		free(node_group);
+// 		return (NULL);
+// 	}
+// 	node_group->type = ft_calloc(operator_count, sizeof(t_token_type));
+// 	if (!node_group->type)
+// 	{
+// 		free(node_group->node);
+// 		free(node_group);
+// 		return (NULL);
+// 	}
+// 	return (node_group);
+// }

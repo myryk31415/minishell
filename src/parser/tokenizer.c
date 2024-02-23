@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:40:50 by padam             #+#    #+#             */
-/*   Updated: 2024/02/23 00:53:12 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/23 19:22:38 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ t_token_type	get_token_type(char *string)
 	else if (!ft_strncmp(string, "<<", 2))
 		token = T_REDIR_HEREDOC;
 	else if (!ft_strncmp(string, "(", 1))
-		token = T_PARENTHESIS_OPEN;
+		token = T_LPAREN;
 	else if (!ft_strncmp(string, ")", 1))
-		token = T_PARENTHESIS_CLOSE;
+		token = T_RPAREN;
 	else if (!ft_strncmp(string, "|", 1))
 		token = T_PIPE;
 	else if (!ft_strncmp(string, ">", 1))
