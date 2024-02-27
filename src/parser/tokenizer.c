@@ -6,31 +6,11 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:40:50 by padam             #+#    #+#             */
-/*   Updated: 2024/02/23 19:22:38 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/26 14:16:34 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
-t_token	*add_token(t_token *token_last, t_token_type token_type)
-{
-	t_token	*new_token;
-
-	if (token_last && token_last->type == T_WORD && token_type == T_WORD)
-		return (token_last);
-	if (token_last && token_last->type == T_SEPARATOR)
-	{
-		token_last->type = token_type;
-		return (token_last);
-	}
-	new_token = malloc(sizeof(t_token));
-	new_token->next = NULL;
-	new_token->type = token_type;
-	new_token->value = NULL;
-	if (token_last)
-		token_last->next = new_token;
-	return (new_token);
-}
 
 //change to char pointer
 t_token_type	get_token_type(char *string)
@@ -82,7 +62,7 @@ t_token	*handle_quotes(char **string, t_token *token_last)
 				ft_substr(*string, 0, i));
 	else
 	{
-		token_last = add_token(token_last, T_WORD);
+		token_last = token_add(token_last, T_WORD);
 		token_last->value = ft_substr(*string, 0, i);
 	}
 	*string += i;
@@ -105,7 +85,7 @@ t_token	*handle_command(char **string, t_token *token_last)
 				ft_substr(*string, 0, i));
 	else
 	{
-		token_last = add_token(token_last, T_WORD);
+		token_last = token_add(token_last, T_WORD);
 		token_last->value = ft_substr(*string, 0, i);
 	}
 	*string += i - 1;
@@ -123,7 +103,7 @@ t_token	*get_next_token(char *string, t_token *token_last)
 	token_type = get_token_type(string);
 	if (is_separator(*string) && is_separator(*(string + 1)))
 		return (get_next_token(string + 1, token_last));
-	token_last = add_token(token_last, token_type);
+	token_last = token_add(token_last, token_type);
 	if (is_quote(*string))
 		token_last = handle_quotes(&string, token_last);
 	else if (token_type == T_WORD)
@@ -135,15 +115,6 @@ t_token	*get_next_token(char *string, t_token *token_last)
 		get_next_token(string + i, token_last);
 	return (token_last);
 }
-
-// void	debug_print_token_array(t_token *token_first)
-// {
-// 	while (token_first)
-// 	{
-// 		printf("type: %d, value: %s\n", token_first->type, token_first->value);
-// 		token_first = token_first->next;
-// 	}
-// }
 
 //just call get_next_token directly
 t_token	*tokenize_command(char *command)

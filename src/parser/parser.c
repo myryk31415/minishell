@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/02/23 00:54:18 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/27 01:45:06 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,64 @@ char	*new_prompt(void)
 	return (command);
 }
 
+void	debug_print_token_array(t_token *token_first)
+{
+	while (token_first)
+	{
+		printf("type: %d, value: %s\n", token_first->type, token_first->value);
+		token_first = token_first->next;
+	}
+}
+
+void	debug_print_redirects(t_cmd *redirects)
+{
+	int	i;
+
+	i = 0;
+	printf("args:\n");
+	while (redirects->args && redirects->args[i])
+		printf("%s\n", redirects->args[i++]);
+	i = 0;
+	printf("redirect_in:\n");
+	while (redirects->redirect_in && redirects->redirect_in[i])
+	{
+		printf("%i: %s\n", i, redirects->redirect_in[i]);
+		if (redirects->heredoc[i++] == true)
+			printf("heredoc\n");
+		else
+			printf("no heredoc\n");
+	}
+	i = 0;
+	printf("redirect_out:\n");
+	while (redirects->redirect_out && redirects->redirect_out[i])
+	{
+		printf("%i: %s\n", i, redirects->redirect_out[i]);
+		if (redirects->append[i++] == true)
+			printf("append\n");
+		else
+			printf("no append\n");
+	}
+}
+
 void	parser(void)
 {
 	char	*command;
 	t_token	*tokens;
+	t_cmd	redirects;
+	t_cmd	*new_redirects;
 
+	redirects.args = NULL;
+	redirects.redirect_in = NULL;
+	redirects.redirect_out = NULL;
+	redirects.heredoc = NULL;
+	redirects.append = NULL;
 	while (1)
 	{
 		command = new_prompt();
 		tokens = tokenize_command(command);
+		debug_print_token_array(tokens);
+		new_redirects = redirects_get(&tokens, &redirects);
+		debug_print_redirects(new_redirects);
 		free(command);
-		
 	}
 }
