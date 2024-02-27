@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:40:50 by padam             #+#    #+#             */
-/*   Updated: 2024/02/26 14:16:34 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/27 17:59:03 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ t_token	*get_next_token(char *string, t_token *token_last)
 		|| token_type == T_REDIR_APPEND || token_type == T_REDIR_HEREDOC)
 		i += 1;
 	if (string[i])
-		get_next_token(string + i, token_last);
+		token_last = get_next_token(string + i, token_last);
 	return (token_last);
 }
 

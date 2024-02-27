@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:11:07 by padam             #+#    #+#             */
-/*   Updated: 2024/02/27 15:51:11 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/27 19:41:21 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ t_token	*token_add(t_token *token_last, t_token_type token_type)
 	}
 	new_token = malloc(sizeof(t_token));
 	new_token->next = NULL;
+	new_token->prev = token_last;
 	new_token->type = token_type;
 	new_token->value = NULL;
 	if (token_last)
@@ -62,16 +63,20 @@ t_token	*token_split(t_token *tokens)
 /*
  * @brief skips the tokens inside parenthesis
  * @param tokens the opening parenthesis token
+ * @param direction "1" for forward, "-1" for backward
  * @return the closing parenthesis token
 */
-t_token *skip_parens(t_token *tokens)
+t_token *skip_parens(t_token *tokens, int direction)
 {
 	int level;
 
 	level = 1;
 	while (tokens && level > 0)
 	{
-		tokens = tokens->next;
+		if (direction == 1)
+			tokens = tokens->next;
+		else
+			tokens = tokens->prev;
 		if (tokens->type == T_LPAREN)
 			level++;
 		else if (tokens->type == T_RPAREN)
@@ -80,15 +85,19 @@ t_token *skip_parens(t_token *tokens)
 	return (tokens);
 }
 
-t_token *get_operator(t_token **tokens)
+t_token *get_operator(t_token *tokens)
 {
-	// t_token	*tmp;
-
-	while (*tokens && (*tokens)->type != T_AND && (*tokens)->type != T_OR)
+	while (tokens && tokens->type != T_LPAREN)
 	{
-		if ((*tokens)->type == T_LPAREN)
-			*tokens = skip_parens(*tokens);
-		*tokens = (*tokens)->next;
+		if (tokens->type == T_RPAREN)
+			return (skip_parens(tokens, -1));
+		if (tokens->type == T_AND || tokens->type == T_OR)
+			return (tokens);
+		if (!tokens->prev )
+			return (tokens);
+		tokens = tokens->prev;
 	}
-	return (*tokens);
+	if (tokens->type == T_LPAREN)
+		tokens = tokens->next;
+	return (tokens);
 }

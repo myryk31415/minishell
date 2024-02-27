@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/02/26 23:16:19 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/27 18:59:26 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ typedef struct s_cmd
 
 typedef enum e_node_type
 {
-	GROUP,
 	AND,
 	OR,
 	PIPE,

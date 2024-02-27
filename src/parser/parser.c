@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/02/27 17:13:39 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/27 20:29:39 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,9 @@ void	parser(void)
 	char	*command;
 	t_token	*tokens;
 	t_cmd	redirects;
-	t_cmd	*new_redirects;
+	// t_cmd	*new_redirects;
+	void	*token_tree;
+	t_node_type	token_tree_first;
 
 	redirects.args = NULL;
 	redirects.redirect_in = NULL;
@@ -100,9 +102,12 @@ void	parser(void)
 	{
 		command = new_prompt();
 		tokens = tokenize_command(command);
-		new_redirects = redirects_get(tokens, &redirects);
-		debug_print_token_array(tokens);
-		debug_print_cmd(new_redirects);
 		free(command);
+		token_tree_first = tokens_to_tree(tokens, &token_tree);
+		(void)token_tree_first;
+		(void)redirects;
+		// new_redirects = redirects_get(tokens, &redirects);
+		// debug_print_token_array(tokens);
+		// debug_print_cmd(new_redirects);
 	}
 }

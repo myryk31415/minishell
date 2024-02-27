@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:34:22 by padam             #+#    #+#             */
-/*   Updated: 2024/02/27 17:08:28 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/27 19:49:22 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	redirects_count(t_token *tokens, int *in_count, int *out_count)
 	while (tokens)
 	{
 		if (tokens->type == T_LPAREN)
-			tokens = skip_parens(tokens);
+			tokens = skip_parens(tokens, 1);
 		else if (tokens->type == T_REDIR_IN)
 			(*in_count)++;
 		else if (tokens->type == T_REDIR_HEREDOC)
@@ -70,10 +70,10 @@ void	redirects_fill(t_token *tokens, t_cmd *redirects)
 	in_count = 0;
 	out_count = 0;
 	while (tokens && tokens->type != T_AND && tokens->type != T_OR
-		&& tokens->type != T_PIPE)
+		&& tokens->type != T_PIPE && tokens->type != T_RPAREN)
 	{
 		if (tokens->type == T_LPAREN)
-			tokens = skip_parens(tokens);
+			tokens = skip_parens(tokens, 1);
 		else if (tokens->type == T_REDIR_IN
 			|| tokens->type == T_REDIR_HEREDOC)
 		{
