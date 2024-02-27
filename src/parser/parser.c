@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/02/27 13:54:48 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/27 17:13:39 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,8 @@ void	parser(void)
 	{
 		command = new_prompt();
 		tokens = tokenize_command(command);
+		new_redirects = redirects_get(tokens, &redirects);
 		debug_print_token_array(tokens);
-		new_redirects = redirects_get(&tokens, &redirects);
 		debug_print_cmd(new_redirects);
 		free(command);
 	}

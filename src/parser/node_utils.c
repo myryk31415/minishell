@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:44:23 by padam             #+#    #+#             */
-/*   Updated: 2024/02/26 15:40:27 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/27 17:04:15 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	count_operators(t_token *tokens)
 	operator_count = 0;
 	while (tokens)
 	{
-		if (tokens->type == T_AND || tokens->type == T_OR)
+		if (is_operator(tokens->type))
 			operator_count++;
 		else if (tokens->type == T_LPAREN)
 			tokens = skip_parens(tokens);

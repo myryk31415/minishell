@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:14:04 by padam             #+#    #+#             */
-/*   Updated: 2024/02/26 23:33:24 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/27 17:08:57 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,11 @@ int		count_operators(t_token *tokens);
 int		is_quote(char c);
 int		is_separator(char c);
 int		is_redirect(t_token_type type);
+int		is_operator(t_token_type type);
 
 // redirects
 t_cmd	*redirects_dup(t_cmd *redirects);
-t_cmd	*redirects_get(t_token **tokens, t_cmd *redirects);
+t_cmd	*redirects_get(t_token *tokens, t_cmd *redirects);
 
 // tokenizer
 t_token	*tokenize_command(char *command);
@@ -69,5 +70,6 @@ void	token_delete(t_token **tokens);
 t_token	*token_add(t_token *tokens, t_token_type token_type);
 t_token	*token_split(t_token *tokens);
 t_token	*skip_parens(t_token *tokens);
+t_token	*get_operator(t_token **tokens);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:11:07 by padam             #+#    #+#             */
-/*   Updated: 2024/02/26 14:17:21 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/27 15:51:11 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ t_token	*token_split(t_token *tokens)
 
 	tmp = tokens->next;
 	tokens->next = NULL;
-	return (tmp);
+	return (tmp);		tokens->next = NULL;
 }
 
 /*
@@ -78,4 +78,17 @@ t_token *skip_parens(t_token *tokens)
 			level--;
 	}
 	return (tokens);
+}
+
+t_token *get_operator(t_token **tokens)
+{
+	// t_token	*tmp;
+
+	while (*tokens && (*tokens)->type != T_AND && (*tokens)->type != T_OR)
+	{
+		if ((*tokens)->type == T_LPAREN)
+			*tokens = skip_parens(*tokens);
+		*tokens = (*tokens)->next;
+	}
+	return (*tokens);
 }

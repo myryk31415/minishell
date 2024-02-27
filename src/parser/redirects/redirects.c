@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:34:22 by padam             #+#    #+#             */
-/*   Updated: 2024/02/27 13:57:40 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/27 17:08:28 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,52 +62,51 @@ void	redirect_realloc(char ***redirects, bool **boolean, int count)
 	*redirects = new_redirects;
 }
 
-void	redirects_fill(t_token **tokens, t_cmd *redirects)
+void	redirects_fill(t_token *tokens, t_cmd *redirects)
 {
 	int	in_count;
 	int	out_count;
 
 	in_count = 0;
 	out_count = 0;
-	while (*tokens)
+	while (tokens && tokens->type != T_AND && tokens->type != T_OR
+		&& tokens->type != T_PIPE)
 	{
-		if ((*tokens)->type == T_LPAREN)
-			*tokens = skip_parens(*tokens);
-		else if ((*tokens)->type == T_REDIR_IN
-			|| (*tokens)->type == T_REDIR_HEREDOC)
+		if (tokens->type == T_LPAREN)
+			tokens = skip_parens(tokens);
+		else if (tokens->type == T_REDIR_IN
+			|| tokens->type == T_REDIR_HEREDOC)
 		{
 			redirects->heredoc[in_count] = 0;
-			if ((*tokens)->type == T_REDIR_HEREDOC)
+			if (tokens->type == T_REDIR_HEREDOC)
 				redirects->heredoc[in_count] = 1;
-			token_delete(tokens);
-			redirects->redirect_in[in_count++] = (*tokens)->value;
-			(*tokens)->value = NULL;
-			token_delete(tokens);
+			tokens = tokens->next;
+			redirects->redirect_in[in_count++] = tokens->value;
+			tokens->value = NULL;
 		}
-		else if ((*tokens)->type == T_REDIR_OUT
-			|| (*tokens)->type == T_REDIR_APPEND)
+		else if (tokens->type == T_REDIR_OUT
+			|| tokens->type == T_REDIR_APPEND)
 		{
 			redirects->append[out_count] = 0;
-			if ((*tokens)->type == T_REDIR_APPEND)
+			if (tokens->type == T_REDIR_APPEND)
 				redirects->append[out_count] = 1;
-			token_delete(tokens);
+			tokens = tokens->next;
 			//if token != T_WORD, error
-			redirects->redirect_out[out_count++] = (*tokens)->value;
-			(*tokens)->value = NULL;
-			token_delete(tokens);
+			redirects->redirect_out[out_count++] = tokens->value;
+			tokens->value = NULL;
 		}
-		else if (*tokens)
-			*tokens = (*tokens)->next;
+		if (tokens)
+			tokens = tokens->next;
 	}
 }
 
-t_cmd	*redirects_get(t_token **tokens, t_cmd *redirects)
+t_cmd	*redirects_get(t_token *tokens, t_cmd *redirects)
 {
 	int	in_count;
 	int	out_count;
 
 	redirects = redirects_dup(redirects);
-	redirects_count(*tokens, &in_count, &out_count);
+	redirects_count(tokens, &in_count, &out_count);
 	if (in_count)
 		redirect_realloc(&(redirects->redirect_in), &redirects->heredoc, in_count);
 	if (out_count)
