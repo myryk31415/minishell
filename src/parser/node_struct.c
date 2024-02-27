@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:38:13 by padam             #+#    #+#             */
-/*   Updated: 2024/02/27 19:48:03 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/27 23:23:31 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,17 @@ t_node_type	get_pipeline(t_token	*tokens, void **head, t_cmd *redirects)
 	return (PIPE);
 }
 
-t_node_type get_next_node_two(t_token *tokens, void **head, t_cmd *redirects)
+t_node_type check_brackets(t_token *tokens, void **head, t_cmd *redirects)
 {
 	t_token *paren;
 	t_token *token_first;
 
 	paren = NULL;
-	token_first = get_paren(tokens, paren);
+	token_first = get_paren(tokens, &paren);
+	token_first++;
 	if (!paren)
 			return (get_pipeline(tokens, head, redirects));
-	redirects = redirects_get(token_first, redirects);
+	// redirects = redirects_get(token_first, redirects);
 	return (get_next_node(paren->prev, head, redirects));
 }
 
@@ -57,14 +58,14 @@ t_node_type	get_next_node(t_token *token_last, void **head, t_cmd *redirects)
 	if (token_first->type == T_AND || token_first->type == T_OR)
 	{
 		node = new_node();
-		node->type_right = get_next_node_two(token_last, &node->right, redirects);
-		node->type_left = get_next_node_two(token_first->next, &node->left, redirects);
+		node->type_right = check_brackets(token_last, &node->right, redirects);
+		node->type_left = get_next_node(token_first->prev, &node->left, redirects);
 		*head = node;
 		if (token_first->type == T_AND)
 			return (AND);
 		return (OR);
 	}
-	return (get_next_node_two(token_first, head, redirects));
+	return (check_brackets(token_first, head, redirects));
 }
 
 t_node_type	tokens_to_tree(t_token *token_last, void **node_tree)

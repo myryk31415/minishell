@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:34:22 by padam             #+#    #+#             */
-/*   Updated: 2024/02/27 19:49:22 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/27 22:49:56 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	redirects_count(t_token *tokens, int *in_count, int *out_count)
 {
 	*in_count = 0;
 	*out_count = 0;
-	while (tokens)
+	while (tokens && tokens->type != T_AND && tokens->type != T_OR)
 	{
 		if (tokens->type == T_LPAREN)
 			tokens = skip_parens(tokens, 1);

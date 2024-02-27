@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:44:23 by padam             #+#    #+#             */
-/*   Updated: 2024/02/27 19:48:57 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/27 22:47:51 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,15 @@ int	count_operators(t_token *tokens)
 	return (operator_count);
 }
 
-t_token	*get_paren(t_token *tokens, t_token *paren)
+t_token	*get_paren(t_token *tokens, t_token **paren)
 {
-	while (tokens && tokens->prev)
+	while (tokens && tokens->prev && tokens->prev->type != T_OR
+			 && tokens->prev->type != T_AND)
 	{
-		if (tokens->type == T_LPAREN)
+		if (tokens->type == T_RPAREN)
 		{
-			paren = tokens;
-			tokens = skip_parens(paren, -1);
+			*paren = tokens;
+			tokens = skip_parens(*paren, -1);
 		}
 		tokens = tokens->prev;
 	}

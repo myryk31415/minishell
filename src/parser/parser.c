@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/02/27 20:29:39 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/27 22:38:05 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,17 @@ void	debug_print_cmd(t_cmd *redirects)
 	}
 }
 
+void	debug_print_tree(t_node *node, int i)
+{
+	char *type_list[] = {"AND", "OR", "PIPE"};
+	printf("%il: %s\n", i, type_list[node->type_left]);
+	printf("%ir: %s\n", i, type_list[node->type_right]);
+	if (node->left)
+		debug_print_tree(node->left, i + 1);
+	if (node->right)
+		debug_print_tree(node->right, i + 1);
+}
+
 void	parser(void)
 {
 	char	*command;
@@ -101,11 +112,14 @@ void	parser(void)
 	while (1)
 	{
 		command = new_prompt();
+		// command = "he && hi || du";
 		tokens = tokenize_command(command);
-		free(command);
+		// free(command);
 		token_tree_first = tokens_to_tree(tokens, &token_tree);
-		(void)token_tree_first;
 		(void)redirects;
+		(void)token_tree_first;
+		debug_print_tree(token_tree, 0);
+
 		// new_redirects = redirects_get(tokens, &redirects);
 		// debug_print_token_array(tokens);
 		// debug_print_cmd(new_redirects);
