@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/02/27 01:45:06 by padam            ###   ########.fr       */
+/*   Updated: 2024/02/27 13:54:48 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,33 +51,36 @@ void	debug_print_token_array(t_token *token_first)
 	}
 }
 
-void	debug_print_redirects(t_cmd *redirects)
+void	debug_print_cmd(t_cmd *redirects)
 {
 	int	i;
 
 	i = 0;
+	printf("----------------\n");
 	printf("args:\n");
 	while (redirects->args && redirects->args[i])
 		printf("%s\n", redirects->args[i++]);
 	i = 0;
+	printf("----------------\n");
 	printf("redirect_in:\n");
 	while (redirects->redirect_in && redirects->redirect_in[i])
 	{
 		printf("%i: %s\n", i, redirects->redirect_in[i]);
 		if (redirects->heredoc[i++] == true)
-			printf("heredoc\n");
+			printf("%i: heredoc\n", i - 1);
 		else
-			printf("no heredoc\n");
+			printf("%i: no heredoc\n", i - 1);
 	}
 	i = 0;
+	printf("----------------\n");
 	printf("redirect_out:\n");
 	while (redirects->redirect_out && redirects->redirect_out[i])
 	{
 		printf("%i: %s\n", i, redirects->redirect_out[i]);
 		if (redirects->append[i++] == true)
-			printf("append\n");
+			printf("%i: append\n", i - 1);
 		else
-			printf("no append\n");
+			printf("%i: no append\n", i - 1);
 	}
 }
 
@@ -99,7 +102,7 @@ void	parser(void)
 		tokens = tokenize_command(command);
 		debug_print_token_array(tokens);
 		new_redirects = redirects_get(&tokens, &redirects);
-		debug_print_redirects(new_redirects);
+		debug_print_cmd(new_redirects);
 		free(command);
 	}
 }
