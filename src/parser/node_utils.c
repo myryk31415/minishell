@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:44:23 by padam             #+#    #+#             */
-/*   Updated: 2024/02/27 22:47:51 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/01 21:53:38 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int	count_operators(t_token *tokens)
 
 t_token	*get_paren(t_token *tokens, t_token **paren)
 {
+	//make cleaner, maybe dont need token_first
 	while (tokens && tokens->prev && tokens->prev->type != T_OR
 			 && tokens->prev->type != T_AND)
 	{
@@ -53,7 +54,9 @@ t_token	*get_paren(t_token *tokens, t_token **paren)
 			*paren = tokens;
 			tokens = skip_parens(*paren, -1);
 		}
-		tokens = tokens->prev;
+		if (tokens->prev && tokens->prev->type != T_OR
+			 && tokens->prev->type != T_AND)
+			tokens = tokens->prev;
 	}
 	return (tokens);
 }

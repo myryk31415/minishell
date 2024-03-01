@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:38:13 by padam             #+#    #+#             */
-/*   Updated: 2024/02/27 23:23:31 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/01 22:02:37 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,16 @@ t_node_type	get_pipeline(t_token	*tokens, void **head, t_cmd *redirects)
 	return (PIPE);
 }
 
-t_node_type check_brackets(t_token *tokens, void **head, t_cmd *redirects)
+t_node_type check_brackets(t_token *token_last, void **head, t_cmd *redirects)
 {
 	t_token *paren;
 	t_token *token_first;
 
 	paren = NULL;
-	token_first = get_paren(tokens, &paren);
+	token_first = get_paren(token_last, &paren);
 	token_first++;
 	if (!paren)
-			return (get_pipeline(tokens, head, redirects));
+			return (get_pipeline(token_last, head, redirects));
 	// redirects = redirects_get(token_first, redirects);
 	return (get_next_node(paren->prev, head, redirects));
 }
@@ -65,7 +65,7 @@ t_node_type	get_next_node(t_token *token_last, void **head, t_cmd *redirects)
 			return (AND);
 		return (OR);
 	}
-	return (check_brackets(token_first, head, redirects));
+	return (check_brackets(token_last, head, redirects));
 }
 
 t_node_type	tokens_to_tree(t_token *token_last, void **node_tree)
