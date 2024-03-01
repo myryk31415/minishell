@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   utils_execution.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/02/21 16:37:15 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/01 11:29:22 by aweizman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-char	*get_env(char **envp)
+char	*get_env(char **envp, char *var)
 {
 	int		i;
 	int		j;
@@ -27,7 +27,8 @@ char	*get_env(char **envp)
 		tmp = ft_substr(envp[i], 0, j);
 		if (!tmp)
 			break ;
-		if (ft_strncmp(tmp, "PATH", 4) == 0)
+		if (!ft_strncmp(tmp, var, ft_strlen(var))
+			&& !ft_strncmp(tmp, var, ft_strlen(tmp)))
 		{
 			free(tmp);
 			return (envp[i] + j + 1);
@@ -38,14 +39,14 @@ char	*get_env(char **envp)
 	return (NULL);
 }
 
-char	*get_path(char *cmd, char **envp)
+char	*get_path(char *cmd, char **envp, char *var)
 {
 	char	**cmd_path;
 	char	*path_to_cmd;
 	char	*trial_path;
 	int		i;
 
-	cmd_path = ft_split(get_env(envp), ':');
+	cmd_path = ft_split(get_env(envp, var), ':');
 	path_to_cmd = ft_strjoin("/", cmd);
 	i = 0;
 	while (cmd_path && path_to_cmd && cmd_path[i])
@@ -72,7 +73,7 @@ void	exec(char **cmd_arg)
 	char		*cmd_path;
 	extern char	**environ;
 
-	cmd_path = get_path(cmd_arg[0], environ);
+	cmd_path = get_path(cmd_arg[0], environ, "PATH");
 	if (execve(cmd_path, cmd_arg, environ) == -1)
 		perror("Command not found\n");
 }

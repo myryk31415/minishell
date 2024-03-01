@@ -6,7 +6,7 @@
 /*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/02/22 15:03:38 by aweizman         ###   ########.fr       */
+/*   Updated: 2024/03/01 11:03:29 by aweizman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	command(t_cmd *token, int *fd, int *pre_fd)
 
 	err = 0;
 	if (token->redirect_in)
-		err = input(token->redirect_in);
+		err = input(token->redirect_in, token->heredoc);
 	else
 	{
 		dup2(pre_fd[0], STDIN_FILENO);
@@ -27,7 +27,7 @@ void	command(t_cmd *token, int *fd, int *pre_fd)
 	}
 	if (token->redirect_out && !err)
 	{
-		err = output(token->redirect_out);
+		err = output(token->redirect_out, token->append);
 		fd[1] = 0;
 	}
 	else

@@ -2,6 +2,9 @@
 	"files.associations": {
 		"string": "c",
 		"iosfwd": "c",
-		"stdbool.h": "c"
+		"stdbool.h": "c",
+		"__config": "c",
+		"execution.h": "c",
+		"stdarg.h": "c"
 	}
 }

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+         #
+#    By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/02/21 15:18:16 by antonweizma      ###   ########.fr        #
+#    Updated: 2024/03/01 11:02:07 by aweizman         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ LIBFT_DIR = libft
 SRC_PATH = src
 OBJ_PATH = obj
 
-OBJ_DIRS =	execution	execution/pipe	main	parser
+OBJ_DIRS =	execution	execution/pipe	execution/builtins	main	parser
 
 SRCS_MAIN =			main.c
 
@@ -29,10 +29,13 @@ SRCS_PARSER =		parser.c		tokenizer.c
 
 SRCS_EXECUTION =	execution.c utils_execution.c input_output.c
 
+SRCS_BUILTINS = echo.c		cd.c
+
 SRCS_PIPE =			fork.c			pipe.c			utils.c
 
-SRC_NAME =	$(addprefix main/,				$(SRCS_MAIN))			\
-			$(addprefix execution/,			$(SRCS_EXECUTION))	\
+SRC_NAME =	$(addprefix execution/builtins/,	$(SRCS_BUILTINS))	\
+		$(addprefix main/,				$(SRCS_MAIN))			\
+		$(addprefix execution/,			$(SRCS_EXECUTION))	\
 #			$(addprefix parser/,			$(SRCS_PARSER))		\
 			$(addprefix execution/pipe/,	$(SRCS_PIPE))		\
 

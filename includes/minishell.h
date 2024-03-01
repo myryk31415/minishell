@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/02/21 16:39:09 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/02/29 15:38:12 by aweizman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,13 @@
 # include <stdbool.h>
 # include "parser.h"
 
-typedef struct s_redirect_in
-{
-	char	**string;
-	bool	*heredoc;
-}	t_redirect_in;
-
-typedef struct s_redirect_out
-{
-	char	**string;
-	bool	*append;
-}	t_redirect_out;
-
 typedef struct s_cmd
 {
-	char			**args;
-	t_redirect_in	*redirect_in;
-	t_redirect_out	*redirect_out;
+	char	**args;
+	char	**redirect_in;
+	bool	*heredoc;
+	char	**redirect_out;
+	bool	*append;
 }	t_cmd;
 
 typedef enum e_node_type
