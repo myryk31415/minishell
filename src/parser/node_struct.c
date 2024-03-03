@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:38:13 by padam             #+#    #+#             */
-/*   Updated: 2024/03/01 22:02:37 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/03 14:48:39 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ t_node_type	get_pipeline(t_token	*tokens, void **head, t_cmd *redirects)
 {
 	(void)redirects;
 	(void)tokens;
-	head = NULL;
 	(void)head;
+	head = NULL;
 	return (PIPE);
 }
 
@@ -48,22 +48,26 @@ t_node_type check_brackets(t_token *token_last, void **head, t_cmd *redirects)
 
 t_node_type	get_next_node(t_token *token_last, void **head, t_cmd *redirects)
 {
-	t_token	*token_first;
-	t_node	*node;
+	t_token		*token_first;
+	t_node		*node;
+	t_node_type return_value;
 
 	//fix this
 	if (!token_last)
-		return (AND);
+		return (ERROR);
 	token_first = get_operator(token_last);
 	if (token_first->type == T_AND || token_first->type == T_OR)
 	{
 		node = new_node();
 		node->type_right = check_brackets(token_last, &node->right, redirects);
-		node->type_left = get_next_node(token_first->prev, &node->left, redirects);
-		*head = node;
 		if (token_first->type == T_AND)
-			return (AND);
-		return (OR);
+			return_value = AND;
+		else
+			return_value = OR;
+		token_delete(&token_first);
+		node->type_left = get_next_node(token_split(token_first, -1), &node->left, redirects);
+		*head = node;
+		return (return_value);
 	}
 	return (check_brackets(token_last, head, redirects));
 }

@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:11:07 by padam             #+#    #+#             */
-/*   Updated: 2024/02/27 21:46:38 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/03 15:25:15 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,14 @@ void	token_delete(t_token **token)
 {
 	t_token	*tmp;
 
+	if ((!*token))
+		return ;
 	free((*token)->value);
 	tmp = *token;
+	if ((*token)->prev)
+		(*token)->prev->next = (*token)->next;
+	if ((*token)->next)
+		(*token)->next->prev = (*token)->prev;
 	*token = (*token)->next;
 	free(tmp);
 }
@@ -49,15 +55,24 @@ t_token	*token_add(t_token *token_last, t_token_type token_type)
 /*
  * @brief splits a token linked list in two parts
  * @param tokens the token after which the list is split
+ * @param direction "1" for forward, "-1" for backward
  * @return first token of new list
 */
-t_token	*token_split(t_token *tokens)
+t_token	*token_split(t_token *tokens, int direction)
 {
 	t_token	*tmp;
 
-	tmp = tokens->next;
-	tokens->next = NULL;
-	return (tmp);		tokens->next = NULL;
+	if (direction == 1)
+	{
+		tmp = tokens->next;
+		tokens->next = NULL;
+		tmp->prev = NULL;
+		return (tmp);
+	}
+	tmp = tokens->prev;
+	tokens->prev = NULL;
+	tmp->next = NULL;
+	return (tmp);
 }
 
 /*
