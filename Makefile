@@ -6,7 +6,7 @@
 #    By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/03/04 17:02:17 by padam            ###   ########.fr        #
+#    Updated: 2024/03/04 17:52:31 by padam            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ SRCS_PIPE =			fork.c			pipe.c			utils.c
 SRC_NAME =	$(addprefix main/,				$(SRCS_MAIN))		\
 			$(addprefix parser/,			$(SRCS_PARS))		\
 			$(addprefix parser/redirects/,	$(SRCS_REDIR))		\
-
+			$(addprefix parser/binary_tree/,$(SRCS_BNTR))		\
 #			$(addprefix execution/,			$(SRCS_EXECUTION))	\
 			$(addprefix execution/pipe/,	$(SRCS_PIPE))		\
 
