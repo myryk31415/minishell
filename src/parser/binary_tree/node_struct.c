@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:38:13 by padam             #+#    #+#             */
-/*   Updated: 2024/03/03 14:48:39 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/04 17:02:31 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,6 @@ t_node_type	get_next_node(t_token *token_last, void **head, t_cmd *redirects);
 // 		handle_parens(tokens, n_top);
 // }
 
-t_node_type	get_pipeline(t_token	*tokens, void **head, t_cmd *redirects)
-{
-	(void)redirects;
-	(void)tokens;
-	(void)head;
-	head = NULL;
-	return (PIPE);
-}
-
 t_node_type check_brackets(t_token *token_last, void **head, t_cmd *redirects)
 {
 	t_token *paren;
@@ -39,9 +30,8 @@ t_node_type check_brackets(t_token *token_last, void **head, t_cmd *redirects)
 
 	paren = NULL;
 	token_first = get_paren(token_last, &paren);
-	token_first++;
 	if (!paren)
-			return (get_pipeline(token_last, head, redirects));
+			return (get_pipeline(token_first, head, redirects));
 	// redirects = redirects_get(token_first, redirects);
 	return (get_next_node(paren->prev, head, redirects));
 }

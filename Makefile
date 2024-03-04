@@ -6,7 +6,7 @@
 #    By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/02/27 00:32:48 by padam            ###   ########.fr        #
+#    Updated: 2024/03/04 17:02:17 by padam            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,14 +21,17 @@ LIBFT_DIR = libft
 SRC_PATH = src
 OBJ_PATH = obj
 
-OBJ_DIRS =	execution	execution/pipe	main	parser parser/redirects
+OBJ_DIRS =	execution	execution/pipe	main	parser	parser/binary_tree	\
+			parser/redirects
 
-SRCS_MAIN =			main.c
+SRCS_MAIN =	main.c
 
-SRCS_PARS =	node_struct.c		node_utils.c		parser_utils.c	\
-			parser.c			tokenizer.c			tokens_utils.c	\
+SRCS_PARS =	parser_utils.c			parser.c			tokenizer.c	\
+			tokens_utils.c	\
 
-SRCS_REDIR =	redirects.c 	redirects_dup.c
+SRCS_BNTR =	node_struct.c			node_utils.c		binary_tree.c
+
+SRCS_REDIR =	redirects.c			redirects_dup.c
 
 SRCS_EXECUTION =
 
@@ -37,6 +40,7 @@ SRCS_PIPE =			fork.c			pipe.c			utils.c
 SRC_NAME =	$(addprefix main/,				$(SRCS_MAIN))		\
 			$(addprefix parser/,			$(SRCS_PARS))		\
 			$(addprefix parser/redirects/,	$(SRCS_REDIR))		\
+
 #			$(addprefix execution/,			$(SRCS_EXECUTION))	\
 			$(addprefix execution/pipe/,	$(SRCS_PIPE))		\
 
