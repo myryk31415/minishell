@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 23:10:31 by padam             #+#    #+#             */
-/*   Updated: 2024/03/03 15:52:12 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/04 20:57:24 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	free_str_array(char **arr)
 	free(arr);
 }
 
-void	free_cmd(t_cmd *cmd)
+void	cmd_free(t_cmd *cmd)
 {
 	free_str_array(cmd->args);
 	free_str_array(cmd->redirect_in);

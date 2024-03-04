@@ -6,7 +6,7 @@
 #    By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/03/04 17:52:31 by padam            ###   ########.fr        #
+#    Updated: 2024/03/04 20:59:12 by padam            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ SRCS_MAIN =	main.c
 SRCS_PARS =	parser_utils.c			parser.c			tokenizer.c	\
 			tokens_utils.c	\
 
-SRCS_BNTR =	node_struct.c			node_utils.c		binary_tree.c
+SRCS_BNTR =	node_struct.c			node_utils.c		pipeline.c
 
 SRCS_REDIR =	redirects.c			redirects_dup.c
 

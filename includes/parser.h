@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:14:04 by padam             #+#    #+#             */
-/*   Updated: 2024/03/04 17:20:23 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/04 20:58:34 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_token
 } t_token;
 
 // node_struct
+t_node_type split_by_operator(t_token *token_last, void **head, t_cmd *redirects);
 t_node_type	tokens_to_tree(t_token *tokens, void **head);
 
 // node_utils
@@ -58,7 +59,7 @@ int		count_operators(t_token *tokens);
 t_token	*get_paren(t_token *tokens, t_token **paren);
 
 // pipeline
-t_node	*get_pipeline(t_token *token_first, void **head, t_cmd *redirects);
+t_node_type	split_by_pipe(t_token *token_first, void **head, t_cmd *redirects);
 
 // parser_utils
 int		is_quote(char c);
@@ -67,6 +68,7 @@ int		is_redirect(t_token_type type);
 int		is_operator(t_token_type type);
 
 // redirects
+void	cmd_free(t_cmd *cmd);
 t_cmd	*redirects_dup(t_cmd *redirects);
 t_cmd	*redirects_get(t_token *tokens, t_cmd *redirects);
 
@@ -78,6 +80,5 @@ void	token_delete(t_token **tokens);
 t_token	*token_add(t_token *tokens, t_token_type token_type);
 t_token	*token_split(t_token *tokens, int direction);
 t_token	*skip_parens(t_token *tokens, int direction);
-t_token	*get_operator(t_token *tokens);
 
 #endif

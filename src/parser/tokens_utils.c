@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:11:07 by padam             #+#    #+#             */
-/*   Updated: 2024/03/03 15:25:15 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/04 20:48:48 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@ void	token_delete(t_token **token)
 	free(tmp);
 }
 
+/*
+ * @brief adds a token to the end of the linked list
+*/
 t_token	*token_add(t_token *token_last, t_token_type token_type)
 {
 	t_token	*new_token;
@@ -62,16 +65,20 @@ t_token	*token_split(t_token *tokens, int direction)
 {
 	t_token	*tmp;
 
+	if (!tokens)
+		return (NULL);
 	if (direction == 1)
 	{
 		tmp = tokens->next;
 		tokens->next = NULL;
-		tmp->prev = NULL;
+		if (tmp)
+			tmp->prev = NULL;
 		return (tmp);
 	}
 	tmp = tokens->prev;
 	tokens->prev = NULL;
-	tmp->next = NULL;
+	if (tmp)
+		tmp->next = NULL;
 	return (tmp);
 }
 
@@ -97,22 +104,5 @@ t_token *skip_parens(t_token *tokens, int direction)
 		else if (tokens->type == T_RPAREN)
 			level -= direction;
 	}
-	return (tokens);
-}
-
-t_token *get_operator(t_token *tokens)
-{
-	while (tokens && tokens->type != T_LPAREN)
-	{
-		if (tokens->type == T_RPAREN)
-			tokens = skip_parens(tokens, -1);
-		else if (tokens->type == T_AND || tokens->type == T_OR)
-			return (tokens);
-		if (!tokens->prev )
-			return (tokens);
-		tokens = tokens->prev;
-	}
-	if (tokens->type == T_LPAREN)
-		tokens = tokens->next;
 	return (tokens);
 }
