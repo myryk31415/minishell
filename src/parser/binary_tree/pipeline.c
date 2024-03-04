@@ -6,16 +6,24 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 17:02:47 by padam             #+#    #+#             */
-/*   Updated: 2024/03/04 20:58:24 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/04 21:17:34 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-t_node_type check_brackets(t_token *token_first, void **head, t_cmd *redirects)
+t_node_type	get_cmd(t_token *token_first, void **head, t_cmd *redirects)
 {
-	t_token_type	return_value;
-	t_token 		*token_last;
+	(void)redirects;
+	(void)head;
+	(void)token_first;
+	return (CMD);
+}
+
+t_node_type	check_brackets(t_token *token_first, void **head, t_cmd *redirects)
+{
+	t_node_type	return_value;
+	t_token		*token_last;
 
 	if (!token_first)
 		return (ERROR);
@@ -39,7 +47,7 @@ t_node_type check_brackets(t_token *token_first, void **head, t_cmd *redirects)
 		return (get_cmd(token_first, head, redirects));
 }
 
-t_node	*get_pipe(t_token *tokens)
+t_token	*get_pipe(t_token *tokens)
 {
 	//token_deletion
 	while (tokens)
@@ -48,7 +56,7 @@ t_node	*get_pipe(t_token *tokens)
 			tokens = skip_parens(tokens, 1);
 		else if (tokens->type == T_PIPE)
 			return (tokens);
-		if (!tokens->next )
+		if (!tokens->next)
 			return (tokens);
 		tokens = tokens->next;
 	}
@@ -78,7 +86,8 @@ t_node_type	split_by_pipe(t_token *token_first, void **head, t_cmd *redirects)
 	return (check_brackets(token_first, head, redirects));
 }
 
-// t_node_type	get_pipeline(t_token *token_first, void **head, t_cmd *redirects)
+// t_node_type	get_pipeline(t_token *token_first,
+// 	void **head, t_cmd *redirects)
 // {
 // 	t_token	*token_tmp;
 // 	t_node	*node;

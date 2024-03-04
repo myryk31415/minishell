@@ -6,15 +6,16 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:38:13 by padam             #+#    #+#             */
-/*   Updated: 2024/03/04 20:58:24 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/04 21:14:58 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-t_node_type	split_by_operator(t_token *token_last, void **head, t_cmd *redirects);
+t_node_type	split_by_operator(t_token *token_last,
+				void **head, t_cmd *redirects);
 
-t_token *get_operator(t_token *tokens)
+t_token	*get_operator(t_token *tokens)
 {
 	//token_deletion
 	while (tokens)
@@ -23,7 +24,7 @@ t_token *get_operator(t_token *tokens)
 			tokens = skip_parens(tokens, -1);
 		else if (tokens->type == T_AND || tokens->type == T_OR)
 			return (tokens);
-		if (!tokens->prev )
+		if (!tokens->prev)
 			return (tokens);
 		tokens = tokens->prev;
 	}
@@ -32,11 +33,12 @@ t_token *get_operator(t_token *tokens)
 	return (tokens);
 }
 
-t_node_type	split_by_operator(t_token *token_last, void **head, t_cmd *redirects)
+t_node_type	split_by_operator(t_token *token_last,
+				void **head, t_cmd *redirects)
 {
 	t_token		*token_first;
 	t_node		*node;
-	t_node_type return_value;
+	t_node_type	return_value;
 
 	if (!token_last)
 		return (ERROR);
@@ -49,7 +51,8 @@ t_node_type	split_by_operator(t_token *token_last, void **head, t_cmd *redirects
 		else
 			return_value = OR;
 		token_delete(&token_first);
-		node->type_left = split_by_operator(token_split(token_first, -1), &node->left, redirects);
+		node->type_left = split_by_operator(token_split(token_first, -1),
+				&node->left, redirects);
 		node->type_right = split_by_pipe(token_first, &node->right, redirects);
 		*head = node;
 		return (return_value);

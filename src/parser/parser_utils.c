@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 17:48:38 by padam             #+#    #+#             */
-/*   Updated: 2024/02/27 17:04:38 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/04 21:09:17 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	is_separator(char c)
 	return (c == ' ' || c == '\t' || c == '\n');
 }
 
-int is_redirect(t_token_type type)
+int	is_redirect(t_token_type type)
 {
 	return (type == T_REDIR_IN || type == T_REDIR_OUT
 		|| type == T_REDIR_APPEND || type == T_REDIR_HEREDOC);

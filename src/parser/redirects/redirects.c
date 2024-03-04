@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:34:22 by padam             #+#    #+#             */
-/*   Updated: 2024/03/04 20:56:00 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/04 21:12:08 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ int	redirect_get_length(char **redirects)
 	int	i;
 
 	i = 0;
-
 	if (!redirects)
 		return (0);
 	while (redirects[i])
@@ -80,11 +79,11 @@ t_token	*test(t_token *tokens, char **redirect, bool *boolean, bool value)
 	*boolean = value;
 	token_delete(&tokens);
 	if (!tokens || tokens->type != T_WORD)
-		return NULL; //error
+		return (NULL); //error
 	*redirect = tokens->value;
 	tokens->value = NULL;
 	token_delete(&tokens);
-	return tokens;
+	return (tokens);
 }
 
 void	redirects_fill(t_token *tokens, t_cmd *redirects)
@@ -100,16 +99,16 @@ void	redirects_fill(t_token *tokens, t_cmd *redirects)
 			tokens = (skip_parens(tokens, 1))->next;
 		else if (tokens->type == T_REDIR_IN && ++in_count)
 			tokens = test(tokens, &(redirects->redirect_in[in_count]),
-				&(redirects->heredoc[in_count]), 0);
+					&(redirects->heredoc[in_count]), 0);
 		else if (tokens->type == T_REDIR_HEREDOC && ++in_count)
 			tokens = test(tokens, &(redirects->redirect_in[in_count]),
-				&(redirects->heredoc[in_count]), 1);
+					&(redirects->heredoc[in_count]), 1);
 		else if (tokens->type == T_REDIR_OUT && ++out_count)
 			tokens = test(tokens, &(redirects->redirect_out[out_count]),
-				&(redirects->append[out_count]), 0);
+					&(redirects->append[out_count]), 0);
 		else if (tokens->type == T_REDIR_APPEND && ++out_count)
 			tokens = test(tokens, &(redirects->redirect_out[out_count]),
-				&(redirects->append[out_count]), 1);
+					&(redirects->append[out_count]), 1);
 		else
 			(void)in_count; //error
 	}
@@ -123,9 +122,11 @@ t_cmd	*redirects_get(t_token *tokens, t_cmd *redirects)
 	redirects = redirects_dup(redirects);
 	redirects_count(tokens, &in_count, &out_count);
 	if (in_count)
-		redirect_realloc(&(redirects->redirect_in), &redirects->heredoc, in_count);
+		redirect_realloc(&(redirects->redirect_in),
+			&redirects->heredoc, in_count);
 	if (out_count)
-		redirect_realloc(&(redirects->redirect_out), &redirects->append, out_count);
+		redirect_realloc(&(redirects->redirect_out),
+			&redirects->append, out_count);
 	redirects_fill(tokens, redirects);
 	return (redirects);
 }

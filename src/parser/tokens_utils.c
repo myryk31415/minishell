@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:11:07 by padam             #+#    #+#             */
-/*   Updated: 2024/03/04 20:48:48 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/04 21:09:42 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,9 @@ t_token	*token_split(t_token *tokens, int direction)
  * @param direction "1" for forward, "-1" for backward
  * @return the closing parenthesis token
 */
-t_token *skip_parens(t_token *tokens, int direction)
+t_token	*skip_parens(t_token *tokens, int direction)
 {
-	int level;
+	int	level;
 
 	level = 1;
 	while (tokens && level > 0)
