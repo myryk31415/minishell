@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:14:04 by padam             #+#    #+#             */
-/*   Updated: 2024/03/03 14:34:04 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/04 17:20:23 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,9 @@ t_node_type	tokens_to_tree(t_token *tokens, void **head);
 t_node *new_node(void);
 int		count_operators(t_token *tokens);
 t_token	*get_paren(t_token *tokens, t_token **paren);
+
+// pipeline
+t_node	*get_pipeline(t_token *token_first, void **head, t_cmd *redirects);
 
 // parser_utils
 int		is_quote(char c);
