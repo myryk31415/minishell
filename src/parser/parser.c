@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/03/03 15:26:58 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/05 00:53:58 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	debug_print_cmd(t_cmd *redirects)
 
 void	debug_print_tree(t_node *node, int i)
 {
-	char *type_list[] = {"ERROR", "AND", "OR", "PIPE"};
+	char *type_list[] = {"ERROR", "AND", "OR", "PIPE", "CMD"};
 	printf("%il: %s\n", i, type_list[node->type_left]);
 	printf("%ir: %s\n", i, type_list[node->type_right]);
 	if (node->left)
@@ -99,16 +99,9 @@ void	parser(void)
 {
 	char	*command;
 	t_token	*tokens;
-	t_cmd	redirects;
-	// t_cmd	*new_redirects;
+
 	void	*token_tree;
 	t_node_type	token_tree_first;
-
-	redirects.args = NULL;
-	redirects.redirect_in = NULL;
-	redirects.redirect_out = NULL;
-	redirects.heredoc = NULL;
-	redirects.append = NULL;
 	while (1)
 	{
 		command = new_prompt();
@@ -116,16 +109,10 @@ void	parser(void)
 		tokens = tokenize_command(command);
 		free(command);
 		token_tree_first = tokens_to_tree(tokens, &token_tree);
-		(void)redirects;
 		if (token_tree_first == ERROR)
 			printf("error\n");
 		else if (token_tree_first == AND || token_tree_first == OR)
 			debug_print_tree(token_tree, 0);
-		else if (token_tree_first == PIPE)
-			debug_print_cmd(&redirects);
-
-		// new_redirects = redirects_get(tokens, &redirects);
 		// debug_print_token_array(tokens);
-		// debug_print_cmd(new_redirects);
 	}
 }

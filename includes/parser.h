@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:14:04 by padam             #+#    #+#             */
-/*   Updated: 2024/03/04 21:08:02 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/05 01:10:28 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@ typedef struct s_token
 }	t_token;
 
 // node_struct
-t_node_type	split_by_operator(t_token *token_last,
-				void **head, t_cmd *redirects);
 t_node_type	tokens_to_tree(t_token *tokens, void **head);
 
 // node_utils
@@ -60,7 +58,9 @@ int			count_operators(t_token *tokens);
 t_token		*get_paren(t_token *tokens, t_token **paren);
 
 // pipeline
-t_node_type	split_by_pipe(t_token *token_first, void **head, t_cmd *redirects);
+int			count_words(t_token *tokens);
+t_token		*get_pipe(t_token *tokens);
+t_token		*get_operator(t_token *tokens);
 
 // parser_utils
 int			is_quote(char c);

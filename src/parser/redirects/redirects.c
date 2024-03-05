@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:34:22 by padam             #+#    #+#             */
-/*   Updated: 2024/03/04 21:12:08 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/05 00:45:59 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ t_cmd	*redirects_get(t_token *tokens, t_cmd *redirects)
 	int	in_count;
 	int	out_count;
 
+	return (NULL);
 	redirects = redirects_dup(redirects);
 	redirects_count(tokens, &in_count, &out_count);
 	if (in_count)
