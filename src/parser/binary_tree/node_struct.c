@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:38:13 by padam             #+#    #+#             */
-/*   Updated: 2024/03/05 01:08:13 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/05 01:31:43 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,27 @@ t_node_type	split_by_operator(t_token *token_last,
 
 t_node_type	get_cmd(t_token *token_first, void **head, t_cmd *redirects)
 {
-	(void)head;
-	(void)redirects;
-	(void)token_first;
-	// while (token_first)
-	// {
+	int	word_count;
+	int	i;
 
-	// }
+	// (void)head;
+	// (void)redirects;
+	// (void)token_first;
+	i = 0;
+	word_count = count_words(token_first);
+	redirects->args =  ft_calloc(word_count + 1, sizeof(char *));
+	if (word_count == -1 || !redirects->args)
+	{
+		cmd_free(redirects);
+		return (ERROR);
+	}
+	redirects->args[word_count] = NULL;
+	while (token_first)
+	{
+		redirects->args[i++] = token_first->value;
+		token_first = token_first->next;
+	}
+	*head = redirects;
 	return (CMD);
 }
 
@@ -105,10 +119,14 @@ t_node_type	split_by_operator(t_token *token_last,
 t_node_type	tokens_to_tree(t_token *token_last, void **node_tree)
 {
 	t_node_type	node_type;
-	t_cmd		*redirects; // no pointer
+	t_cmd		redirects; // no pointer
 
-	redirects = NULL;
-	node_type = split_by_operator(token_last, node_tree, redirects);
-	cmd_free(redirects);
+	redirects.args = NULL;
+	redirects.redirect_in = NULL;
+	redirects.redirect_out = NULL;
+	redirects.heredoc = NULL;
+	redirects.append = NULL;
+	node_type = split_by_operator(token_last, node_tree, &redirects);
+	cmd_free(&redirects);
 	return (node_type);
 }

@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/03/05 00:53:58 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/05 01:54:27 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,22 +51,22 @@ void	debug_print_token_array(t_token *token_first)
 	}
 }
 
-void	debug_print_cmd(t_cmd *redirects)
+void	debug_print_cmd(t_cmd *cmd)
 {
 	int	i;
 
 	i = 0;
 	printf("----------------\n");
 	printf("args:\n");
-	while (redirects->args && redirects->args[i])
-		printf("%s\n", redirects->args[i++]);
+	while (cmd->args && cmd->args[i])
+		printf("%s\n", cmd->args[i++]);
 	i = 0;
 	printf("----------------\n");
 	printf("redirect_in:\n");
-	while (redirects->redirect_in && redirects->redirect_in[i])
+	while (cmd->redirect_in && cmd->redirect_in[i])
 	{
-		printf("%i: %s\n", i, redirects->redirect_in[i]);
-		if (redirects->heredoc[i++] == true)
+		printf("%i: %s\n", i, cmd->redirect_in[i]);
+		if (cmd->heredoc[i++] == true)
 			printf("%i: heredoc\n", i - 1);
 		else
 			printf("%i: no heredoc\n", i - 1);
@@ -74,10 +74,10 @@ void	debug_print_cmd(t_cmd *redirects)
 	i = 0;
 	printf("----------------\n");
 	printf("redirect_out:\n");
-	while (redirects->redirect_out && redirects->redirect_out[i])
+	while (cmd->redirect_out && cmd->redirect_out[i])
 	{
-		printf("%i: %s\n", i, redirects->redirect_out[i]);
-		if (redirects->append[i++] == true)
+		printf("%i: %s\n", i, cmd->redirect_out[i]);
+		if (cmd->append[i++] == true)
 			printf("%i: append\n", i - 1);
 		else
 			printf("%i: no append\n", i - 1);
@@ -90,9 +90,20 @@ void	debug_print_tree(t_node *node, int i)
 	printf("%il: %s\n", i, type_list[node->type_left]);
 	printf("%ir: %s\n", i, type_list[node->type_right]);
 	if (node->left)
-		debug_print_tree(node->left, i + 1);
+	{
+		if (node->type_left == CMD)
+			debug_print_cmd(node->left);
+		else
+			debug_print_tree(node->left, i + 1);
+
+	}
 	if (node->right)
-		debug_print_tree(node->right, i + 1);
+	{
+		if (node->type_right == CMD)
+			debug_print_cmd(node->right);
+		else
+			debug_print_tree(node->right, i + 1);
+	}
 }
 
 void	parser(void)
@@ -111,8 +122,11 @@ void	parser(void)
 		token_tree_first = tokens_to_tree(tokens, &token_tree);
 		if (token_tree_first == ERROR)
 			printf("error\n");
-		else if (token_tree_first == AND || token_tree_first == OR)
+		else if (token_tree_first == CMD)
+			debug_print_cmd(token_tree);
+		else
 			debug_print_tree(token_tree, 0);
+
 		// debug_print_token_array(tokens);
 	}
 }
