@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:38:13 by padam             #+#    #+#             */
-/*   Updated: 2024/03/05 01:31:43 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/06 12:22:55 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,13 @@ t_node_type	get_cmd(t_token *token_first, void **head, t_cmd *redirects)
 	redirects->args =  ft_calloc(word_count + 1, sizeof(char *));
 	if (word_count == -1 || !redirects->args)
 	{
-		cmd_free(redirects);
+		// cmd_free(redirects);
 		return (ERROR);
 	}
-	redirects->args[word_count] = NULL;
 	while (token_first)
 	{
 		redirects->args[i++] = token_first->value;
-		token_first = token_first->next;
+		token_delete(&token_first);
 	}
 	*head = redirects;
 	return (CMD);
@@ -54,14 +53,14 @@ t_node_type	check_brackets(t_token *token_first, void **head, t_cmd *redirects)
 		token_last = skip_parens(token_first, 1);
 		if (!token_last || token_last->next)
 		{
-			cmd_free(redirects);
+			// cmd_free(redirects);
 			return (ERROR);
 		}
 		token_last = token_last->prev;
 		token_delete(&token_last->next);
 		token_delete(&token_first);
 		return_value = split_by_operator(token_last, head, redirects);
-		cmd_free(redirects);
+		// cmd_free(redirects);
 		return (return_value);
 	}
 	else
@@ -127,6 +126,6 @@ t_node_type	tokens_to_tree(t_token *token_last, void **node_tree)
 	redirects.heredoc = NULL;
 	redirects.append = NULL;
 	node_type = split_by_operator(token_last, node_tree, &redirects);
-	cmd_free(&redirects);
+	// cmd_free(&redirects);
 	return (node_type);
 }

@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:34:22 by padam             #+#    #+#             */
-/*   Updated: 2024/03/05 01:46:11 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/06 12:20:32 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,36 +32,6 @@ void	redirects_count(t_token *tokens, int *in_count, int *out_count)
 	}
 }
 
-void	redirect_realloc(char ***redirects, bool **boolean, int count)
-{
-	char	**new_redirects;
-	bool	*new_boolean;
-	int		i;
-
-	i = 0;
-	while (redirects[i])
-		i++;
-	new_redirects = ft_calloc(i + count + 1, sizeof(char *));
-	if (!new_redirects)
-		return ;
-	new_redirects[i + count] = NULL;
-	new_boolean = ft_calloc(i + count, sizeof(bool));
-	if (!new_boolean)
-	{
-		free(new_redirects);
-		return ;
-	}
-	while (i--)
-	{
-		new_redirects[i] = (*redirects)[i];
-		new_boolean[i] = (*boolean)[i];
-	}
-	free(*redirects);
-	free(*boolean);
-	*boolean = new_boolean;
-	*redirects = new_redirects;
-}
-
 int	redirect_get_length(char **redirects)
 {
 	int	i;
@@ -81,7 +51,6 @@ t_token	*test(t_token *tokens, char **redirect, bool *boolean, bool value)
 	if (!tokens || tokens->type != T_WORD)
 		return (NULL); //error
 	*redirect = tokens->value;
-	tokens->value = NULL;
 	token_delete(&tokens);
 	return (tokens);
 }
@@ -97,37 +66,77 @@ void	redirects_fill(t_token *tokens, t_cmd *redirects)
 	{
 		if (tokens->type == T_LPAREN)
 			tokens = (skip_parens(tokens, 1))->next;
-		else if (tokens->type == T_REDIR_IN && ++in_count)
+		else if (tokens->type == T_REDIR_IN)
+		{
 			tokens = test(tokens, &(redirects->redirect_in[in_count]),
 					&(redirects->heredoc[in_count]), 0);
-		else if (tokens->type == T_REDIR_HEREDOC && ++in_count)
+			in_count++;
+		}
+		else if (tokens->type == T_REDIR_HEREDOC)
+		{
 			tokens = test(tokens, &(redirects->redirect_in[in_count]),
 					&(redirects->heredoc[in_count]), 1);
-		else if (tokens->type == T_REDIR_OUT && ++out_count)
+			in_count++;
+		}
+		else if (tokens->type == T_REDIR_OUT)
+		{
 			tokens = test(tokens, &(redirects->redirect_out[out_count]),
 					&(redirects->append[out_count]), 0);
-		else if (tokens->type == T_REDIR_APPEND && ++out_count)
+			out_count++;
+		}
+		else if (tokens->type == T_REDIR_APPEND)
+		{
 			tokens = test(tokens, &(redirects->redirect_out[out_count]),
 					&(redirects->append[out_count]), 1);
+			out_count++;
+		}
 		else
 			tokens = tokens->next;
 	}
 }
 
+char	**redirect_realloc(char **redirects_old, bool *boolean_old,
+			bool **boolean_new, int count)
+{
+	char	**redirects_new;
+	int		i;
+
+	i = 0;
+	if (redirects_old)
+		while (redirects_old[i])
+			i++;
+	redirects_new = ft_calloc(i + count + 1, sizeof(char *));
+	if (!redirects_new)
+		return (NULL);
+	*boolean_new = ft_calloc(i + count, sizeof(bool));
+	if (!(*boolean_new))
+	{
+		free(redirects_new);
+		return (NULL);
+	}
+	while (i--)
+	{
+		redirects_new[i] = ft_strdup(redirects_old[i]);
+		(*boolean_new)[i] = boolean_old[i];
+	}
+	return (redirects_new);
+}
+
 t_cmd	*redirects_get(t_token *tokens, t_cmd *redirects)
 {
-	int	in_count;
-	int	out_count;
+	int		in_count;
+	int		out_count;
+	t_cmd	*new_redirects;
 
-	return (redirects); //lel
-	redirects = redirects_dup(redirects);
+	new_redirects = ft_calloc(1, sizeof(t_cmd));
+	if (!new_redirects)
+		return (NULL);
+	new_redirects->args = NULL;
 	redirects_count(tokens, &in_count, &out_count);
-	if (in_count)
-		redirect_realloc(&(redirects->redirect_in),
-			&redirects->heredoc, in_count);
-	if (out_count)
-		redirect_realloc(&(redirects->redirect_out),
-			&redirects->append, out_count);
-	redirects_fill(tokens, redirects);
-	return (redirects);
+	new_redirects->redirect_in = redirect_realloc((redirects->redirect_in),
+		redirects->heredoc, &new_redirects->heredoc, in_count);
+	new_redirects->redirect_out = redirect_realloc((redirects->redirect_out),
+		redirects->append, &new_redirects->append, out_count);
+	redirects_fill(tokens, new_redirects);
+	return (new_redirects);
 }
