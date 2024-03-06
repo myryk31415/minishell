@@ -6,23 +6,20 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:38:13 by padam             #+#    #+#             */
-/*   Updated: 2024/03/06 12:22:55 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/07 00:38:45 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-t_node_type	split_by_operator(t_token *token_last,
-				void **head, t_cmd *redirects);
+t_node_type	split_by_operator(t_token *token_last, void **head,
+				t_cmd *redirects, bool *new_process);
 
 t_node_type	get_cmd(t_token *token_first, void **head, t_cmd *redirects)
 {
 	int	word_count;
 	int	i;
 
-	// (void)head;
-	// (void)redirects;
-	// (void)token_first;
 	i = 0;
 	word_count = count_words(token_first);
 	redirects->args =  ft_calloc(word_count + 1, sizeof(char *));
@@ -40,7 +37,8 @@ t_node_type	get_cmd(t_token *token_first, void **head, t_cmd *redirects)
 	return (CMD);
 }
 
-t_node_type	check_brackets(t_token *token_first, void **head, t_cmd *redirects)
+t_node_type	check_brackets(t_token *token_first, void **head,
+				t_cmd *redirects, bool *new_process)
 {
 	t_node_type	return_value;
 	t_token		*token_last;
@@ -50,6 +48,8 @@ t_node_type	check_brackets(t_token *token_first, void **head, t_cmd *redirects)
 	redirects = redirects_get(token_first, redirects);
 	if (token_first->type == T_LPAREN)
 	{
+		if (new_process)
+			*new_process = true;
 		token_last = skip_parens(token_first, 1);
 		if (!token_last || token_last->next)
 		{
@@ -59,7 +59,7 @@ t_node_type	check_brackets(t_token *token_first, void **head, t_cmd *redirects)
 		token_last = token_last->prev;
 		token_delete(&token_last->next);
 		token_delete(&token_first);
-		return_value = split_by_operator(token_last, head, redirects);
+		return_value = split_by_operator(token_last, head, redirects, NULL);
 		// cmd_free(redirects);
 		return (return_value);
 	}
@@ -67,7 +67,8 @@ t_node_type	check_brackets(t_token *token_first, void **head, t_cmd *redirects)
 		return (get_cmd(token_first, head, redirects));
 }
 
-t_node_type	split_by_pipe(t_token *token_first, void **head, t_cmd *redirects)
+t_node_type	split_by_pipe(t_token *token_first, void **head,
+				t_cmd *redirects, bool *new_process)
 {
 	t_token		*token_last;
 	t_node		*node;
@@ -80,16 +81,18 @@ t_node_type	split_by_pipe(t_token *token_first, void **head, t_cmd *redirects)
 		node = new_node();
 		token_delete(&token_last);
 		token_split(token_last, -1);
-		node->type_left = check_brackets(token_first, &node->left, redirects);
-		node->type_right = split_by_pipe(token_last, &node->right, redirects);
+		node->type_left = check_brackets(token_first, &node->left, redirects,
+				&node->new_process_left);
+		node->type_right = split_by_pipe(token_last, &node->right, redirects ,
+				&node->new_process_right);
 		*head = node;
 		return (PIPE);
 	}
-	return (check_brackets(token_first, head, redirects));
+	return (check_brackets(token_first, head, redirects, new_process));
 }
 
-t_node_type	split_by_operator(t_token *token_last,
-				void **head, t_cmd *redirects)
+t_node_type	split_by_operator(t_token *token_last, void **head,
+				t_cmd *redirects, bool *new_process)
 {
 	t_token		*token_first;
 	t_node		*node;
@@ -107,12 +110,13 @@ t_node_type	split_by_operator(t_token *token_last,
 			return_value = OR;
 		token_delete(&token_first);
 		node->type_left = split_by_operator(token_split(token_first, -1),
-				&node->left, redirects);
-		node->type_right = split_by_pipe(token_first, &node->right, redirects);
+				&node->left, redirects , &node->new_process_left);
+		node->type_right = split_by_pipe(token_first, &node->right, redirects,
+				 &node->new_process_right);
 		*head = node;
 		return (return_value);
 	}
-	return (split_by_pipe(token_first, head, redirects));
+	return (split_by_pipe(token_first, head, redirects, new_process));
 }
 
 t_node_type	tokens_to_tree(t_token *token_last, void **node_tree)
@@ -125,7 +129,7 @@ t_node_type	tokens_to_tree(t_token *token_last, void **node_tree)
 	redirects.redirect_out = NULL;
 	redirects.heredoc = NULL;
 	redirects.append = NULL;
-	node_type = split_by_operator(token_last, node_tree, &redirects);
+	node_type = split_by_operator(token_last, node_tree, &redirects, NULL);
 	// cmd_free(&redirects);
 	return (node_type);
 }

@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/03/05 01:55:27 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/07 00:58:08 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,30 +65,30 @@ void	debug_print_cmd(t_cmd *cmd)
 	printf("redirect_in:\n");
 	while (cmd->redirect_in && cmd->redirect_in[i])
 	{
-		printf("%i: %s\n", i, cmd->redirect_in[i]);
+		printf("%i: %s, ", i, cmd->redirect_in[i]);
 		if (cmd->heredoc[i++] == true)
-			printf("%i: heredoc\n", i - 1);
+			printf("heredoc\n");
 		else
-			printf("%i: no heredoc\n", i - 1);
+			printf("no heredoc\n");
 	}
 	i = 0;
 	printf("----------------\n");
 	printf("redirect_out:\n");
 	while (cmd->redirect_out && cmd->redirect_out[i])
 	{
-		printf("%i: %s\n", i, cmd->redirect_out[i]);
+		printf("%i: %s, ", i, cmd->redirect_out[i]);
 		if (cmd->append[i++] == true)
-			printf("%i: append\n", i - 1);
+			printf("append\n");
 		else
-			printf("%i: no append\n", i - 1);
+			printf("no append\n");
 	}
 }
 
 void	debug_print_tree(t_node *node, int i)
 {
 	char *type_list[] = {"ERROR", "AND", "OR", "PIPE", "CMD"};
-	printf("%il: %s\n", i, type_list[node->type_left]);
-	printf("%ir: %s\n", i, type_list[node->type_right]);
+	printf("%il%b: %s\n", i, node->new_process_left, type_list[node->type_left]);
+	printf("%ir%b: %s\n", i, node->new_process_right, type_list[node->type_right]);
 	if (node->left)
 	{
 		if (node->type_left == CMD)

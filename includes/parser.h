@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:14:04 by padam             #+#    #+#             */
-/*   Updated: 2024/03/05 01:14:20 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/07 00:16:44 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ int			is_operator(t_token_type type);
 
 // redirects
 void		cmd_free(t_cmd *cmd);
-t_cmd		*redirects_dup(t_cmd *redirects);
 t_cmd		*redirects_get(t_token *tokens, t_cmd *redirects);
 
 // tokenizer
