@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:38:13 by padam             #+#    #+#             */
-/*   Updated: 2024/03/07 00:38:45 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/07 12:53:53 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_node_type	check_brackets(t_token *token_first, void **head,
 
 	if (!token_first)
 		return (ERROR);
-	redirects = redirects_get(token_first, redirects);
+	redirects = redirects_get(&token_first, redirects);
 	if (token_first->type == T_LPAREN)
 	{
 		if (new_process)
@@ -73,9 +73,9 @@ t_node_type	split_by_pipe(t_token *token_first, void **head,
 	t_token		*token_last;
 	t_node		*node;
 
-	if (!token_first)
-		return (ERROR);
 	token_last = get_pipe(token_first);
+	if (!token_first || !token_last)
+		return (ERROR);
 	if (token_last->type == T_PIPE)
 	{
 		node = new_node();
@@ -98,9 +98,9 @@ t_node_type	split_by_operator(t_token *token_last, void **head,
 	t_node		*node;
 	t_node_type	return_value;
 
-	if (!token_last)
-		return (ERROR);
 	token_first = get_operator(token_last);
+	if (!token_first || !token_last)
+		return (ERROR);
 	if (token_first->type == T_AND || token_first->type == T_OR)
 	{
 		node = new_node();

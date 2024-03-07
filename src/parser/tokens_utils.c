@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:11:07 by padam             #+#    #+#             */
-/*   Updated: 2024/03/07 00:06:05 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/07 12:32:43 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ t_token	*skip_parens(t_token *tokens, int direction)
 			tokens = tokens->next;
 		else
 			tokens = tokens->prev;
+		if (!tokens)
+			return (NULL);
 		if (tokens->type == T_LPAREN)
 			level += direction;
 		else if (tokens->type == T_RPAREN)

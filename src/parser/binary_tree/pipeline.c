@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 17:02:47 by padam             #+#    #+#             */
-/*   Updated: 2024/03/05 01:28:53 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/07 12:42:59 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,36 +29,30 @@ int	count_words(t_token *token_first)
 
 t_token	*get_pipe(t_token *token_first)
 {
-	//token_deletion
 	while (token_first)
 	{
 		if (token_first->type == T_LPAREN)
 			token_first = skip_parens(token_first, 1);
 		else if (token_first->type == T_PIPE)
 			return (token_first);
-		if (!token_first->next)
-			return (token_first);
+		if (!token_first || !token_first->next)
+			break ;
 		token_first = token_first->next;
 	}
-	// if (token_first->type == T_RPAREN)
-	// 	token_first = token_first->prev;
 	return (token_first);
 }
 
-t_token	*get_operator(t_token *tokens)
+t_token	*get_operator(t_token *token_last)
 {
-	//token_deletion
-	while (tokens)
+	while (token_last)
 	{
-		if (tokens->type == T_RPAREN)
-			tokens = skip_parens(tokens, -1);
-		else if (tokens->type == T_AND || tokens->type == T_OR)
-			return (tokens);
-		if (!tokens->prev)
-			return (tokens);
-		tokens = tokens->prev;
+		if (token_last->type == T_RPAREN)
+			token_last = skip_parens(token_last, -1);
+		else if (token_last->type == T_AND || token_last->type == T_OR)
+			return (token_last);
+		if (!token_last || !token_last->prev)
+			break ;
+		token_last = token_last->prev;
 	}
-	// if (tokens->type == T_LPAREN)
-	// 	tokens = tokens->next;
-	return (tokens);
+	return (token_last);
 }

@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:34:22 by padam             #+#    #+#             */
-/*   Updated: 2024/03/06 12:20:32 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/07 12:58:14 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,21 +122,22 @@ char	**redirect_realloc(char **redirects_old, bool *boolean_old,
 	return (redirects_new);
 }
 
-t_cmd	*redirects_get(t_token *tokens, t_cmd *redirects)
+t_cmd	*redirects_get(t_token **tokens, t_cmd *redirects)
 {
 	int		in_count;
 	int		out_count;
 	t_cmd	*new_redirects;
 
+	//token return
 	new_redirects = ft_calloc(1, sizeof(t_cmd));
 	if (!new_redirects)
 		return (NULL);
 	new_redirects->args = NULL;
-	redirects_count(tokens, &in_count, &out_count);
+	redirects_count(*tokens, &in_count, &out_count);
 	new_redirects->redirect_in = redirect_realloc((redirects->redirect_in),
 		redirects->heredoc, &new_redirects->heredoc, in_count);
 	new_redirects->redirect_out = redirect_realloc((redirects->redirect_out),
 		redirects->append, &new_redirects->append, out_count);
-	redirects_fill(tokens, new_redirects);
+	*tokens = redirects_fill(tokens, new_redirects);
 	return (new_redirects);
 }
