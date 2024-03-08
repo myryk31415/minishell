@@ -6,7 +6,7 @@
 /*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:16:36 by padam             #+#    #+#             */
-/*   Updated: 2024/03/08 16:04:59 by aweizman         ###   ########.fr       */
+/*   Updated: 2024/03/08 17:20:32 by aweizman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	main(int argc, char **argv)
 		waitpid(pid, &status, 0);
 		ft_printf("exit: %i\n", status);
 		if (status == 256)
-			ft_printf("ERRORa");
+			ft_printf("ERROR");
 		if (!status)
 			ft_printf("SUCCESS");
 
