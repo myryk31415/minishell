@@ -1,5 +1,6 @@
 minishell
 *test*
+.vscode
 
 # Prerequisites
 *.d
