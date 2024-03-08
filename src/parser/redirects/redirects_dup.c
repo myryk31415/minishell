@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 23:10:31 by padam             #+#    #+#             */
-/*   Updated: 2024/03/07 00:16:56 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/08 11:43:28 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,12 @@ void	cmd_free(t_cmd *cmd)
 	free(cmd->heredoc);
 	free(cmd->append);
 	free(cmd);
+}
+
+t_node_type	err_pars(char *message, t_cmd *redirects, t_token *tokens)
+{
+	cmd_free(redirects);
+	token_delete_all(&tokens);
+	printf("error: %s\n", message);
+	return (ERROR);
 }

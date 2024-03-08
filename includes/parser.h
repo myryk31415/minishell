@@ -6,7 +6,7 @@
 /*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:14:04 by padam             #+#    #+#             */
-/*   Updated: 2024/03/08 12:28:55 by aweizman         ###   ########.fr       */
+/*   Updated: 2024/03/08 12:40:47 by aweizman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ int			is_operator(t_token_type type);
 
 // redirects
 void		cmd_free(t_cmd *cmd);
+t_node_type	err_pars(char *message, t_cmd *redirects, t_token *tokens);
 t_cmd		*redirects_get(t_token **tokens, t_cmd *redirects);
 
 // tokenizer
@@ -76,6 +77,7 @@ t_token		*tokenize_command(char *command);
 
 // tokens utils
 void		token_delete(t_token **tokens);
+void		*token_delete_all(t_token **tokens);
 t_token		*token_add(t_token *tokens, t_token_type token_type);
 t_token		*token_split(t_token *tokens, int direction);
 t_token		*skip_parens(t_token *tokens, int direction);

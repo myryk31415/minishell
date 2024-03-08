@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:38:13 by padam             #+#    #+#             */
-/*   Updated: 2024/03/07 12:53:53 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/08 01:07:18 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,13 @@ t_node_type	get_cmd(t_token *token_first, void **head, t_cmd *redirects)
 	int	i;
 
 	i = 0;
+	if (!redirects)
+		return (err_pars("malloc failed", redirects, token_first));
 	word_count = count_words(token_first);
 	redirects->args =  ft_calloc(word_count + 1, sizeof(char *));
-	if (word_count == -1 || !redirects->args)
+	if (word_count <= 0 || !redirects->args)
 	{
-		// cmd_free(redirects);
+		cmd_free(redirects);
 		return (ERROR);
 	}
 	while (token_first)
@@ -51,16 +53,16 @@ t_node_type	check_brackets(t_token *token_first, void **head,
 		if (new_process)
 			*new_process = true;
 		token_last = skip_parens(token_first, 1);
-		if (!token_last || token_last->next)
+		if (!token_last || token_last->next || !redirects)
 		{
-			// cmd_free(redirects);
+			cmd_free(redirects);
 			return (ERROR);
 		}
 		token_last = token_last->prev;
 		token_delete(&token_last->next);
 		token_delete(&token_first);
 		return_value = split_by_operator(token_last, head, redirects, NULL);
-		// cmd_free(redirects);
+		cmd_free(redirects);
 		return (return_value);
 	}
 	else
@@ -86,6 +88,8 @@ t_node_type	split_by_pipe(t_token *token_first, void **head,
 		node->type_right = split_by_pipe(token_last, &node->right, redirects ,
 				&node->new_process_right);
 		*head = node;
+		if (node->type_left == ERROR || node->type_right == ERROR)
+			return (ERROR);
 		return (PIPE);
 	}
 	return (check_brackets(token_first, head, redirects, new_process));
@@ -113,6 +117,8 @@ t_node_type	split_by_operator(t_token *token_last, void **head,
 				&node->left, redirects , &node->new_process_left);
 		node->type_right = split_by_pipe(token_first, &node->right, redirects,
 				 &node->new_process_right);
+		if (node->type_left == ERROR || node->type_right == ERROR)
+			return (ERROR);
 		*head = node;
 		return (return_value);
 	}
@@ -130,6 +136,5 @@ t_node_type	tokens_to_tree(t_token *token_last, void **node_tree)
 	redirects.heredoc = NULL;
 	redirects.append = NULL;
 	node_type = split_by_operator(token_last, node_tree, &redirects, NULL);
-	// cmd_free(&redirects);
 	return (node_type);
 }
