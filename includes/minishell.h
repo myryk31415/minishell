@@ -6,7 +6,7 @@
 /*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/03/08 12:06:12 by aweizman         ###   ########.fr       */
+/*   Updated: 2024/03/08 12:26:32 by aweizman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <stdbool.h>
-# include "parser.h"
+# include <readline/readline.h>
+# include <readline/history.h>
 
 typedef struct s_cmd
 {
@@ -47,6 +48,6 @@ typedef struct s_node
 	bool		new_process_right;
 }	t_node;
 
-void	parser(void);
+t_node_type	parser(void *tree);
 
 #endif

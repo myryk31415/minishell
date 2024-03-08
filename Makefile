@@ -6,7 +6,7 @@
 #    By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/03/08 12:07:32 by aweizman         ###   ########.fr        #
+#    Updated: 2024/03/08 12:28:38 by aweizman         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,11 +40,11 @@ SRCS_BUILTINS = echo.c		cd.c
 SRCS_PIPE =			fork.c			pipe.c			utils.c
 
 SRC_NAME =	$(addprefix main/,				$(SRCS_MAIN))		\
+			$(addprefix execution/,			$(SRCS_EXECUTION))	\
 			$(addprefix parser/,			$(SRCS_PARS))		\
-			$(addprefix parser/redirects/,	$(SRCS_REDIR))		\
 			$(addprefix parser/binary_tree/,$(SRCS_BNTR))		\
-#			$(addprefix execution/,			$(SRCS_EXECUTION))	\
-			$(addprefix execution/pipe/,	$(SRCS_PIPE))		\
+			$(addprefix parser/redirects/,	$(SRCS_REDIR))		\
+#			$(addprefix execution/pipe/,	$(SRCS_PIPE))		\
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 OBJS = $(addprefix $(OBJ_PATH)/,$(OBJ_NAME))

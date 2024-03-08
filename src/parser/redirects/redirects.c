@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:34:22 by padam             #+#    #+#             */
-/*   Updated: 2024/03/07 12:58:14 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/08 12:31:01 by aweizman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,6 @@ t_cmd	*redirects_get(t_token **tokens, t_cmd *redirects)
 		redirects->heredoc, &new_redirects->heredoc, in_count);
 	new_redirects->redirect_out = redirect_realloc((redirects->redirect_out),
 		redirects->append, &new_redirects->append, out_count);
-	*tokens = redirects_fill(tokens, new_redirects);
+	redirects_fill(*tokens, new_redirects);
 	return (new_redirects);
 }

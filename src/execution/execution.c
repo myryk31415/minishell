@@ -6,7 +6,7 @@
 /*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/08 12:06:40 by aweizman         ###   ########.fr       */
+/*   Updated: 2024/03/08 12:26:01 by aweizman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	create_tree(int *pre_fd, t_node *token)
 	else if (token->type_left == AND)
 		and_execute((t_node *)token->left, fd, pre_fd, 0);
 	else if (token->type_left == OR)
-		or_execute((t_node *)token->left, fd, pre_fd);
+		or_execute((t_node *)token->left, fd, pre_fd, 0);
 	else if (token->type_left == CMD)
 		command_pipe((t_cmd *)token->left, fd, pre_fd);
 }

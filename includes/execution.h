@@ -6,7 +6,7 @@
 /*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:29 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/08 12:06:48 by aweizman         ###   ########.fr       */
+/*   Updated: 2024/03/08 12:25:35 by aweizman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,5 @@ char	*get_env(char **envp, char *var);
 int		pwd(void);
 int		echo(char **args);
 void	and_execute(t_node *token, int *fd, int *pre_fd, int i);
+void	or_execute(t_node *token, int *fd, int *pre_fd, int i);
 #endif
