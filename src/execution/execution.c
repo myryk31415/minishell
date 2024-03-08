@@ -6,20 +6,20 @@
 /*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/01 11:03:29 by aweizman         ###   ########.fr       */
+/*   Updated: 2024/03/08 11:45:00 by aweizman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-void	command(t_cmd *token, int *fd, int *pre_fd)
+void	command_pipe(t_cmd *token, int *fd, int *pre_fd)
 {
 	int	err;
 
 	err = 0;
 	if (token->redirect_in)
 		err = input(token->redirect_in, token->heredoc);
-	else
+	else if (pre_fd)
 	{
 		dup2(pre_fd[0], STDIN_FILENO);
 		close(pre_fd[0]);
@@ -28,9 +28,9 @@ void	command(t_cmd *token, int *fd, int *pre_fd)
 	if (token->redirect_out && !err)
 	{
 		err = output(token->redirect_out, token->append);
-		fd[1] = 0;
+		fd = NULL;
 	}
-	else
+	else if (fd)
 	{
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[0]);
@@ -53,7 +53,11 @@ void	create_tree(int *pre_fd, t_node *token)
 	if (pid == 0 && token->type_right == PIPE)
 		create_tree(fd, (t_node *)token->right);
 	else if (pid == 0 && token->type_right == CMD)
-		command((t_cmd *)token->right, fd, pre_fd);
-	else
-		command((t_cmd *)token->left, fd, pre_fd);
+		command_pipe((t_cmd *)token->right, fd, pre_fd);
+	else if (token->type_left == AND)
+		and_execute((t_node *)token->left, fd, pre_fd, 0);
+	else if (token->type_left == OR)
+		or_execute((t_node *)token->left, fd, pre_fd);
+	else if (token->type_left == CMD)
+		command_pipe((t_cmd *)token->left, fd, pre_fd);
 }

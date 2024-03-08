@@ -6,7 +6,7 @@
 /*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/01 11:29:22 by aweizman         ###   ########.fr       */
+/*   Updated: 2024/03/07 11:42:57 by aweizman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,9 @@ void	exec(char **cmd_arg)
 	extern char	**environ;
 
 	cmd_path = get_path(cmd_arg[0], environ, "PATH");
-	if (execve(cmd_path, cmd_arg, environ) == -1)
-		perror("Command not found\n");
+	execve(cmd_path, cmd_arg, environ);
+	perror("Command not found\n");
+	exit(-1);
 }
 
 int	here_doc(char *limiter)

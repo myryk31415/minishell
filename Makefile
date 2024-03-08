@@ -6,14 +6,14 @@
 #    By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/03/01 11:02:07 by aweizman         ###   ########.fr        #
+#    Updated: 2024/03/08 11:45:31 by aweizman         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror $(INCLUDES)
+CFLAGS = -Wall -Wextra -Werror $(INCLUDES) -g
 INCLUDES = -I./includes
 LIBS = -lreadline
 LIBFT_DIR = libft
@@ -27,15 +27,15 @@ SRCS_MAIN =			main.c
 
 SRCS_PARSER =		parser.c		tokenizer.c
 
-SRCS_EXECUTION =	execution.c utils_execution.c input_output.c
+SRCS_EXECUTION =	execution.c utils_execution.c input_output.c and.c
 
 SRCS_BUILTINS = echo.c		cd.c
 
 SRCS_PIPE =			fork.c			pipe.c			utils.c
 
-SRC_NAME =	$(addprefix execution/builtins/,	$(SRCS_BUILTINS))	\
-		$(addprefix main/,				$(SRCS_MAIN))			\
+SRC_NAME =$(addprefix main/,				$(SRCS_MAIN))			\
 		$(addprefix execution/,			$(SRCS_EXECUTION))	\
+#$(addprefix execution/builtins/,	$(SRCS_BUILTINS))	\
 #			$(addprefix parser/,			$(SRCS_PARSER))		\
 			$(addprefix execution/pipe/,	$(SRCS_PIPE))		\
 
