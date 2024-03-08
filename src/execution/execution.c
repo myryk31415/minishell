@@ -6,7 +6,7 @@
 /*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/08 12:26:01 by aweizman         ###   ########.fr       */
+/*   Updated: 2024/03/08 15:42:41 by aweizman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,31 @@ void	create_tree(int *pre_fd, t_node *token)
 	pid = fork();
 	if (pid == -1)
 		perror("Fork");
+	if (!pid)
+		run_tree(pre_fd, token, fd);
+	else
+	{
+		waitpid(pid, NULL, 0);
+		close(fd[0]);
+		close(fd[1]);
+	}
+}
+
+void	run_tree(int *pre_fd, t_node *token, int fd[2])
+{
+	int	pid;
+
+	pid = fork();
+	if (pid == -1)
+		perror("Fork");
 	if (pid == 0 && token->type_right == PIPE)
 		create_tree(fd, (t_node *)token->right);
 	else if (pid == 0 && token->type_right == CMD)
 		command_pipe((t_cmd *)token->right, fd, pre_fd);
 	else if (token->type_left == AND)
-		and_execute((t_node *)token->left, fd, pre_fd, 0);
+		and_execute((t_node *)token->left, fd, pre_fd, 1);
 	else if (token->type_left == OR)
-		or_execute((t_node *)token->left, fd, pre_fd, 0);
+		or_execute((t_node *)token->left, fd, pre_fd, 1);
 	else if (token->type_left == CMD)
 		command_pipe((t_cmd *)token->left, fd, pre_fd);
 }

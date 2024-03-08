@@ -10,6 +10,7 @@
 		"istream": "c",
 		"locale": "c",
 		"ostream": "c",
-		"parser.h": "c"
+		"parser.h": "c",
+		"minishell.h": "c"
 	}
 }

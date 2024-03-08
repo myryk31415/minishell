@@ -6,7 +6,7 @@
 /*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/03/08 12:41:02 by aweizman         ###   ########.fr       */
+/*   Updated: 2024/03/08 12:56:38 by aweizman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ char	*new_prompt(void)
 	prompt = ft_strjoin(prompt, RESET);
 	prompt = ft_strjoin(prompt, "$ ");
 	command = readline(prompt);
-	printf("hello");
 	free(prompt);
 	if (command)
 		add_history(command);
+	printf("command: %s\n", command);
 	return (command);
 }
 
