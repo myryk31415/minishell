@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:40:50 by padam             #+#    #+#             */
-/*   Updated: 2024/02/27 17:59:03 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/08 11:46:33 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,9 +116,9 @@ t_token	*get_next_token(char *string, t_token *token_last)
 	return (token_last);
 }
 
-//just call get_next_token directly
 t_token	*tokenize_command(char *command)
 {
+	//just call get_next_token directly
 	t_token			*tokens;
 
 	tokens = get_next_token(command, NULL);

@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/03/07 12:51:29 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/08 12:02:24 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,9 +110,9 @@ void	parser(void)
 {
 	char	*command;
 	t_token	*tokens;
-
 	void	*token_tree;
 	t_node_type	token_tree_first;
+	
 	while (1)
 	{
 		command = new_prompt();
