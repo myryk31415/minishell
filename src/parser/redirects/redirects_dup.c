@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 23:10:31 by padam             #+#    #+#             */
-/*   Updated: 2024/03/08 11:43:28 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/08 12:08:48 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,6 @@ t_node_type	err_pars(char *message, t_cmd *redirects, t_token *tokens)
 {
 	cmd_free(redirects);
 	token_delete_all(&tokens);
-	printf("error: %s\n", message);
+	printf("minishell: %s\n", message);
 	return (ERROR);
 }
