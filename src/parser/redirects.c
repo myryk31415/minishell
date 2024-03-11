@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:34:22 by padam             #+#    #+#             */
-/*   Updated: 2024/03/12 00:34:14 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/12 00:36:32 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	get_input(t_token **token_first, t_cmd *redirects, bool value)
 	token_delete(token_first);
 	if (!(*token_first) || (*token_first)->type != T_WORD)
 		return (-1); //error
-	if (redirects->redirect_in > 1)
+	if (redirects->redirect_in > 2) //okay so?
 		close(redirects->redirect_in);
 	if (value)
 		redirects->redirect_in = here_doc((*token_first)->value);
@@ -61,7 +61,7 @@ int	get_output(t_token **token_first, t_cmd *redirects, bool value)
 	token_delete(token_first);
 	if (!(*token_first) || (*token_first)->type != T_WORD)
 		return (-1); //error
-	if (redirects->redirect_out > 1)
+	if (redirects->redirect_out > 2)//okay so?
 		close(redirects->redirect_out);
 	if (value)
 		redirects->redirect_out = open((*token_first)->value,
