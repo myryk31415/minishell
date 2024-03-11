@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/03/11 12:40:53 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/11 14:17:32 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,13 +111,14 @@ t_node_type	parser(void **token_tree)
 {
 	char	*command;
 	t_token	*tokens;
-
 	t_node_type	token_tree_first;
 
-	command = new_prompt();
+	command = NULL;
+	while (!command)
+		command = new_prompt();
+	ft_printf("command:\"%s\"\n", command);
 	// command = "he && hi || du";
-	if (command)
-		tokens = tokenize_command(command);
+	tokens = tokenize_command(command);
 	free(command);
 	token_tree_first = tokens_to_tree(tokens, token_tree);
 	if (token_tree_first == ERROR)
