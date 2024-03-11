@@ -6,13 +6,15 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/03/12 08:41:28 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/12 08:42:58 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
 void	debug_print_tree(t_node *node, int i);
+void	debug_print_redir(t_redir *redir, int i);
+void	debug_print_cmd(t_cmd *cmd);
 
 char	*get_current_folder(void)
 {
@@ -53,9 +55,22 @@ char	*new_prompt(void)
 // 	}
 // }
 
-// void	debug_print_cmd(t_cmd *cmd)
-// {
-// 	int	i;
+void	get_next_debug(void *ptr, t_node_type type, int i)
+{
+	i++;
+	if (type == CMD)
+		debug_print_cmd(ptr);
+	else if (type == ERROR)
+		printf("error\n");
+	else if (type == REDIR)
+		debug_print_redir(ptr, i);
+	else
+		debug_print_tree(ptr, i);
+}
+
+void	debug_print_cmd(t_cmd *cmd)
+{
+	int	i;
 
 	i = 0;
 	printf("----------------\n");
@@ -72,7 +87,7 @@ void	debug_print_redir(t_redir *redir, int i)
 	if (redir->redirects)
 		debug_print_cmd(redir->redirects);
 	if (redir->next)
-		debug_print_tree(redir->next, i + 1);
+		get_next_debug(redir->next, redir->type, i);
 }
 
 void	debug_print_tree(t_node *node, int i)
@@ -81,24 +96,9 @@ void	debug_print_tree(t_node *node, int i)
 	printf("%il%b: %s\n", i, node->new_process_left, type_list[node->type_left]);
 	printf("%ir%b: %s\n", i, node->new_process_right, type_list[node->type_right]);
 	if (node->left)
-	{
-		if (node->type_left == CMD)
-			debug_print_cmd(node->left);
-		else if (node->type_left == REDIR)
-			debug_print_redir(node->left, i + 1);
-		else
-			debug_print_tree(node->left, i + 1);
-
-	}
+		get_next_debug(node->left, node->type_left, i);
 	if (node->right)
-	{
-		if (node->type_right == CMD)
-			debug_print_cmd(node->right);
-		else if (node->type_right == REDIR)
-			debug_print_redir(node->right, i + 1);
-		else
-			debug_print_tree(node->right, i + 1);
-	}
+		get_next_debug(node->right, node->type_right, i);
 }
 
 t_node_type	parser(void **token_tree)
@@ -116,13 +116,8 @@ t_node_type	parser(void **token_tree)
 			tokens = tokenize_command(command);
 		free(command);
 		token_tree_first = tokens_to_tree(tokens, &token_tree);
-		if (token_tree_first == ERROR)
-			printf("error\n");
-		else if (token_tree_first == CMD)
-			debug_print_cmd(token_tree);
-		else
-			debug_print_tree(token_tree, 0);
-
-	// debug_print_token_array(tokens);
-	return (token_tree_first);
+		if (token_tree)
+			get_next_debug(token_tree, token_tree_first, 0);
+		// debug_print_token_array(tokens);
+	}
 }

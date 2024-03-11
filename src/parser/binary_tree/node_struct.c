@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:38:13 by padam             #+#    #+#             */
-/*   Updated: 2024/03/12 08:41:39 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/12 08:43:15 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_node_type	check_brackets(t_token *token_first, void **head,
 {
 	t_token			*token_last;
 	t_cmd			*redirects;
-	t_redir	*new_node;
+	t_redir			*new_node;
 
 	if (!token_first)
 		return (ERROR);
@@ -68,7 +68,9 @@ t_node_type	check_brackets(t_token *token_first, void **head,
 			cmd_free(redirects);
 			return (ERROR);
 		}
+		new_node->redirects = redirects;
 		new_node->type = split_by_operator(token_last, &new_node->next, NULL);
+		*head = new_node;
 		return (REDIR);
 	}
 	return (get_cmd(token_first, head, redirects));
