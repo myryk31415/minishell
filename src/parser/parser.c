@@ -6,11 +6,13 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/03/11 12:31:03 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/11 21:11:35 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+void	debug_print_tree(t_node *node, int i);
 
 char	*get_current_folder(void)
 {
@@ -61,38 +63,29 @@ void	debug_print_cmd(t_cmd *cmd)
 	while (cmd->args && cmd->args[i])
 		printf("%s\n", cmd->args[i++]);
 	i = 0;
-	printf("----------------\n");
-	printf("redirect_in:\n");
-	while (cmd->redirect_in && cmd->redirect_in[i])
-	{
-		printf("%i: %s, ", i, cmd->redirect_in[i]);
-		if (cmd->heredoc[i++] == true)
-			printf("heredoc\n");
-		else
-			printf("no heredoc\n");
-	}
-	i = 0;
-	printf("----------------\n");
-	printf("redirect_out:\n");
-	while (cmd->redirect_out && cmd->redirect_out[i])
-	{
-		printf("%i: %s, ", i, cmd->redirect_out[i]);
-		if (cmd->append[i++] == true)
-			printf("append\n");
-		else
-			printf("no append\n");
-	}
+	printf("redirect_in: %d\n", cmd->redirect_in);
+	printf("redirect_out: %d\n", cmd->redirect_out);
+}
+
+void	debug_print_redir(t_redir *redir, int i)
+{
+	if (redir->redirects)
+		debug_print_cmd(redir->redirects);
+	if (redir->next)
+		debug_print_tree(redir->next, i + 1);
 }
 
 void	debug_print_tree(t_node *node, int i)
 {
-	char *type_list[] = {"ERROR", "AND", "OR", "PIPE", "CMD"};
+	char *type_list[] = {"ERROR", "REDIR", "AND", "OR", "PIPE", "CMD"};
 	printf("%il%b: %s\n", i, node->new_process_left, type_list[node->type_left]);
 	printf("%ir%b: %s\n", i, node->new_process_right, type_list[node->type_right]);
 	if (node->left)
 	{
 		if (node->type_left == CMD)
 			debug_print_cmd(node->left);
+		else if (node->type_left == REDIR)
+			debug_print_redir(node->left, i + 1);
 		else
 			debug_print_tree(node->left, i + 1);
 
@@ -101,6 +94,8 @@ void	debug_print_tree(t_node *node, int i)
 	{
 		if (node->type_right == CMD)
 			debug_print_cmd(node->right);
+		else if (node->type_right == REDIR)
+			debug_print_redir(node->right, i + 1);
 		else
 			debug_print_tree(node->right, i + 1);
 	}
@@ -113,6 +108,7 @@ void	parser(void)
 	void	*token_tree;
 	t_node_type	token_tree_first;
 
+	(void)token_tree_first;
 	while (1)
 	{
 		command = new_prompt();
@@ -121,12 +117,12 @@ void	parser(void)
 			tokens = tokenize_command(command);
 		free(command);
 		token_tree_first = tokens_to_tree(tokens, &token_tree);
-		// if (token_tree_first == ERROR)
-		// 	printf("error\n");
-		// else if (token_tree_first == CMD)
-		// 	debug_print_cmd(token_tree);
-		// else
-		// 	debug_print_tree(token_tree, 0);
+		if (token_tree_first == ERROR)
+			printf("error\n");
+		else if (token_tree_first == CMD)
+			debug_print_cmd(token_tree);
+		else
+			debug_print_tree(token_tree, 0);
 
 		// debug_print_token_array(tokens);
 	}

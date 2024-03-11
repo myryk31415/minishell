@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:14:04 by padam             #+#    #+#             */
-/*   Updated: 2024/03/08 11:48:32 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/11 21:02:00 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ t_node_type	tokens_to_tree(t_token *tokens, void **head);
 
 // node_utils
 t_node		*new_node(void);
+t_redir		*new_redir_node(void);
 // int			count_operators(t_token *tokens);
 // t_token		*get_paren(t_token *tokens, t_token **paren);
 
@@ -71,7 +72,7 @@ int			is_operator(t_token_type type);
 // redirects
 void		cmd_free(t_cmd *cmd);
 t_node_type	err_pars(char *message, t_cmd *redirects, t_token *tokens);
-t_cmd		*redirects_get(t_token **tokens, t_cmd *redirects);
+t_cmd		*redirects_get(t_token **token_first);
 
 // tokenizer
 t_token		*tokenize_command(char *command);

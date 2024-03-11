@@ -6,7 +6,7 @@
 #    By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/03/04 20:59:12 by padam            ###   ########.fr        #
+#    Updated: 2024/03/11 19:42:09 by padam            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,11 +27,9 @@ OBJ_DIRS =	execution	execution/pipe	main	parser	parser/binary_tree	\
 SRCS_MAIN =	main.c
 
 SRCS_PARS =	parser_utils.c			parser.c			tokenizer.c	\
-			tokens_utils.c	\
+			tokens_utils.c			redirects.c			cleanup.c\
 
 SRCS_BNTR =	node_struct.c			node_utils.c		pipeline.c
-
-SRCS_REDIR =	redirects.c			redirects_dup.c
 
 SRCS_EXECUTION =
 
@@ -39,7 +37,6 @@ SRCS_PIPE =			fork.c			pipe.c			utils.c
 
 SRC_NAME =	$(addprefix main/,				$(SRCS_MAIN))		\
 			$(addprefix parser/,			$(SRCS_PARS))		\
-			$(addprefix parser/redirects/,	$(SRCS_REDIR))		\
 			$(addprefix parser/binary_tree/,$(SRCS_BNTR))		\
 #			$(addprefix execution/,			$(SRCS_EXECUTION))	\
 			$(addprefix execution/pipe/,	$(SRCS_PIPE))		\
