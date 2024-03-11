@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/03/08 12:26:32 by aweizman         ###   ########.fr       */
+/*   Updated: 2024/03/11 12:39:44 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,6 @@ typedef struct s_node
 	bool		new_process_right;
 }	t_node;
 
-t_node_type	parser(void *tree);
+t_node_type	parser(void **tree);
 
 #endif

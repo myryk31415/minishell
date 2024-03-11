@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:16:36 by padam             #+#    #+#             */
-/*   Updated: 2024/03/11 12:20:38 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/11 12:39:17 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	main(void)
 	t_node	*test;
 
 	tree = NULL;
-		if (parser(tree) == AND)
+		if (parser(&tree) == AND)
 		{
 			test = tree;
 			and_execute(tree, NULL, NULL, 0);
