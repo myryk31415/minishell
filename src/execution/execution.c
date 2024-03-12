@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/11 16:12:38 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/12 08:48:25 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,17 @@
 
 void	command_pipe(t_cmd *token, int *fd, int *pre_fd)
 {
-	int	err;
-
-	err = 0;
 	if (token->redirect_in)
-	{
-		err = input(token->redirect_in, token->heredoc);
-	}
+		dup2(token->redirect_in, STDIN_FILENO);
 	else if (pre_fd)
 	{
 		dup2(pre_fd[0], STDIN_FILENO);
 		close(pre_fd[0]);
 		close(pre_fd[1]);
 	}
-	if (token->redirect_out && !err)
+	if (token->redirect_out)
 	{
-		err = output(token->redirect_out, token->append);
+		dup2(token->redirect_out, STDOUT_FILENO);
 		fd = NULL;
 	}
 	else if (fd)
@@ -38,8 +33,7 @@ void	command_pipe(t_cmd *token, int *fd, int *pre_fd)
 		close(fd[0]);
 		close(fd[1]);
 	}
-	if (!err)
-		exec(token->args);
+	exec(token->args);
 }
 
 void	create_tree(int *pre_fd, t_node *token, int pid)
