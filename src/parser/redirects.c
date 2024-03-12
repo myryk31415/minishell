@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:34:22 by padam             #+#    #+#             */
-/*   Updated: 2024/03/12 00:36:32 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/12 08:54:32 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,22 +81,22 @@ int	get_fds(t_token **token_first, t_cmd *new_redirects)
 	{
 		if ((*token_first)->type == T_LPAREN)
 			token_first = &(skip_parens(*token_first, 1)->next); //brackets?
-		else if (((*token_first)->type == T_REDIR_IN))
+		else if ((*token_first)->type == T_REDIR_IN)
 		{
 			if (get_input(token_first, new_redirects, false) == -1)
 				return (-1);
 		}
-		else if (((*token_first)->type == T_REDIR_HEREDOC))
+		else if ((*token_first)->type == T_REDIR_HEREDOC)
 		{
 			if (get_input(token_first, new_redirects, true) == -1)
 				return (-1);
 		}
-		else if (((*token_first)->type == T_REDIR_OUT))
+		else if ((*token_first)->type == T_REDIR_OUT)
 		{
 			if (get_output(token_first, new_redirects, false) == -1)
 				return (-1);
 		}
-		else if (((*token_first)->type == T_REDIR_APPEND))
+		else if ((*token_first)->type == T_REDIR_APPEND)
 		{
 			if (get_output(token_first, new_redirects, true) == -1)
 				return (-1);
