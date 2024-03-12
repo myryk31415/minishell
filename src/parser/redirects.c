@@ -6,14 +6,14 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:34:22 by padam             #+#    #+#             */
-/*   Updated: 2024/03/12 08:54:32 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/12 08:59:17 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include <fcntl.h>
 
-int	here_doc(char *limiter)
+static int	here_doc(char *limiter)
 {
 	char	*str;
 	int		fd[2];

@@ -6,62 +6,25 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/11 16:05:04 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/12 15:28:15 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-int	input(char **input, bool *heredoc)
+void	redirect(t_redir *token, int *fd, int *pre_fd)
 {
-	int			j;
-	int			file;
-
-	file = 0;
-	j = 0;
-	while (input[j])
-	{
-		if (file)
-			close(file);
-		if (heredoc[j] == false)
-		{
-			file = open(input[j], O_RDONLY, 0666);
-			if (file == -1)
-				return (perror(error_msg("bash: ", input[j])), -1);
-		}
-		else
-			file = here_doc(input[j]);
-		j++;
-	}
-	dup2(file, STDIN_FILENO);
-	close(file);
-	return (0);
-}
-
-int	output(char **output, bool *append)
-{
-	int		file;
-	int		j;
-
-	j = 0;
-	file = 0;
-	while (output[j])
-	{
-		if (file)
-			close(file);
-		if (append[j] == false)
-			file = open(output[j],
-					O_WRONLY | O_TRUNC | O_CREAT, 0666);
-		else
-			file = open(output[j],
-					O_WRONLY | O_APPEND | O_CREAT, 0666);
-		if (file == -1)
-			return (perror(error_msg("bash: ", output[j])), -1);
-		j++;
-	}
-	dup2(file, STDOUT_FILENO);
-	close(file);
-	return (0);
+	command_pipe(token->redirects, NULL, NULL, 1);
+	if (token->type == CMD)
+		command_pipe((t_cmd *)token->next, NULL, NULL, 0);
+	else if (token->type == OR)
+		or_execute((t_node *)token->next, fd, pre_fd, 0);
+	else if (token->type == AND)
+		and_execute((t_node *)token->next, fd, pre_fd, 0);
+	else if (token->type == PIPE)
+		create_tree(0, (t_node *)token->next, 0);
+	else if (token->type == REDIR)
+		command_pipe((t_cmd *)token->next, NULL, NULL, 1);
 }
 
 char	*error_msg(char *cmd, char *file)

@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:16:36 by padam             #+#    #+#             */
-/*   Updated: 2024/03/11 15:27:23 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/12 15:38:12 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,16 @@
 int	main(void)
 {
 	void		*tree;
-	t_node		*test;
+	t_redir		*test;
 	t_node_type	type;
-	tree = NULL;
 
+	tree = NULL;
 	while (1)
 	{
 		type = parser(&tree);
+		test = tree;
 		execution(tree, type);
+
 	}
 	free (tree);
 	(void)test;

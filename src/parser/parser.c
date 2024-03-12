@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/03/12 08:50:30 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/12 10:56:58 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,7 @@ t_node_type	parser(void **token_tree)
 	t_node_type	token_tree_first;
 
 	(void)token_tree_first;
-	while (1)
-	{
+	tokens = NULL;
 		command = new_prompt();
 		// command = "he && hi || du";
 		if (command)
@@ -119,5 +118,5 @@ t_node_type	parser(void **token_tree)
 		// if (token_tree)
 		// 	get_next_debug(token_tree, token_tree_first, 0);
 		// debug_print_token_array(tokens);
-	}
+	return (token_tree_first);
 }
