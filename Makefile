@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+         #
+#    By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/03/08 12:28:38 by aweizman         ###   ########.fr        #
+#    Updated: 2024/03/11 15:10:29 by antonweizma      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror $(INCLUDES) -g
+CFLAGS = -Wall -Wextra -Werror $(INCLUDES) -g3
 INCLUDES = -I./includes
 LIBS = -lreadline
 LIBFT_DIR = libft

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:29 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/11 12:11:47 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/11 14:53:58 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,6 @@ int		echo(char **args);
 void	and_execute(t_node *token, int *fd, int *pre_fd, int status);
 void	or_execute(t_node *token, int *fd, int *pre_fd, int status);
 void	run_tree(int *pre_fd, t_node *token, int fd[2]);
+void	create_tree(int *pre_fd, t_node *token, int pid);
+void	execution(void *tree, t_node_type type);
 #endif

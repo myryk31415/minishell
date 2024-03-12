@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:16:36 by padam             #+#    #+#             */
-/*   Updated: 2024/03/11 12:39:17 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/11 15:27:23 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,17 @@
 
 int	main(void)
 {
-	void	*tree;
-	t_node	*test;
-
+	void		*tree;
+	t_node		*test;
+	t_node_type	type;
 	tree = NULL;
-		if (parser(&tree) == AND)
-		{
-			test = tree;
-			and_execute(tree, NULL, NULL, 0);
-		}
+
+	while (1)
+	{
+		type = parser(&tree);
+		execution(tree, type);
+	}
+	free (tree);
 	(void)test;
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_execution.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/08 17:30:00 by aweizman         ###   ########.fr       */
+/*   Updated: 2024/03/11 15:45:09 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,11 @@ char	*get_path(char *cmd, char **environ, char *var)
 		free(trial_path);
 		i++;
 	}
-	if (cmd_path)
+	if (!cmd_path)
 		free_array(cmd_path);
-	if (path_to_cmd)
+	if (!path_to_cmd)
 		free(cmd_path);
+				ft_printf("hn\n");
 	return (NULL);
 }
 
