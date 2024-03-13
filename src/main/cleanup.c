@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 17:10:56 by padam             #+#    #+#             */
-/*   Updated: 2024/03/12 17:27:24 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/13 15:12:10 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,10 @@ void	cmd_free(t_cmd *cmd)
 	if (!cmd)
 		return ;
 	free_str_array(cmd->args);
+	if (cmd->redirect_in)
+		close(cmd->redirect_in);
+	if (cmd->redirect_out)
+		close(cmd->redirect_out);
 	free(cmd);
 }
 

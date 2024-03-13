@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:38:13 by padam             #+#    #+#             */
-/*   Updated: 2024/03/12 17:10:31 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/13 16:26:19 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ t_node_type	get_cmd(t_token *token_first, void **head, t_cmd *redirects)
 	while (token_first)
 	{
 		redirects->args[i++] = token_first->value;
+		token_first->value = NULL;
 		token_delete(&token_first);
 	}
 	*head = redirects;
@@ -71,7 +72,6 @@ t_node_type	check_brackets(t_token *token_first, void **head)
 			return(err_pars("malloc", redirects, token_first));
 		new_node->redirects = redirects;
 		new_node->type = split_by_operator(token_last, &new_node->next);
-		
 		*head = new_node;
 		return (REDIR);
 	}
@@ -85,17 +85,28 @@ t_node_type	split_by_pipe(t_token *token_first, void **head)
 
 	token_last = get_pipe(token_first);
 	if (!token_first || !token_last)
-		return (ERROR);
+		return (SYNTAX);
 	if (token_last->type == T_PIPE)
 	{
 		node = new_node();
+		if (!node)
+			return(err_pars("malloc", NULL, token_first));
 		token_delete(&token_last);
-		token_split(token_last, -1);
+		if (!token_split(token_last, -1))
+		{
+			token_delete_all(&token_last);
+			return (SYNTAX);
+		}
 		node->type_left = check_brackets(token_first, &node->left);
+		if (node->type_left == SYNTAX)
+		{
+			token_delete_all(&token_last);
+			return (SYNTAX);
+		}
 		node->type_right = split_by_pipe(token_last, &node->right);
+		if (node->type_right == SYNTAX)
+			return (SYNTAX);
 		*head = node;
-		if (node->type_left == ERROR || node->type_right == ERROR)
-			return (ERROR);
 		return (PIPE);
 	}
 	return (check_brackets(token_first, head));
@@ -109,10 +120,12 @@ t_node_type	split_by_operator(t_token *token_last, void **head)
 
 	token_first = get_operator(token_last);
 	if (!token_first || !token_last)
-		return (ERROR);
+		return (SYNTAX);
 	if (token_first->type == T_AND || token_first->type == T_OR)
 	{
 		node = new_node();
+		if (!node)
+			return(err_pars("malloc", NULL, token_first));
 		if (token_first->type == T_AND)
 			return_value = AND;
 		else
@@ -120,9 +133,11 @@ t_node_type	split_by_operator(t_token *token_last, void **head)
 		token_delete(&token_first);
 		node->type_left = split_by_operator(token_split(token_first, -1),
 				&node->left);
+		if (node->type_left == SYNTAX)
+			return(token_delete_all(&token_first), SYNTAX);
 		node->type_right = split_by_pipe(token_first, &node->right);
-		if (node->type_left == ERROR || node->type_right == ERROR)
-			return (ERROR);
+		if (node->type_right == SYNTAX)
+			return (SYNTAX);
 		*head = node;
 		return (return_value);
 	}

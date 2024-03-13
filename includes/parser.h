@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:14:04 by padam             #+#    #+#             */
-/*   Updated: 2024/03/12 17:13:23 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/13 15:29:22 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,11 @@ t_redir		*new_redir_node(void);
 //cleanup
 void		print_err(char *message);
 t_node_type	err_pars(char *message, t_cmd *redirects, t_token *tokens);
+void		print_syntax_err(t_token *token);
+
+// debug
+void		debug_print_token_array(t_token *token_first);
+void		get_next_debug(void *ptr, t_node_type type, int i);
 
 // pipeline
 int			count_words(t_token *tokens);

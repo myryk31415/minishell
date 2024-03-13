@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:34:22 by padam             #+#    #+#             */
-/*   Updated: 2024/03/12 17:04:03 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/13 15:45:40 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,12 @@ int	get_input(t_token **token_first, t_cmd *redirects, bool value)
 {
 	token_delete(token_first);
 	if (!(*token_first) || (*token_first)->type != T_WORD)
-		return (-1);
+	{
+		ft_printf("minishell: syntax error near unexpected token `%s'\n",
+			(*token_first)->value);
+		token_delete_all(token_first);
+		return (-2);
+	}
 	if (redirects->redirect_in)
 		close(redirects->redirect_in);
 	if (value)
@@ -54,6 +59,7 @@ int	get_input(t_token **token_first, t_cmd *redirects, bool value)
 	if (redirects->redirect_in == -1)
 	{
 		print_err((*token_first)->value);
+		token_delete_all(token_first);
 		return (-1);
 	}
 	token_delete(token_first);
@@ -67,6 +73,7 @@ int	get_output(t_token **token_first, t_cmd *redirects, bool value)
 	{
 		ft_printf("minishell: syntax error near unexpected token `%s'\n",
 			(*token_first)->value);
+		token_delete_all(token_first);
 		return (-2);
 	}
 	if (redirects->redirect_out)
@@ -80,6 +87,7 @@ int	get_output(t_token **token_first, t_cmd *redirects, bool value)
 	if (redirects->redirect_out == -1)
 	{
 		print_err((*token_first)->value);
+		token_delete_all(token_first);
 		return (-1);
 	}
 	token_delete(token_first);
@@ -94,7 +102,11 @@ int	get_fds(t_token **token_first, t_cmd *new_redirects)
 	while (*token_first)
 	{
 		if ((*token_first)->type == T_LPAREN)
+		{
 			token_first = &skip_parens(*token_first, 1)->next; //brackets?
+			if (!*token_first)
+				return (-2);
+		}
 		else if ((*token_first)->type == T_REDIR_IN)
 			output = get_input(token_first, new_redirects, false);
 		else if ((*token_first)->type == T_REDIR_HEREDOC)

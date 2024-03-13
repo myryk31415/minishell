@@ -6,7 +6,7 @@
 #    By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/03/11 19:42:09 by padam            ###   ########.fr        #
+#    Updated: 2024/03/13 15:29:38 by padam            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,10 +24,11 @@ OBJ_PATH = obj
 OBJ_DIRS =	execution	execution/pipe	main	parser	parser/binary_tree	\
 			parser/redirects
 
-SRCS_MAIN =	main.c
+SRCS_MAIN =	main.c cleanup.c
 
 SRCS_PARS =	parser_utils.c			parser.c			tokenizer.c	\
 			tokens_utils.c			redirects.c			cleanup.c\
+			debug.c
 
 SRCS_BNTR =	node_struct.c			node_utils.c		pipeline.c
 
