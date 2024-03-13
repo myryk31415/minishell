@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:57:00 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/13 17:06:39 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/13 20:46:57 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	echo(char **args)
 		if (ft_printf("%s", args[i++]) == 256)
 			return (-1);
 	while (args[i])
-		if (ft_printf(" %s", args[i++]) == 256)
+		if (ft_printf("%s", args[i++]) == 256)
 			return (-1);
 	if (flag == false)
 		ft_printf("\n");
