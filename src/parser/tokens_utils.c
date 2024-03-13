@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:11:07 by padam             #+#    #+#             */
-/*   Updated: 2024/03/08 00:59:48 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/12 17:06:17 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,11 @@ t_token	*skip_parens(t_token *tokens, int direction)
 		else
 			tokens = tokens->prev;
 		if (!tokens)
+		{
+			printf("minishell: unclosed parenthesis\n");
+			token_delete_all(&tokens);
 			return (NULL);
+		}
 		if (tokens->type == T_LPAREN)
 			level += direction;
 		else if (tokens->type == T_RPAREN)

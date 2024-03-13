@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/03/11 21:01:22 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/12 17:13:32 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef enum e_node_type
 	OR,
 	PIPE,
 	CMD,
+	SYNTAX,
 }	t_node_type;
 
 typedef struct s_redir
@@ -46,12 +47,13 @@ typedef struct s_node
 {
 	void		*left;
 	t_node_type	type_left;
-	bool		new_process_left;
 	void		*right;
 	t_node_type	type_right;
-	bool		new_process_right;
 }	t_node;
 
 void	parser(void);
 
+//cleanup
+void	cmd_free(t_cmd *cmd);
+void	node_tree_delete(void *node, t_node_type type);
 #endif

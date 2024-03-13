@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/03/12 00:14:48 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/12 14:58:49 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	debug_print_redir(t_redir *redir, int i)
 
 void	debug_print_tree(t_node *node, int i)
 {
-	char *type_list[] = {"ERROR", "REDIR", "AND", "OR", "PIPE", "CMD"};
+	char *type_list[] = {"ERROR", "REDIR", "AND", "OR", "PIPE", "CMD", "SYNTAX"};
 	printf("%il%b: %s\n", i, node->new_process_left, type_list[node->type_left]);
 	printf("%ir%b: %s\n", i, node->new_process_right, type_list[node->type_right]);
 	if (node->left)
