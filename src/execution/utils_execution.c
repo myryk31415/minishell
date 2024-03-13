@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/13 16:26:55 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/13 16:51:34 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,19 +73,19 @@ int	is_builtin(t_cmd *token, int *fd, int *pre_fd, int *redir)
 	if (!ft_strncmp(token->args[0], "cd", 2))
 	{
 		command(token, fd, pre_fd, redir);
-		return (cd(token->args[1]), 1);
+		return (cd(token->args[1]));
 	}
 	if (!ft_strncmp(token->args[0], "echo", 4))
 	{
 		command(token, fd, pre_fd, redir);
-		return (echo(token->args), 1);
+		return (echo(token->args));
 	}
 	if (!ft_strncmp(token->args[0], "pwd", 3))
 	{
 		command(token, fd, pre_fd, redir);
-		return (pwd(), 1);
+		return (pwd());
 	}
-	return (0);
+	return (1);
 }
 
 void	exec(char **cmd_arg)

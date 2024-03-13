@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:57:00 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/01 11:40:32 by aweizman         ###   ########.fr       */
+/*   Updated: 2024/03/13 17:06:39 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ int	echo(char **args)
 	else
 		flag = false;
 	if (args[i])
-		if (ft_printf("%s", args[i++]) == -1)
+		if (ft_printf("%s", args[i++]) == 256)
 			return (-1);
 	while (args[i])
-		if (ft_printf(" %s", args[i++]) == -1)
+		if (ft_printf(" %s", args[i++]) == 256)
 			return (-1);
 	if (flag == false)
 		ft_printf("\n");
@@ -59,7 +59,7 @@ int	pwd(void)
 
 	cwd = getcwd(NULL, PATH_MAX);
 	if (!cwd)
-		return (free(cwd), perror("getcwd"), -1);
+		return (free(cwd), perror("getcwd"), 256);
 	ft_printf("%s\n", cwd);
 	free(cwd);
 	return (0);

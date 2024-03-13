@@ -6,13 +6,13 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/12 15:28:15 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/13 17:22:26 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-void	redirect(t_redir *token, int *fd, int *pre_fd)
+int	redirect(t_redir *token, int *fd, int *pre_fd)
 {
 	command_pipe(token->redirects, NULL, NULL, 1);
 	if (token->type == CMD)

@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/13 16:28:17 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/13 16:57:26 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,11 @@ void	command(t_cmd *token, int *fd, int *pre_fd, int *redir)
 	dup2(output, STDOUT_FILENO);
 }
 
-void	command_pipe(t_cmd *token, int *fd, int *pre_fd, int redirect)
+int	command_pipe(t_cmd *token, int *fd, int *pre_fd, int redirect)
 {
 	int	pid;
 	static int	redir[2];
+	int	status;
 
 	if (redirect)
 	{
@@ -49,28 +50,33 @@ void	command_pipe(t_cmd *token, int *fd, int *pre_fd, int redirect)
 			redir[0] = token->redirect_in;
 		if (token->redirect_out)
 			redir[1] = token->redirect_out;
-
-		return ;
+		return (0);
 	}
 	else
 	{
-		if (is_builtin(token, fd, pre_fd, redir))
-			return ;
-		pid = fork();
-		if (pid == -1)
-			perror("Fork");
-		if (!pid)
-			command(token, fd, pre_fd, redir);
-		else
+		status = is_builtin(token, fd, pre_fd, redir);
+		if (status == 1)
 		{
-			waitpid(pid, NULL, 0);
-			close(fd[0]);
-			close(fd[1]);
-			close(pre_fd[0]);
-			close(pre_fd[1]);
+			pid = fork();
+			if (pid == -1)
+				perror("Fork");
+			if (!pid)
+			{
+				command(token, fd, pre_fd, redir);
+				exec(token->args);
+			}
+			else
+			{
+				waitpid(pid, &status, 0);
+				close(fd[0]);
+				close(fd[1]);
+				close(pre_fd[0]);
+				close(pre_fd[1]);
+			}
 		}
-		exec(token->args);
+		return (status);
 	}
+	return (0);
 }
 
 void	create_tree(int *pre_fd, t_node *token)
