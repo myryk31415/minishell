@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/12 15:35:48 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/12 16:11:55 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	command(t_cmd *token, int *fd, int *pre_fd, int *redir)
 	int	output;
 
 	input = 0;
-	output = 0;
+	output = 1;
 	if (token->redirect_in)
 		input = token->redirect_in;
 	else if (redir[0])
@@ -74,13 +74,7 @@ void	command_pipe(t_cmd *token, int *fd, int *pre_fd, int redirect)
 void	create_tree(int *pre_fd, t_node *token, int pid)
 {
 	int	fd[2];
-	t_node	*left_test;
-	t_node	*right_test;
-	t_cmd	*cmd_r_test;
 
-	left_test = token->left;
-	right_test = token->right;
-	cmd_r_test = token->right;
 	if (pipe(fd) == -1)
 		perror("Pipe");
 	else if (!pid)
@@ -139,11 +133,9 @@ void	execution(void *tree, t_node_type type)
 		else if (type == PIPE)
 			create_tree(0, (t_node *)tree, pid);
 		else if (type == REDIR)
-			command_pipe((t_cmd *)tree, NULL, NULL, 1);
+			redirect((t_redir *)tree, NULL, NULL);
 		exit(256);
 	}
 	else
-	{
 		waitpid(pid, NULL, 0);
-	}
 }

@@ -6,21 +6,21 @@
 #    By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/03/12 12:48:33 by antonweizma      ###   ########.fr        #
+#    Updated: 2024/03/12 16:07:05 by antonweizma      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 CC = cc
-CFLAGS =  $(INCLUDES) -g3
+CFLAGS =  -Wall -Wextra -Werror $(INCLUDES) -g3
 INCLUDES = -I./includes
 LIBS = -lreadline
 LIBFT_DIR = libft
 
 SRC_PATH = src
 OBJ_PATH = obj
-# -Wall -Wextra -Werror
+
 OBJ_DIRS =	execution	execution/pipe	main	parser	parser/binary_tree	\
 
 SRCS_MAIN =	main.c

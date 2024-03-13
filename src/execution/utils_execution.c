@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/11 15:45:09 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/13 14:53:57 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,15 +65,24 @@ char	*get_path(char *cmd, char **environ, char *var)
 		free_array(cmd_path);
 	if (!path_to_cmd)
 		free(cmd_path);
-				ft_printf("hn\n");
 	return (NULL);
 }
+
+// int	is_builtin(char **arg)
+// {
+// 	if (ft_strncmp(arg[0], "cd", 2))
+// 	{
+
+// 	}
+// }
 
 void	exec(char **cmd_arg)
 {
 	char		*cmd_path;
 	extern char	**environ;
 
+	// if (is_builtin(cmd_arg))
+	// 	exit(0);
 	if (!access(cmd_arg[0], F_OK | X_OK))
 	{
 		execve(cmd_arg[0], cmd_arg, environ);

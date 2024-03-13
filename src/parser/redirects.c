@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:34:22 by padam             #+#    #+#             */
-/*   Updated: 2024/03/12 08:59:17 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/12 15:56:42 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ t_cmd	*redirects_get(t_token **token_first)
 		return (NULL);
 	new_redirects->args = NULL;
 	new_redirects->redirect_in = 0;
-	new_redirects->redirect_out = 1;
+	new_redirects->redirect_out = 0;
 	get_fds(token_first, new_redirects);
 	return (new_redirects);
 }
