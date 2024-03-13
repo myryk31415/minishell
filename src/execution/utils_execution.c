@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/13 14:53:57 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/13 15:58:21 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,21 +68,24 @@ char	*get_path(char *cmd, char **environ, char *var)
 	return (NULL);
 }
 
-// int	is_builtin(char **arg)
-// {
-// 	if (ft_strncmp(arg[0], "cd", 2))
-// 	{
-
-// 	}
-// }
+int	is_builtin(char **arg)
+{
+	if (!ft_strncmp(arg[0], "cd", 2))
+		return (cd(arg[1]), 1);
+	if (!ft_strncmp(arg[0], "echo", 4))
+		return (echo(arg), 1);
+	if (!ft_strncmp(arg[0], "pwd", 3))
+		return (pwd(), 1);
+	return (0);
+}
 
 void	exec(char **cmd_arg)
 {
 	char		*cmd_path;
 	extern char	**environ;
 
-	// if (is_builtin(cmd_arg))
-	// 	exit(0);
+	if (is_builtin(cmd_arg))
+		exit(0);
 	if (!access(cmd_arg[0], F_OK | X_OK))
 	{
 		execve(cmd_arg[0], cmd_arg, environ);

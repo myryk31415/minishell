@@ -6,7 +6,7 @@
 #    By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/03/12 16:07:05 by antonweizma      ###   ########.fr        #
+#    Updated: 2024/03/13 15:55:33 by antonweizma      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ LIBFT_DIR = libft
 SRC_PATH = src
 OBJ_PATH = obj
 
-OBJ_DIRS =	execution	execution/pipe	main	parser	parser/binary_tree	\
+OBJ_DIRS =	execution	execution/builtins	main	parser	parser/binary_tree	\
 
 SRCS_MAIN =	main.c
 
@@ -37,10 +37,10 @@ SRCS_BUILTINS = echo.c		cd.c
 SRCS_PIPE =			fork.c			pipe.c			utils.c
 
 SRC_NAME =	$(addprefix main/,				$(SRCS_MAIN))		\
+			$(addprefix execution/builtins/,$(SRCS_BUILTINS))		\
 			$(addprefix execution/,			$(SRCS_EXECUTION))	\
 			$(addprefix parser/,			$(SRCS_PARS))		\
 			$(addprefix parser/binary_tree/,$(SRCS_BNTR))		\
-#			$(addprefix execution/pipe/,	$(SRCS_PIPE))		\
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 OBJS = $(addprefix $(OBJ_PATH)/,$(OBJ_NAME))

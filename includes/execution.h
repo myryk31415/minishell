@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:29 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/12 15:27:51 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/13 15:06:21 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ char	*get_env(char **environ, char *var);
 char	*get_path(char *cmd, char **environ, char *var);
 int		pwd(void);
 int		echo(char **args);
+int		cd(char	*arg);
 void	and_execute(t_node *token, int *fd, int *pre_fd, int status);
 void	or_execute(t_node *token, int *fd, int *pre_fd, int status);
 void	run_tree(int *pre_fd, t_node *token, int fd[2]);
