@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 17:02:47 by padam             #+#    #+#             */
-/*   Updated: 2024/03/12 17:01:41 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/13 22:27:35 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int	count_words(t_token *token_first)
 		if (token_first->type != T_WORD)
 		{
 			print_syntax_err(token_first);
-			token_delete_all(&token_first);
 			return(-1);
 		}
 		word_count++;

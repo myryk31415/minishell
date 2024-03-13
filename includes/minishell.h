@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/03/12 17:13:32 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/13 22:09:45 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ typedef struct s_node
 	t_node_type	type_right;
 }	t_node;
 
-void	parser(void);
+t_node_type	parser(void *token_tree);
 
 //cleanup
-void	cmd_free(t_cmd *cmd);
-void	node_tree_delete(void *node, t_node_type type);
+void		cmd_free(t_cmd *cmd);
+void		node_tree_delete(void *node, t_node_type type);
 #endif

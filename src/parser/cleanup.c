@@ -6,25 +6,21 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 23:10:31 by padam             #+#    #+#             */
-/*   Updated: 2024/03/13 16:44:15 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/13 22:30:59 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-void print_err(char *message)
+t_node_type	err_pars(char *message, t_cmd *redirects, t_token **tokens)
 {
 	char *error;
 
+	free(redirects);
 	error = ft_strjoin("minishell: ", message);
 	perror(error);
 	free(error);
-}
-t_node_type	err_pars(char *message, t_cmd *redirects, t_token *tokens)
-{
-	free(redirects);
-	token_delete_all(&tokens);
-	print_err(message);
+	token_delete_all(tokens);
 	return (ERROR);
 }
 
@@ -40,4 +36,5 @@ void	print_syntax_err(t_token *token)
 	else
 		printf("minishell: syntax error near unexpected token `%s'\n",
 			type_list[token->type]);
+	token_delete_all(&token);
 }

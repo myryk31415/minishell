@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:14:04 by padam             #+#    #+#             */
-/*   Updated: 2024/03/13 15:29:22 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/13 22:29:44 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,7 @@ t_node		*new_node(void);
 t_redir		*new_redir_node(void);
 
 //cleanup
-void		print_err(char *message);
-t_node_type	err_pars(char *message, t_cmd *redirects, t_token *tokens);
+t_node_type	err_pars(char *message, t_cmd *redirects, t_token **tokens);
 void		print_syntax_err(t_token *token);
 
 // debug
