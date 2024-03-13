@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:29 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/13 15:06:21 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/13 16:27:23 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int		cd(char	*arg);
 void	and_execute(t_node *token, int *fd, int *pre_fd, int status);
 void	or_execute(t_node *token, int *fd, int *pre_fd, int status);
 void	run_tree(int *pre_fd, t_node *token, int fd[2]);
-void	create_tree(int *pre_fd, t_node *token, int pid);
+void	create_tree(int *pre_fd, t_node *token);
 void	execution(void *tree, t_node_type type);
+int		is_builtin(t_cmd *token, int *fd, int *pre_fd, int *redir);
+void	command(t_cmd *token, int *fd, int *pre_fd, int *redir);
 #endif

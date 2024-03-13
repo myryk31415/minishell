@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/12 16:11:55 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/13 16:28:17 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ void	command_pipe(t_cmd *token, int *fd, int *pre_fd, int redirect)
 	}
 	else
 	{
+		if (is_builtin(token, fd, pre_fd, redir))
+			return ;
 		pid = fork();
 		if (pid == -1)
 			perror("Fork");
@@ -71,10 +73,14 @@ void	command_pipe(t_cmd *token, int *fd, int *pre_fd, int redirect)
 	}
 }
 
-void	create_tree(int *pre_fd, t_node *token, int pid)
+void	create_tree(int *pre_fd, t_node *token)
 {
 	int	fd[2];
+	int			pid;
 
+	pid = fork();
+	if (pid == -1)
+		perror("Fork");
 	if (pipe(fd) == -1)
 		perror("Pipe");
 	else if (!pid)
@@ -103,7 +109,7 @@ void	run_tree(int *pre_fd, t_node *token, int fd[2])
 	else if (pid && token->type_left == OR)
 		or_execute((t_node *)token->left, fd, pre_fd, 1);
 	else if (!pid && token->type_right == PIPE)
-		create_tree(fd, (t_node *)token->right, 0);
+		create_tree(fd, (t_node *)token->right);
 	else if (!pid && token->type_right == CMD)
 		command_pipe((t_cmd *)token->right, fd, fd, 0);
 	else if (!pid && token->type_right == REDIR)
@@ -116,14 +122,6 @@ void	run_tree(int *pre_fd, t_node *token, int fd[2])
 
 void	execution(void *tree, t_node_type type)
 {
-	int			pid;
-
-	pid = fork();
-	if (pid == -1)
-		perror("Fork");
-
-	if (!pid)
-	{
 		if (type == CMD)
 			command_pipe((t_cmd *)tree, NULL, NULL, 0);
 		else if (type == AND)
@@ -131,11 +129,7 @@ void	execution(void *tree, t_node_type type)
 		else if (type == OR)
 			or_execute((t_node *)tree, NULL, NULL, 0);
 		else if (type == PIPE)
-			create_tree(0, (t_node *)tree, pid);
+			create_tree(0, (t_node *)tree);
 		else if (type == REDIR)
 			redirect((t_redir *)tree, NULL, NULL);
-		exit(256);
-	}
-	else
-		waitpid(pid, NULL, 0);
 }

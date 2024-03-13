@@ -11,6 +11,7 @@
 		"locale": "c",
 		"ostream": "c",
 		"parser.h": "c",
-		"minishell.h": "c"
+		"minishell.h": "c",
+		"complex": "c"
 	}
 }
