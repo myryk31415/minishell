@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/13 21:27:48 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/14 12:50:20 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ void	command(t_cmd *token, int *fd, int *pre_fd, int *redir)
 
 int	command_pipe(t_cmd *token, int *fd, int *pre_fd, int redirect)
 {
-	int	pid;
+	int			id;
 	static int	redir[2];
-	int	status;
+	int			status;
 
 	if (redirect)
 	{
@@ -57,27 +57,35 @@ int	command_pipe(t_cmd *token, int *fd, int *pre_fd, int redirect)
 		status = is_builtin(token, fd, pre_fd, redir);
 		if (status == 1)
 		{
-			pid = fork();
-			if (pid == -1)
+			id = fork();
+			if (id == -1)
 				perror("Fork");
-			if (!pid)
+			if (!id)
 			{
 				command(token, fd, pre_fd, redir);
 				exec(token->args);
 			}
 			else
 			{
-				waitpid(pid, &status, 0);
-				ft_putstr_fd("work", 1);
-				close(fd[0]);
-				close(fd[1]);
-				close(pre_fd[0]);
-				close(pre_fd[1]);
+				waitpid(id, &status, 0);
+				if (status > 0)
+					status = 256;
+				ft_putstr_fd("work", 2);
+				if (fd)
+				{
+					close(fd[0]);
+					close(fd[1]);
+				}
+				if (pre_fd)
+				{
+					close(pre_fd[0]);
+					close(pre_fd[1]);
+				}
 			}
 		}
 		return (status);
 	}
-	return (0);
+	return (256);
 }
 
 int	create_tree(int *pre_fd, t_node *token, int status)
@@ -103,34 +111,42 @@ int	create_tree(int *pre_fd, t_node *token, int status)
 
 void	run_tree(int *pre_fd, t_node *token, int fd[2])
 {
-	int	pid;
+	int		pid;
 
 	pid = fork();
 	if (pid == -1)
 		perror("Fork");
-	if (pid && token->type_left == CMD)
-		command_pipe((t_cmd *)token->left, fd, pre_fd, 0);
-	else if (pid && token->type_left == REDIR)
-		redirect((t_redir *)token->left, fd, pre_fd, 0);
-	else if (!pid && token->type_right == PIPE)
-		create_tree(fd, (t_node *)token->right, 0);
-	else if (!pid && token->type_right == CMD)
-		command_pipe((t_cmd *)token->right, fd, fd, 0);
-	else if (!pid && token->type_right == REDIR)
+	if (!pid && token->type_left == CMD)
+		command_pipe((t_cmd *)token->right, fd, pre_fd, 0);
+	else if (!pid && token->type_left == REDIR)
 		redirect((t_redir *)token->right, fd, pre_fd, 0);
-
+	else if (pid && token->type_right == PIPE)
+	{
+		waitpid(pid, NULL, 0);
+		create_tree(fd, (t_node *)token->right, 0);
+	}
+	else if (pid && token->type_right == CMD)
+	{
+		waitpid(pid, NULL, 0);
+		command_pipe((t_cmd *)token->left, fd, fd, 0);
+	}
+	else if (pid && token->type_right == REDIR)
+	{
+		waitpid(pid, NULL, 0);
+		redirect((t_redir *)token->left, fd, pre_fd, 0);
+	}
 }
 
 void	execution(void *tree, t_node_type type)
 {
-		if (type == CMD)
-			command_pipe((t_cmd *)tree, NULL, NULL, 0);
-		else if (type == AND)
-			and_execute((t_node *)tree, NULL, NULL, 0);
-		else if (type == OR)
-			or_execute((t_node *)tree, NULL, NULL, 0);
-		else if (type == PIPE)
-			create_tree(0, (t_node *)tree, 0);
-		else if (type == REDIR)
-			redirect((t_redir *)tree, NULL, NULL, 0);
+	if (type == CMD)
+		command_pipe((t_cmd *)tree, NULL, NULL, 0);
+	else if (type == AND)
+		and_execute((t_node *)tree, NULL, NULL, 0);
+	else if (type == OR)
+		or_execute((t_node *)tree, NULL, NULL, 0);
+	else if (type == PIPE)
+		create_tree(0, (t_node *)tree, 0);
+	else if (type == REDIR)
+		redirect((t_redir *)tree, NULL, NULL, 0);
 }

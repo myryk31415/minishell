@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/13 21:12:53 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/14 11:42:36 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	exec(char **cmd_arg)
 	{
 		execve(cmd_arg[0], cmd_arg, environ);
 		perror("Command not found");
-		exit(EXIT_FAILURE);
+		exit(256);
 	}
 	else
 	{
@@ -105,7 +105,7 @@ void	exec(char **cmd_arg)
 			cmd_path = get_path(cmd_arg[0], environ, "PATH");
 		execve(cmd_path, cmd_arg, environ);
 		perror("Command not found");
-		exit(EXIT_FAILURE);
+		exit(256);
 	}
 }
 
