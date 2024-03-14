@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:14:04 by padam             #+#    #+#             */
-/*   Updated: 2024/03/13 22:29:44 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/13 22:39:48 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,4 +88,6 @@ t_token		*token_add(t_token *tokens, t_token_type token_type);
 t_token		*token_split(t_token *tokens, int direction);
 t_token		*skip_parens(t_token *tokens, int direction);
 
+// variable_expansion
+char		*expand_variables(char *command, int exit_status);
 #endif
