@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/14 15:35:11 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/14 19:53:21 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ void	run_tree(int *pre_fd, t_node *token, int fd[2])
 		perror("Fork");
 	if (!pid && token->type_left == CMD)
 		command_pipe((t_cmd *)token->right, fd, pre_fd, 2);
-	else if (!pid && token->type_left == REDIR)
+	else if (!pid && token->type_left == 	REDIR)
 		redirect((t_redir *)token->right, fd, pre_fd, 0);
 	else if (pid && token->type_right == PIPE)
 		create_tree(fd, (t_node *)token->right, 0);
