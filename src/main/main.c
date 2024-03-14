@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:16:36 by padam             #+#    #+#             */
-/*   Updated: 2024/03/14 20:12:10 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/14 20:12:51 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int	main(void)
 {
-	voidhhhh		*tree;
+	void	*tree;
 	t_cmd		*test;
 	t_node_type	type;
 
