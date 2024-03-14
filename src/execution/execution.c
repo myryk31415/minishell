@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/14 12:50:20 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/14 13:02:31 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ int	command_pipe(t_cmd *token, int *fd, int *pre_fd, int redirect)
 			else
 			{
 				waitpid(id, &status, 0);
-				if (status > 0)
-					status = 256;
+				// if (status > 0)
+				// 	status = 256;
 				ft_putstr_fd("work", 2);
 				if (fd)
 				{
