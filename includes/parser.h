@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:14:04 by padam             #+#    #+#             */
-/*   Updated: 2024/03/12 08:41:02 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/21 22:31:31 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,14 @@ t_node_type	tokens_to_tree(t_token *tokens, void **head);
 // node_utils
 t_node		*new_node(void);
 t_redir		*new_redir_node(void);
-// int			count_operators(t_token *tokens);
-// t_token		*get_paren(t_token *tokens, t_token **paren);
+
+//cleanup
+t_node_type	err_pars(char *message, t_cmd *redirects, t_token **tokens);
+void		print_syntax_err(t_token *token);
+
+// debug
+void		debug_print_token_array(t_token *token_first);
+void		get_next_debug(void *ptr, t_node_type type, int i);
 
 // pipeline
 int			count_words(t_token *tokens);
@@ -69,9 +75,7 @@ int			is_redirect(t_token_type type);
 int			is_operator(t_token_type type);
 
 // redirects
-void		cmd_free(t_cmd *cmd);
-t_node_type	err_pars(char *message, t_cmd *redirects, t_token *tokens);
-t_cmd		*redirects_get(t_token **token_first);
+int			redirects_get(t_token **token_first, t_cmd **redirects);
 
 // tokenizer
 t_token		*tokenize_command(char *command);
@@ -82,4 +86,7 @@ void		token_delete_all(t_token **tokens);
 t_token		*token_add(t_token *tokens, t_token_type token_type);
 t_token		*token_split(t_token *tokens, int direction);
 t_token		*skip_parens(t_token *tokens, int direction);
+
+// variable_expansion
+char		*expand_variables(char *command, int exit_status);
 #endif

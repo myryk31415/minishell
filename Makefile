@@ -6,7 +6,7 @@
 #    By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/03/21 14:58:44 by antonweizma      ###   ########.fr        #
+#    Updated: 2024/03/21 22:44:39 by antonweizma      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,16 +23,16 @@ OBJ_PATH = obj
 
 OBJ_DIRS =	execution	execution/builtins	main	parser	parser/binary_tree	\
 
-SRCS_MAIN =	main.c
+SRCS_MAIN =	main.c cleanup.c
 
 SRCS_PARS =	parser_utils.c			parser.c			tokenizer.c	\
 			tokens_utils.c			redirects.c			cleanup.c\
+			debug.c					variable_expansion.c
 
 SRCS_BNTR =	node_struct.c			node_utils.c		pipeline.c
 
-SRCS_EXECUTION =	execution.c utils_execution.c utils2_execution.c input_output.c and.c
-
-SRCS_BUILTINS = echo.c		cd.c
+SRCS_BUILTINS = cd.c echo.c
+SRCS_EXECUTION =	execution.c input_output.c utils_execution.c utils2_execution.c and.c
 
 SRCS_PIPE =			fork.c			pipe.c			utils.c
 

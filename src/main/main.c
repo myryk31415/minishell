@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:16:36 by padam             #+#    #+#             */
-/*   Updated: 2024/03/21 15:25:45 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/21 22:48:17 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,39 +15,16 @@
 
 int	main(void)
 {
-	void		*tree;
+	void		*token_tree;
 	t_node_type	type;
+	int			exit_status;
 
+	exit_status = 0;
 	while (1)
 	{
-		tree = NULL;
-		type = parser(&tree);
-		execution(tree, type);
-
+		token_tree = NULL;
+		type = parser(token_tree, exit_status);
+		execution(token_tree, type);
 	}
-	free (tree);
+	return (0);
 }
-
-// int	main()
-// {
-// 	int	pid;
-// 	int	status;
-
-// 	argc=0;
-// 	argv++;
-// 	pid = fork();
-// 	if (pid == -1)
-// 		perror("Fork");
-// 	if (!pid)
-// 		exec(argv);
-// 	else
-// 	{
-// 		waitpid(pid, &status, 0);
-// 		ft_printf("exit: %i\n", status);
-// 		if (status == 256)
-// 			ft_printf("ERROR");
-// 		if (!status)
-// 			ft_printf("SUCCESS");
-
-// 	}
-// }

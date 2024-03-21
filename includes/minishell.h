@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/03/21 16:28:35 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/21 22:51:32 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ typedef struct s_cmd
 {
 	char	**args;
 	char	**redirect_in;
-	char	**redirect_out;
 	int		*heredoc;
+	char	**redirect_out;
 	int		*append;
 }	t_cmd;
 
@@ -37,6 +37,7 @@ typedef enum e_node_type
 	OR,
 	PIPE,
 	CMD,
+	SYNTAX,
 }	t_node_type;
 
 typedef struct s_redir
@@ -50,12 +51,13 @@ typedef struct s_node
 {
 	void		*left;
 	t_node_type	type_left;
-	bool		new_process_left;
 	void		*right;
 	t_node_type	type_right;
-	bool		new_process_right;
 }	t_node;
 
-t_node_type	parser(void **tree);
+t_node_type	parser(void **token_tree, int exit_status);
 
+//cleanup
+void		cmd_free(t_cmd *cmd);
+void		node_tree_delete(void *node, t_node_type type);
 #endif

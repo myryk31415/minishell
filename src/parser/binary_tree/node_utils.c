@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   node_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:44:23 by padam             #+#    #+#             */
-/*   Updated: 2024/03/11 21:01:22 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/21 22:33:26 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,7 @@ t_node	*new_node(void)
 	if (!node)
 		return (NULL);
 	node->left = NULL;
-	node->new_process_left = false;
 	node->right = NULL;
-	node->new_process_right = false;
 	return (node);
 }
 

@@ -3,39 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 23:10:31 by padam             #+#    #+#             */
-/*   Updated: 2024/03/11 17:37:58 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/21 22:32:50 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-void	free_str_array(char **arr)
+t_node_type	err_pars(char *message, t_cmd *redirects, t_token **tokens)
 {
-	int	i;
+	char *error;
 
-	i = 0;
-	if (!arr)
-		return ;
-	while (arr[i])
-		free(arr[i++]);
-	free(arr);
-}
-
-void	cmd_free(t_cmd *cmd)
-{
-	if (!cmd)
-		return ;
-	free_str_array(cmd->args);
-	free(cmd);
-}
-
-t_node_type	err_pars(char *message, t_cmd *redirects, t_token *tokens)
-{
-	cmd_free(redirects);
-	token_delete_all(&tokens);
-	printf("minishell: %s\n", message);
+	free(redirects);
+	error = ft_strjoin("minishell: ", message);
+	perror(error);
+	free(error);
+	token_delete_all(tokens);
 	return (ERROR);
+}
+
+void	print_syntax_err(t_token *token)
+{
+	char	*type_list[] = {"word", "separator", "|", "&&", "||", "(", ")",
+				 "<", ">", ">>", "<<"};
+	if (!token)
+		printf("minishell: syntax error near missing tokens\n") ;
+	else if (token->value)
+		printf("minishell: syntax error near unexpected token `%s'\n",
+			token->value);
+	else
+		printf("minishell: syntax error near unexpected token `%s'\n",
+			type_list[token->type]);
+	token_delete_all(&token);
 }
