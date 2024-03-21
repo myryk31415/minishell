@@ -6,7 +6,7 @@
 #    By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/03/14 11:59:50 by antonweizma      ###   ########.fr        #
+#    Updated: 2024/03/21 12:07:56 by antonweizma      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,13 +14,13 @@ NAME = minishell
 
 CC = cc
 CFLAGS =  $(INCLUDES) -g3
-INCLUDES = -I./includes
+INCLUDES = -Wall -Wextra -Werror -I./includes
 LIBS = -lreadline
 LIBFT_DIR = libft
 
 SRC_PATH = src
 OBJ_PATH = obj
-# -Wall -Wextra -Werror 
+
 OBJ_DIRS =	execution	execution/builtins	main	parser	parser/binary_tree	\
 
 SRCS_MAIN =	main.c

@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:16:36 by padam             #+#    #+#             */
-/*   Updated: 2024/03/14 20:12:51 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/21 09:52:31 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int	main(void)
 		type = parser(&tree);
 		test = tree;
 		execution(tree, type);
-
 	}
 	free (tree);
 	(void)test;

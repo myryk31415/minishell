@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/14 13:13:44 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/21 12:06:40 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,32 +107,6 @@ void	exec(char **cmd_arg)
 		perror("Command not found");
 		exit(EXIT_FAILURE);
 	}
-}
-
-int	here_doc(char *limiter)
-{
-	char	*str;
-	int		fd[2];
-
-	if (pipe(fd) == -1)
-		perror("Pipe");
-	while (1)
-	{
-		str = readline(">");
-		if (str && *str)
-		{
-			if (!ft_strncmp(str, limiter, ft_strlen(limiter))
-				&& !ft_strncmp(str, limiter, ft_strlen(str) - 1))
-			{
-				free(str);
-				break ;
-			}
-			write(fd[1], str, ft_strlen(str));
-			free(str);
-		}
-	}
-	close(fd[1]);
-	return (fd[0]);
 }
 
 void	free_array(char **arr)
