@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/14 19:53:21 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/21 09:00:00 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,5 +145,4 @@ void	execution(void *tree, t_node_type type)
 	else if (type == PIPE)
 		create_tree(0, (t_node *)tree, 0);
 	else if (type == REDIR)
-		redirect((t_redir *)tree, NULL, NULL, 0);
-}
+		redirect((t_redir *)tree, NULL, NULL, 0);}
