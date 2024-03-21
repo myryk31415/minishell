@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:34:22 by padam             #+#    #+#             */
-/*   Updated: 2024/03/12 15:56:42 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/21 12:50:29 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	here_doc(char *limiter)
 	int		fd[2];
 
 	if (pipe(fd) == -1)
-		return(perror("Pipe"), -1);
+		return (perror("Pipe"), -1);
 	while (1)
 	{
 		str = readline(">");
@@ -34,6 +34,7 @@ static int	here_doc(char *limiter)
 			write(fd[1], str, ft_strlen(str));
 			free(str);
 		}
+		write(fd[1], "\n", 1);
 	}
 	close(fd[1]);
 	return (fd[0]);

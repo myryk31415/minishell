@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:29 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/14 12:46:17 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/21 16:19:27 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,11 @@
 # include <sys/wait.h>
 
 void	exec(char **cmd_arg);
-int		here_doc(char *limiter);
+void	close_pipes(int *fd, int *pre_fd);
 void	free_array(char **arr);
 int		redirect(t_redir *token, int *fd, int *pre_fd, int status);
+int		output_handling(char **output, bool *append);
+int		input_handling(char **input, int *heredoc);
 int		command_pipe(t_cmd *token, int *fd, int *pre_fd, int redirect);
 char	*error_msg(char *cmd, char *file);
 char	*get_env(char **environ, char *var);

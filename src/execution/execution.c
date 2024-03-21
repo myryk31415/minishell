@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/21 12:08:17 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/21 16:20:12 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	command(t_cmd *token, int *fd, int *pre_fd, int *redir)
 
 	input = 0;
 	output = 1;
-	if (token->redirect_in)
-		input = token->redirect_in;
+	if (token->input)
+		input = input_handling(token->input, token->heredoc);
 	else if (redir[0])
 	{
 		input = redir[0];
@@ -29,13 +29,14 @@ void	command(t_cmd *token, int *fd, int *pre_fd, int *redir)
 	else if (pre_fd)
 		input = pre_fd[0];
 	dup2(input, STDIN_FILENO);
-	if (token->redirect_out)
-		output = token->redirect_out;
+	if (token->output)
+		output = output_handling(token->output, token->append);
 	else if (redir[1])
 		output = redir[1];
 	else if (fd)
 		output = fd[1];
 	dup2(output, STDOUT_FILENO);
+	close_pipes(fd, pre_fd);
 }
 
 int	command_pipe(t_cmd *token, int *fd, int *pre_fd, int redirect)
@@ -46,10 +47,10 @@ int	command_pipe(t_cmd *token, int *fd, int *pre_fd, int redirect)
 
 	if (redirect == 1)
 	{
-		if (token->redirect_in)
-			redir[0] = token->redirect_in;
-		if (token->redirect_out)
-			redir[1] = token->redirect_out;
+		if (token->input)
+			redir[0] = input_handling(token->input, token->heredoc);
+		if (token->output)
+			redir[1] = output_handling(token->output, token->append);
 		return (0);
 	}
 	else
@@ -73,16 +74,7 @@ int	command_pipe(t_cmd *token, int *fd, int *pre_fd, int redirect)
 			else
 			{
 				waitpid(id, &status, 0);
-				if (fd)
-				{
-					close(fd[0]);
-					close(fd[1]);
-				}
-				if (pre_fd)
-				{
-					close(pre_fd[0]);
-					close(pre_fd[1]);
-				}
+				close_pipes(fd, pre_fd);
 			}
 		}
 		if (redirect == 2)
@@ -124,7 +116,7 @@ void	run_tree(int *pre_fd, t_node *token, int fd[2])
 		command_pipe((t_cmd *)token->left, fd, pre_fd, 2);
 	else if (!pid && token->type_left == REDIR)
 		redirect((t_redir *)token->left, fd, pre_fd, 0);
-	else if (pid && token->type_right == PIPE)
+	if (pid && token->type_right == PIPE)
 		create_tree(fd, (t_node *)token->right, 0);
 	else if (pid && token->type_right == CMD)
 		command_pipe((t_cmd *)token->right, 0, fd, 2);
