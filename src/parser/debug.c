@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:26:09 by padam             #+#    #+#             */
-/*   Updated: 2024/03/13 15:30:07 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/21 20:08:27 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,19 @@ void	debug_print_cmd(t_cmd *cmd)
 	while (cmd->args && cmd->args[i])
 		printf("%s\n", cmd->args[i++]);
 	i = 0;
-	printf("redirect_in: %d\n", cmd->redirect_in);
-	printf("redirect_out: %d\n", cmd->redirect_out);
+	printf("redirect_in:\n");
+	while (cmd->redirect_in && cmd->redirect_in[i])
+	{
+		printf("%s %i\n", cmd->redirect_in[i], cmd->heredoc[i]);
+		i++;
+	}
+	i = 0;
+	printf("redirect_out:\n");
+	while (cmd->redirect_out && cmd->redirect_out[i])
+	{
+		printf("%s %i\n", cmd->redirect_out[i], cmd->append[i]);
+		i++;
+	}
 }
 
 void	debug_print_redir(t_redir *redir, int i)
