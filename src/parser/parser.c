@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/03/13 22:39:13 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/21 15:35:23 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,18 @@ char	*get_current_folder(void)
 char	*new_prompt(void)
 {
 	char	*prompt;
+	char	*prompt_tmp;
 	char	*command;
 
 	prompt = ft_strjoin(getenv("USER"), "@minishell:");
-	prompt = ft_strjoin(prompt, CYAN);
-	prompt = ft_strjoin(prompt, get_current_folder());
-	prompt = ft_strjoin(prompt, RESET);
-	prompt = ft_strjoin(prompt, "$ ");
+	prompt_tmp = ft_strjoin(prompt, CYAN);
+	free(prompt);
+	prompt = ft_strjoin(prompt_tmp, get_current_folder());
+	free(prompt_tmp);
+	prompt_tmp = ft_strjoin(prompt, RESET);
+	free(prompt);
+	prompt = ft_strjoin(prompt_tmp, "$ ");
+	free(prompt_tmp);
 	command = readline(prompt);
 	free(prompt);
 	if (command)

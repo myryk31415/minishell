@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:34:22 by padam             #+#    #+#             */
-/*   Updated: 2024/03/13 22:29:54 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/21 12:50:22 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	here_doc(char *limiter)
 			write(fd[1], str, ft_strlen(str));
 			free(str);
 		}
+		write(fd[1], "\n", 1);
 	}
 	close(fd[1]);
 	return (fd[0]);

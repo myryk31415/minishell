@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:38:13 by padam             #+#    #+#             */
-/*   Updated: 2024/03/13 16:26:19 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/21 12:09:13 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_node_type	get_cmd(t_token *token_first, void **head, t_cmd *redirects)
 	}
 	redirects->args =  ft_calloc(word_count + 1, sizeof(char *));
 	if (!redirects->args)
-		return(err_pars("malloc", redirects, token_first));
+		return(err_pars("malloc", redirects, &token_first));
 	while (token_first)
 	{
 		redirects->args[i++] = token_first->value;
@@ -69,7 +69,7 @@ t_node_type	check_brackets(t_token *token_first, void **head)
 		token_delete(&token_first);
 		new_node = new_redir_node();
 		if (!new_node)
-			return(err_pars("malloc", redirects, token_first));
+			return(err_pars("malloc", redirects, &token_first));
 		new_node->redirects = redirects;
 		new_node->type = split_by_operator(token_last, &new_node->next);
 		*head = new_node;
@@ -90,7 +90,7 @@ t_node_type	split_by_pipe(t_token *token_first, void **head)
 	{
 		node = new_node();
 		if (!node)
-			return(err_pars("malloc", NULL, token_first));
+			return(err_pars("malloc", NULL, &token_first));
 		token_delete(&token_last);
 		if (!token_split(token_last, -1))
 		{
@@ -125,7 +125,7 @@ t_node_type	split_by_operator(t_token *token_last, void **head)
 	{
 		node = new_node();
 		if (!node)
-			return(err_pars("malloc", NULL, token_first));
+			return(err_pars("malloc", NULL, &token_first));
 		if (token_first->type == T_AND)
 			return_value = AND;
 		else
