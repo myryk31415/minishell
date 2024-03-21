@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:16:36 by padam             #+#    #+#             */
-/*   Updated: 2024/03/13 22:38:45 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/21 22:57:49 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	main(void)
 	while (1)
 	{
 		token_tree = NULL;
-		type = parser(token_tree, exit_status);
+		type = parser(&token_tree, exit_status);
 	}
 	(void)type;
 	return (0);

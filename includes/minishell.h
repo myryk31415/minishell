@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/03/21 16:28:34 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/21 22:57:31 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ typedef struct s_node
 	t_node_type	type_right;
 }	t_node;
 
-t_node_type	parser(void *token_tree, int exit_status);
+t_node_type	parser(void **token_tree, int exit_status);
 
 //cleanup
 void		cmd_free(t_cmd *cmd);

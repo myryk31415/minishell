@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/03/21 15:35:23 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/21 22:58:10 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*new_prompt(void)
 }
 
 
-t_node_type	parser(void *token_tree, int exit_status)
+t_node_type	parser(void **token_tree, int exit_status)
 {
 	char	*command;
 	t_token	*tokens;
@@ -62,11 +62,11 @@ t_node_type	parser(void *token_tree, int exit_status)
 	command = expand_variables(command, exit_status);
 	tokens = tokenize_command(command);
 	free(command);
-	type_first = tokens_to_tree(tokens, &token_tree);
+	type_first = tokens_to_tree(tokens, token_tree);
 	if (type_first == SYNTAX)
 		printf("syntax error\n");
 	if (token_tree)
-		get_next_debug(token_tree, type_first, 0);
+		get_next_debug(*token_tree, type_first, 0);
 	// debug_print_token_array(tokens);
 	command = NULL;
 	return (type_first);
