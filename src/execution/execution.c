@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/21 16:20:12 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/21 16:24:28 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	command(t_cmd *token, int *fd, int *pre_fd, int *redir)
 
 	input = 0;
 	output = 1;
-	if (token->input)
-		input = input_handling(token->input, token->heredoc);
+	if (token->redirect_in)
+		input = input_handling(token->redirect_in, token->heredoc);
 	else if (redir[0])
 	{
 		input = redir[0];
@@ -29,8 +29,8 @@ void	command(t_cmd *token, int *fd, int *pre_fd, int *redir)
 	else if (pre_fd)
 		input = pre_fd[0];
 	dup2(input, STDIN_FILENO);
-	if (token->output)
-		output = output_handling(token->output, token->append);
+	if (token->redirect_out)
+		output = output_handling(token->redirect_out, token->append);
 	else if (redir[1])
 		output = redir[1];
 	else if (fd)
@@ -47,10 +47,10 @@ int	command_pipe(t_cmd *token, int *fd, int *pre_fd, int redirect)
 
 	if (redirect == 1)
 	{
-		if (token->input)
-			redir[0] = input_handling(token->input, token->heredoc);
-		if (token->output)
-			redir[1] = output_handling(token->output, token->append);
+		if (token->redirect_in)
+			redir[0] = input_handling(token->redirect_in, token->heredoc);
+		if (token->redirect_out)
+			redir[1] = output_handling(token->redirect_out, token->append);
 		return (0);
 	}
 	else

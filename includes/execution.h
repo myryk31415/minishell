@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:29 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/21 16:19:27 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/21 16:29:05 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	exec(char **cmd_arg);
 void	close_pipes(int *fd, int *pre_fd);
 void	free_array(char **arr);
 int		redirect(t_redir *token, int *fd, int *pre_fd, int status);
-int		output_handling(char **output, bool *append);
+int		output_handling(char **output, int *append);
 int		input_handling(char **input, int *heredoc);
 int		command_pipe(t_cmd *token, int *fd, int *pre_fd, int redirect);
 char	*error_msg(char *cmd, char *file);

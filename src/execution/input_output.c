@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/21 16:20:28 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/21 16:28:55 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	input_handling(char **input, int *heredoc)
 	return (file);
 }
 
-int	output_handling(char **output, bool *append)
+int	output_handling(char **output, int *append)
 {
 	int		file;
 	int		j;
@@ -47,7 +47,7 @@ int	output_handling(char **output, bool *append)
 	{
 		if (file)
 			close(file);
-		if (append[j] == false)
+		if (append[j] == 0)
 			file = open(output[j],
 					O_WRONLY | O_TRUNC | O_CREAT, 0666);
 		else

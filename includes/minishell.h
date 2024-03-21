@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/03/21 16:21:15 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/21 16:28:35 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@
 typedef struct s_cmd
 {
 	char	**args;
-	char	**input;
-	char	**output;
+	char	**redirect_in;
+	char	**redirect_out;
 	int		*heredoc;
-	bool	*append;
+	int		*append;
 }	t_cmd;
 
 typedef enum e_node_type
