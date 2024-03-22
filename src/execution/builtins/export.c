@@ -1,30 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/10 23:16:36 by padam             #+#    #+#             */
-/*   Updated: 2024/03/21 22:59:14 by antonweizma      ###   ########.fr       */
+/*   Created: 2024/03/22 09:47:35 by antonweizma       #+#    #+#             */
+/*   Updated: 2024/03/22 09:52:27 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "execution.h"
 
-int	main(void)
+int	export(char **arg)
 {
-	void		*token_tree;
-	t_node_type	type;
-	int			exit_status;
+	extern char	**environ;
+	char		**env;
 
-	exit_status = 0;
-	while (1)
-	{
-		token_tree = NULL;
-		type = parser(&token_tree, exit_status);
-		execution(token_tree, type);
-	}
-	return (0);
+	env = environ;
+	
 }
