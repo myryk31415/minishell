@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:14:04 by padam             #+#    #+#             */
-/*   Updated: 2024/03/13 22:39:48 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/22 17:41:13 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,13 @@ int			is_quote(char c);
 int			is_separator(char c);
 int			is_redirect(t_token_type type);
 int			is_operator(t_token_type type);
+int			is_variable(char c);
 
 // redirects
 int			redirects_get(t_token **token_first, t_cmd **redirects);
 
 // tokenizer
+t_token_type	get_token_type(char *string);
 t_token		*tokenize_command(char *command);
 
 // tokens utils
