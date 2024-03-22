@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:26:09 by padam             #+#    #+#             */
-/*   Updated: 2024/03/21 20:08:27 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/22 17:03:46 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,6 @@ void	get_next_debug(void *ptr, t_node_type type, int i)
 		debug_print_cmd(ptr);
 	else if (type == ERROR)
 		printf("error\n");
-	else if (type == SYNTAX)
-		printf("syntax\n");
 	else if (type == REDIR)
 		debug_print_redir(ptr, i);
 	else

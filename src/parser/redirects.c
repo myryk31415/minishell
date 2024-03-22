@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:34:22 by padam             #+#    #+#             */
-/*   Updated: 2024/03/21 20:01:15 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/22 17:10:11 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,7 @@ int	redirects_get(t_token **token_first, t_cmd **redirects)
 	output = redirect_alloc(token_first, *redirects);
 	if (output == -1)
 	{
-		free(*redirects);
+		cmd_free(*redirects);
 		*redirects = NULL;
 		return (-1);
 	}
