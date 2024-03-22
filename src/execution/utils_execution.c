@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/21 15:21:26 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/22 12:35:58 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,21 +70,22 @@ char	*get_path(char *cmd, char **environ, char *var)
 
 int	is_builtin(t_cmd *token, int *fd, int *pre_fd, int *redir)
 {
+	extern char	**environ;
+	char		**env;
+
+	env = environ;
+
 	if (!ft_strncmp(token->args[0], "cd", 2))
-	{
-		command(token, fd, pre_fd, redir);
 		return (cd(token->args[1]));
-	}
 	if (!ft_strncmp(token->args[0], "echo", 4))
 	{
 		command(token, fd, pre_fd, redir);
 		return (echo(token->args));
 	}
 	if (!ft_strncmp(token->args[0], "pwd", 3))
-	{
-		command(token, fd, pre_fd, redir);
 		return (pwd());
-	}
+	if (!ft_strncmp(token->args[0], "export", 6))
+		return (export(token->args, env));
 	return (1);
 }
 

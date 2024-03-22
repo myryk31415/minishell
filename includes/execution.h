@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:29 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/21 16:29:05 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/22 12:36:32 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,5 @@ int		create_tree(int *pre_fd, t_node *token, int status);
 void	execution(void *tree, t_node_type type);
 int		is_builtin(t_cmd *token, int *fd, int *pre_fd, int *redir);
 void	command(t_cmd *token, int *fd, int *pre_fd, int *redir);
+int		export(char **arg, char **env);
 #endif
