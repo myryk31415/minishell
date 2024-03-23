@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:57:00 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/21 15:12:12 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/23 16:44:11 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,24 @@ int	pwd(void)
 	ft_printf("%s\n", cwd);
 	free(cwd);
 	return (0);
+}
+
+int	env(t_cmd *token, char **env)
+{
+	char	**tmp_env;
+	char	**tmp_var;
+	int		id;
+
+
+	tmp_env = env;
+	tmp_var = malloc(sizeof(char *) + 1);
+	if (!token->args)
+		display_env(env);
+	else
+	{
+		tmp_var[0] = token->args[1];
+		tmp_var[1] = NULL;
+		export(tmp_var, tmp_env);
+		command_pipe(token, NULL, 3, &tmp_env);
+	}
 }

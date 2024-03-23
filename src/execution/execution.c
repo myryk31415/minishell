@@ -6,13 +6,13 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/22 09:06:30 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/23 16:43:21 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-void	command(t_cmd *token, int *fd, int *pre_fd, int *redir)
+void	command(t_cmd *token, int **pipes, int *redir)
 {
 	int	input;
 	int	output;
@@ -26,20 +26,20 @@ void	command(t_cmd *token, int *fd, int *pre_fd, int *redir)
 		input = redir[0];
 		redir[0] = 0;
 	}
-	else if (pre_fd)
-		input = pre_fd[0];
+	else if (pipes && pipes[1])
+		input = pipes[1][0];
 	dup2(input, STDIN_FILENO);
 	if (token->redirect_out && *(token->redirect_out))
 		output = output_handling(token->redirect_out, token->append);
 	else if (redir[1])
 		output = redir[1];
-	else if (fd)
-		output = fd[1];
+	else if (pipes && pipes[0])
+		output = pipes[0][1];
 	dup2(output, STDOUT_FILENO);
-	close_pipes(fd, pre_fd);
+	close_pipes(pipes);
 }
 
-int	command_pipe(t_cmd *token, int *fd, int *pre_fd, int redirect)
+int	command_pipe(t_cmd *token, int **pipes, int redirect, char ***env)
 {
 	int			id;
 	static int	redir[2];
@@ -55,7 +55,9 @@ int	command_pipe(t_cmd *token, int *fd, int *pre_fd, int redirect)
 	}
 	else
 	{
-		status = is_builtin(token, fd, pre_fd, redir);
+		if (redirect == 3)
+			pipes = NULL;
+		status = is_builtin(token, pipes, redir, env);
 		if (status == 1)
 		{
 			if (redirect == 2)
@@ -68,13 +70,14 @@ int	command_pipe(t_cmd *token, int *fd, int *pre_fd, int redirect)
 			}
 			if (!id)
 			{
-				command(token, fd, pre_fd, redir);
-				exec(token->args);
+				if (redirect != 3)
+					command(token, pipes, redir);
+				exec(token->args, *env);
 			}
 			else
 			{
 				waitpid(id, &status, 0);
-				close_pipes(fd, pre_fd);
+				close_pipes(pipes);
 			}
 		}
 		if (redirect == 2)
@@ -84,28 +87,33 @@ int	command_pipe(t_cmd *token, int *fd, int *pre_fd, int redirect)
 	return (256);
 }
 
-int	create_tree(int *pre_fd, t_node *token, int status)
+int	create_tree(int *pre_fd, t_node *token, int status, char **env)
 {
 	int	fd[2];
 	int	pid;
+	int	**pipes;
 
+	pipes = malloc(sizeof(int *) * 2 + 1);
+	if (!pipes)
+		perror("Malloc");
+	pipes[0] = fd;
+	pipes[1] = pre_fd;
 	pid = fork();
 	if (pid == -1)
 		perror("Fork");
 	if (pipe(fd) == -1)
 		perror("Pipe");
 	else if (!pid)
-		run_tree(pre_fd, token, fd);
+		run_tree(token, pipes, env);
 	else
 	{
 		waitpid(pid, &status, 0);
-		close(fd[0]);
-		close(fd[1]);
+		close_pipes(pipes);
 	}
 	return (status);
 }
 
-void	run_tree(int *pre_fd, t_node *token, int fd[2])
+void	run_tree(t_node *token, int **pipes, char **env)
 {
 	int		pid;
 
@@ -113,27 +121,27 @@ void	run_tree(int *pre_fd, t_node *token, int fd[2])
 	if (pid == -1)
 		perror("Fork");
 	if (!pid && token->type_left == CMD)
-		command_pipe((t_cmd *)token->left, fd, pre_fd, 2);
+		command_pipe((t_cmd *)token->left, pipes, 2, env);
 	else if (!pid && token->type_left == REDIR)
-		redirect((t_redir *)token->left, fd, pre_fd, 0);
+		redirect((t_redir *)token->left, pipes, 0, env);
 	if (pid && token->type_right == PIPE)
-		create_tree(fd, (t_node *)token->right, 0);
+		create_tree(pipes[0], (t_node *)token->right, 0, env);
 	else if (pid && token->type_right == CMD)
-		command_pipe((t_cmd *)token->right, 0, fd, 2);
+		command_pipe((t_cmd *)token->right, pipes, 2, env);
 	else if (pid && token->type_right == REDIR)
-		redirect((t_redir *)token->right, fd, pre_fd, 0);
+		redirect((t_redir *)token->right, pipes, 0, env);
 }
 
-void	execution(void *tree, t_node_type type)
+void	execution(void *tree, t_node_type type, char ***env)
 {
 	if (type == CMD)
-		command_pipe((t_cmd *)tree, NULL, NULL, 0);
+		command_pipe((t_cmd *)tree, NULL, 0, env);
 	else if (type == AND)
-		and_execute((t_node *)tree, NULL, NULL, 0);
+		and_execute((t_node *)tree, NULL, 0, *env);
 	else if (type == OR)
-		or_execute((t_node *)tree, NULL, NULL, 0);
+		or_execute((t_node *)tree, NULL, 0, *env);
 	else if (type == PIPE)
-		create_tree(0, (t_node *)tree, 0);
+		create_tree(0, (t_node *)tree, 0, *env);
 	else if (type == REDIR)
-		redirect((t_redir *)tree, NULL, NULL, 0);
+		redirect((t_redir *)tree, NULL, 0, *env);
 }

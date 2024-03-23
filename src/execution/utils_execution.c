@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/22 12:35:58 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/23 12:56:48 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*get_env(char **environ, char *var)
 			&& !ft_strncmp(tmp, var, ft_strlen(tmp)))
 		{
 			free(tmp);
-			return (environ[i] + j + 1);
+			return (ft_strdup(environ[i] + j + 1));
 		}
 		free(tmp);
 		i++;
@@ -68,43 +68,46 @@ char	*get_path(char *cmd, char **environ, char *var)
 	return (NULL);
 }
 
-int	is_builtin(t_cmd *token, int *fd, int *pre_fd, int *redir)
+int	is_builtin(t_cmd *token, int **pipes, int *redir, char ***env)
 {
-	extern char	**environ;
-	char		**env;
-
-	env = environ;
-
 	if (!ft_strncmp(token->args[0], "cd", 2))
-		return (cd(token->args[1]));
+	{
+		command(token, pipes, redir);
+		return (cd(token->args[1], env));
+	}
 	if (!ft_strncmp(token->args[0], "echo", 4))
 	{
-		command(token, fd, pre_fd, redir);
+		command(token, pipes, redir);
 		return (echo(token->args));
 	}
 	if (!ft_strncmp(token->args[0], "pwd", 3))
+	{
+		command(token, pipes, redir);
 		return (pwd());
+	}
 	if (!ft_strncmp(token->args[0], "export", 6))
+	{
+		command(token, pipes, redir);
 		return (export(token->args, env));
+	}
 	return (1);
 }
 
-void	exec(char **cmd_arg)
+void	exec(char **cmd_arg, char **env)
 {
 	char		*cmd_path;
-	extern char	**environ;
 
 	if (!access(cmd_arg[0], F_OK | X_OK))
 	{
-		execve(cmd_arg[0], cmd_arg, environ);
+		execve(cmd_arg[0], cmd_arg, env);
 		perror("Command not found");
 		exit(EXIT_FAILURE);
 	}
 	else
 	{
 		if (!ft_strchr(cmd_arg[0], '/'))
-			cmd_path = get_path(cmd_arg[0], environ, "PATH");
-		execve(cmd_path, cmd_arg, environ);
+			cmd_path = get_path(cmd_arg[0], env, "PATH");
+		execve(cmd_path, cmd_arg, env);
 		perror("Command not found");
 		exit(EXIT_FAILURE);
 	}

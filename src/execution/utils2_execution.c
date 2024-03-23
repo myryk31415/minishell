@@ -6,23 +6,23 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 14:57:38 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/03/21 14:58:05 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/23 10:27:21 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-void	close_pipes(int *fd, int *pre_fd)
+void	close_pipes(int **pipes)
 {
-	if (fd)
+	if (pipes && pipes[1])
 	{
-		close(fd[0]);
-		close(fd[1]);
+		close(pipes[1][0]);
+		close(pipes[1][1]);
 	}
-	if (pre_fd)
+	if (pipes && pipes[0])
 	{
-		close(pre_fd[0]);
-		close(pre_fd[1]);
+		close(pipes[0][0]);
+		close(pipes[0][1]);
 	}
 
 }

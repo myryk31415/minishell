@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 10:14:07 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/13 17:06:30 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/23 12:57:32 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,20 +66,28 @@ char	*cd_path(char *arg)
 	return (path);
 }
 
-int	cd(char	*arg)
+void	oldpwd_save(char ***env, char *var)
 {
-	static char	*prev_dir = NULL;
-	char		*path_to_dir;
-	extern char	**environ;
+	char	**oldpwd;
 
-	if (!arg)
-		path_to_dir = get_env(environ, "HOME");
+	oldpwd = malloc(sizeof(char *) * 1 + 1);
+	oldpwd[1] = NULL;
+	oldpwd[0] = var;
+	export(oldpwd, env);
+}
+
+int	cd(char	*arg, char ***env)
+{
+	char		*path_to_dir;
+
+	if (!arg || *arg == '~')
+		path_to_dir = get_env(*env, "HOME");
 	else if (arg[0] == '-')
 	{
-		if (prev_dir == NULL)
-			return (ft_putstr_fd("bash: cd: OLDPWD not set\n", 2), 256);
+		if (get_env(*env, "OLDPWD") == NULL)
+			return (perror("bash: cd: OLDPWD not set"), 256);
 		else
-			path_to_dir = prev_dir;
+			path_to_dir = get_env(*env, "OLDPWD");
 	}
 	else
 		path_to_dir = cd_path(arg);
@@ -87,7 +95,7 @@ int	cd(char	*arg)
 		return (perror(error_msg("bash: cd: ", arg)), -1);
 	if (access(path_to_dir, F_OK | X_OK))
 		return (perror(error_msg("bash: cd: ", arg)), free (path_to_dir), 256);
-	prev_dir = getcwd(NULL, PATH_MAX);
+	oldpwd_save(env, ft_strjoin("OLDPWD=", getcwd(NULL, PATH_MAX)));
 	chdir(path_to_dir);
 	if (arg && arg[0] == '-')
 		pwd();

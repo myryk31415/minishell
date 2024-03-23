@@ -6,7 +6,7 @@
 #    By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/03/22 12:31:55 by antonweizma      ###   ########.fr        #
+#    Updated: 2024/03/23 12:30:48 by antonweizma      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,10 +14,10 @@ NAME = minishell
 
 CC = cc
 CFLAGS =  $(INCLUDES) -g3
-INCLUDES = -Wall -Wextra -Werror -I./includes
+INCLUDES = -I./includes
 LIBS = -lreadline
 LIBFT_DIR = libft
-
+# -Wall -Wextra -Werror
 SRC_PATH = src
 OBJ_PATH = obj
 

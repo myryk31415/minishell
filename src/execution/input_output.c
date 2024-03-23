@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/21 16:28:55 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/22 18:27:19 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	output_handling(char **output, int *append)
 	return (file);
 }
 
-int	redirect(t_redir *token, int *fd, int *pre_fd, int status)
+int	redirect(t_redir *token, int **pipes, int status, char **env)
 {
 	int	pid;
 
@@ -69,17 +69,17 @@ int	redirect(t_redir *token, int *fd, int *pre_fd, int status)
 		perror("Fork");
 	if (!pid)
 	{
-		command_pipe(token->redirects, NULL, NULL, 1);
+		command_pipe(token->redirects, pipes, 1, env);
 		if (token->type == CMD)
-			command_pipe((t_cmd *)token->next, NULL, NULL, 0);
+			command_pipe((t_cmd *)token->next, pipes, 0, env);
 		else if (token->type == OR)
-			or_execute((t_node *)token->next, fd, pre_fd, 0);
+			or_execute((t_node *)token->next, pipes, 0, env);
 		else if (token->type == AND)
-			and_execute((t_node *)token->next, fd, pre_fd, 0);
+			and_execute((t_node *)token->next, pipes, 0, env);
 		else if (token->type == PIPE)
-			create_tree(0, (t_node *)token->next, 0);
+			create_tree(0, (t_node *)token->next, 0, env);
 		else if (token->type == REDIR)
-			command_pipe((t_cmd *)token->next, NULL, NULL, 1);
+			command_pipe((t_cmd *)token->next, pipes, 1, env);
 	}
 	else
 		waitpid(pid, &status, 0);
