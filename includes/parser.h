@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:14:04 by padam             #+#    #+#             */
-/*   Updated: 2024/03/12 17:13:23 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/22 17:41:13 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,12 @@ t_node		*new_node(void);
 t_redir		*new_redir_node(void);
 
 //cleanup
-void		print_err(char *message);
-t_node_type	err_pars(char *message, t_cmd *redirects, t_token *tokens);
+t_node_type	err_pars(char *message, t_cmd *redirects, t_token **tokens);
+void		print_syntax_err(t_token *token);
+
+// debug
+void		debug_print_token_array(t_token *token_first);
+void		get_next_debug(void *ptr, t_node_type type, int i);
 
 // pipeline
 int			count_words(t_token *tokens);
@@ -70,11 +74,13 @@ int			is_quote(char c);
 int			is_separator(char c);
 int			is_redirect(t_token_type type);
 int			is_operator(t_token_type type);
+int			is_variable(char c);
 
 // redirects
 int			redirects_get(t_token **token_first, t_cmd **redirects);
 
 // tokenizer
+t_token_type	get_token_type(char *string);
 t_token		*tokenize_command(char *command);
 
 // tokens utils
@@ -84,4 +90,6 @@ t_token		*token_add(t_token *tokens, t_token_type token_type);
 t_token		*token_split(t_token *tokens, int direction);
 t_token		*skip_parens(t_token *tokens, int direction);
 
+// variable_expansion
+char		*expand_variables(char *command, int exit_status);
 #endif

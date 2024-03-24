@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:11:07 by padam             #+#    #+#             */
-/*   Updated: 2024/03/12 17:06:17 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/13 15:47:26 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	token_delete(t_token **token)
 	if (tmp->next)
 		(tmp->next)->prev = tmp->prev;
 	*token = tmp->next;
+	free(tmp->value);
 	free(tmp);
 }
 
