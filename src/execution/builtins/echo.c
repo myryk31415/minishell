@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:57:00 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/23 16:44:11 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/24 13:09:39 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ int	env(t_cmd *token, char **env)
 	{
 		tmp_var[0] = token->args[1];
 		tmp_var[1] = NULL;
-		export(tmp_var, tmp_env);
+		export(tmp_var, &tmp_env);
 		command_pipe(token, NULL, 3, &tmp_env);
 	}
+	free(tmp_var);
 }

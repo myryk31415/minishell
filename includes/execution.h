@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:29 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/23 16:44:38 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/24 13:48:03 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ char	*get_path(char *cmd, char **environ, char *var);
 int		pwd(void);
 int		echo(char **args);
 int		cd(char	*arg, char ***env);
-int		and_execute(t_node *token, int **pipes, int status, char **env);
-int		or_execute(t_node *token, int **pipes, int status, char **env);
-void	run_tree(t_node *token, int **pipes, char **env);
+int		and_execute(t_node *token, int status, char ***env);
+int		or_execute(t_node *token, int **pipes, int status, char ***env);
+void	run_tree(t_node *token, int **pipes, char ***env);
 int		create_tree(int *pre_fd, t_node *token, int status, char **env);
 void	execution(void *tree, t_node_type type, char ***env);
 int		is_builtin(t_cmd *token, int **pipes, int *redir, char ***env);
