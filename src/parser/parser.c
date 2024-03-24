@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/03/22 09:09:13 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/24 21:16:18 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ char	*new_prompt(void)
 	free(prompt);
 	prompt = ft_strjoin(prompt_tmp, "$ ");
 	free(prompt_tmp);
-	ft_putstr_fd(prompt, 0);
-	// command = readline(prompt);
-	command = get_next_line(0);
+	command = readline(prompt);
+	// ft_putstr_fd(prompt, 0);
+	// command = get_next_line(0);
 	free(prompt);
 	if (command)
 		add_history(command);
