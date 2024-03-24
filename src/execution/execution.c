@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/24 13:48:17 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/24 22:19:27 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ void	execution(void *tree, t_node_type type, char ***env)
 	else if (type == AND)
 		and_execute((t_node *)tree, 0, env);
 	else if (type == OR)
-		or_execute((t_node *)tree, NULL, 0, env);
+		or_execute((t_node *)tree, 0, env);
 	else if (type == PIPE)
 		create_tree(0, (t_node *)tree, 0, *env);
 	else if (type == REDIR)

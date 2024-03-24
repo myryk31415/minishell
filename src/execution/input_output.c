@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_output.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/24 21:12:40 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/24 22:19:44 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	redirect(t_redir *token, int **pipes, int status, char **env)
 		perror("Fork");
 	if (!pid)
 	{
-		command_pipe(token->redirects, pipes, 1, env);
+		command_pipe(token->redirects, pipes, 1, &env);
 		if (token->type == CMD)
 			command_pipe((t_cmd *)token->next, pipes, 0, &env);
 		else if (token->type == OR)
