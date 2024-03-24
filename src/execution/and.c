@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 10:39:18 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/24 13:50:11 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/24 22:50:36 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	and_execute(t_node *token, int status, char ***env)
 	if (token->type_left == CMD)
 		status = command_pipe((t_cmd *)token->left, NULL, 0, env);
 	else if (token->type_left == OR)
-		status = or_execute((t_node *)token->left, NULL, 0, env);
+		status = or_execute((t_node *)token->left, 0, env);
 	else if (token->type_left == AND)
 		status = and_execute((t_node *)token->left, 0, env);
 	else if (token->type_left == PIPE)
@@ -34,12 +34,12 @@ int	and_execute(t_node *token, int status, char ***env)
 }
 
 
-int	or_execute(t_node *token, int **pipes, int status, char ***env)
+int	or_execute(t_node *token, int status, char ***env)
 {
 	if (token->type_left == CMD)
 		status = command_pipe((t_cmd *)token->left, NULL, 0, env);
 	else if (token->type_left == OR)
-		status = or_execute((t_node *)token->left, NULL, 0, env);
+		status = or_execute((t_node *)token->left, 0, env);
 	else if (token->type_left == AND)
 		status = and_execute((t_node *)token->left, 0, env);
 	else if (token->type_left == PIPE)

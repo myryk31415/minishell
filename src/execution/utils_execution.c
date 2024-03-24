@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/23 12:56:48 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/24 23:07:30 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,8 @@ void	exec(char **cmd_arg, char **env)
 	if (!access(cmd_arg[0], F_OK | X_OK))
 	{
 		execve(cmd_arg[0], cmd_arg, env);
-		perror("Command not found");
+		ft_putstr_fd(ft_strjoin("minishell: ", \
+			ft_strjoin(cmd_arg[0], ": command not found\n")), 2);
 		exit(EXIT_FAILURE);
 	}
 	else
@@ -108,7 +109,8 @@ void	exec(char **cmd_arg, char **env)
 		if (!ft_strchr(cmd_arg[0], '/'))
 			cmd_path = get_path(cmd_arg[0], env, "PATH");
 		execve(cmd_path, cmd_arg, env);
-		perror("Command not found");
+		ft_putstr_fd(ft_strjoin("minishell: ", \
+			ft_strjoin(cmd_arg[0], ": command not found\n")), 2);
 		exit(EXIT_FAILURE);
 	}
 }

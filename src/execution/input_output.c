@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/22 18:27:19 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/24 22:51:00 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,17 +69,17 @@ int	redirect(t_redir *token, int **pipes, int status, char **env)
 		perror("Fork");
 	if (!pid)
 	{
-		command_pipe(token->redirects, pipes, 1, env);
+		command_pipe(token->redirects, pipes, 1, &env);
 		if (token->type == CMD)
-			command_pipe((t_cmd *)token->next, pipes, 0, env);
+			command_pipe((t_cmd *)token->next, pipes, 0, &env);
 		else if (token->type == OR)
-			or_execute((t_node *)token->next, pipes, 0, env);
+			or_execute((t_node *)token->next, 0, &env);
 		else if (token->type == AND)
-			and_execute((t_node *)token->next, pipes, 0, env);
+			and_execute((t_node *)token->next, 0, &env);
 		else if (token->type == PIPE)
 			create_tree(0, (t_node *)token->next, 0, env);
 		else if (token->type == REDIR)
-			command_pipe((t_cmd *)token->next, pipes, 1, env);
+			command_pipe((t_cmd *)token->next, pipes, 1, &env);
 	}
 	else
 		waitpid(pid, &status, 0);

@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/24 13:48:17 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/24 23:00:11 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ int	command_pipe(t_cmd *token, int **pipes, int redirect, char ***env)
 			}
 			else
 			{
-					ft_putstr_fd("test\n", 2);
 				waitpid(id, &status, 0);
 				close_pipes(pipes);
 			}
@@ -144,7 +143,7 @@ void	execution(void *tree, t_node_type type, char ***env)
 	else if (type == AND)
 		and_execute((t_node *)tree, 0, env);
 	else if (type == OR)
-		or_execute((t_node *)tree, NULL, 0, env);
+		or_execute((t_node *)tree, 0, env);
 	else if (type == PIPE)
 		create_tree(0, (t_node *)tree, 0, *env);
 	else if (type == REDIR)

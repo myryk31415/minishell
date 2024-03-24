@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:57:00 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/24 13:09:39 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/24 22:57:37 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	echo(char **args)
 		if (ft_printf("%s", args[i++]) == 256)
 			return (-1);
 	while (args[i])
-		if (ft_printf("%s", args[i++]) == 256)
+		if (ft_printf(" %s", args[i++]) == 256)
 			return (-1);
 	if (flag == false)
 		ft_printf("\n");
@@ -69,11 +69,11 @@ int	env(t_cmd *token, char **env)
 {
 	char	**tmp_env;
 	char	**tmp_var;
-	int		id;
-
 
 	tmp_env = env;
 	tmp_var = malloc(sizeof(char *) + 1);
+	if (!tmp_var)
+		return (-1);
 	if (!token->args)
 		display_env(env);
 	else
@@ -84,4 +84,5 @@ int	env(t_cmd *token, char **env)
 		command_pipe(token, NULL, 3, &tmp_env);
 	}
 	free(tmp_var);
+	return (0);
 }
