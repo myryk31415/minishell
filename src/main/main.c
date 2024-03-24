@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:16:36 by padam             #+#    #+#             */
-/*   Updated: 2024/03/23 12:27:07 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/25 00:01:40 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "execution.h"
+
+int	g_signal;
 
 char	**fill_env(void)
 {
@@ -43,7 +45,9 @@ int	main(void)
 	char		**env;
 	t_node_type	type;
 
+	g_signal = 0;
 	exit_status = 0;
+	set_signal_action();
 	env = fill_env();
 	if (!env)
 		return (-1);
