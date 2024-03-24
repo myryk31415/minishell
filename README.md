@@ -5,7 +5,7 @@ While it is not as feature complete as bash or zsh, it provides most features ty
 ## Features
 - executing commands
 - command history
-- pipelines: "|"
+- pipes: "|"
 - operators with priority: "&&", "||", "(", ")"
 - redirections: "<", "<<", ">", ">>"
 - environment variables: "$"
