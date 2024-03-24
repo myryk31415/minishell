@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/03/22 17:04:32 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/21 22:51:32 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <stdbool.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 typedef struct s_cmd
 {

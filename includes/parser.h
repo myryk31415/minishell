@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:14:04 by padam             #+#    #+#             */
-/*   Updated: 2024/03/22 17:41:13 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/21 22:31:31 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 # define PARSER_H
 
 # include "minishell.h"
-# include <readline/readline.h>
-# include <readline/history.h>
+
 
 // colors
 # define RESET "\033[0m"

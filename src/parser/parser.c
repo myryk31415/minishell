@@ -3,14 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/03/22 17:12:31 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/22 09:09:13 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+void	debug_print_tree(t_node *node, int i);
+void	debug_print_redir(t_redir *redir, int i);
+void	debug_print_cmd(t_cmd *cmd);
 
 char	*get_current_folder(void)
 {
@@ -40,7 +44,9 @@ char	*new_prompt(void)
 	free(prompt);
 	prompt = ft_strjoin(prompt_tmp, "$ ");
 	free(prompt_tmp);
-	command = readline(prompt);
+	ft_putstr_fd(prompt, 0);
+	// command = readline(prompt);
+	command = get_next_line(0);
 	free(prompt);
 	if (command)
 		add_history(command);
@@ -50,8 +56,8 @@ char	*new_prompt(void)
 
 t_node_type	parser(void **token_tree, int exit_status)
 {
-	char	*command;
-	t_token	*tokens;
+	char		*command;
+	t_token		*tokens;
 	t_node_type	type_first;
 
 	command = NULL;
@@ -64,8 +70,8 @@ t_node_type	parser(void **token_tree, int exit_status)
 	type_first = tokens_to_tree(tokens, token_tree);
 	if (type_first == ERROR)
 		printf("syntax error\n");
-	if (*token_tree)
-		get_next_debug(*token_tree, type_first, 0);
+	// if (*token_tree)
+	// 	get_next_debug(*token_tree, type_first, 0);
 	// debug_print_token_array(tokens);
 	command = NULL;
 	return (type_first);

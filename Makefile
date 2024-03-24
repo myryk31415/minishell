@@ -3,26 +3,25 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+         #
+#    By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/03/13 23:04:20 by padam            ###   ########.fr        #
+#    Updated: 2024/03/23 12:30:48 by antonweizma      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 CC = cc
-CFLAGS = -g -Wall -Wextra -Werror $(INCLUDES)
+CFLAGS =  $(INCLUDES) -g3
 INCLUDES = -I./includes
 LIBS = -lreadline
 LIBFT_DIR = libft
-
+# -Wall -Wextra -Werror
 SRC_PATH = src
 OBJ_PATH = obj
 
-OBJ_DIRS =	execution	execution/pipe	main	parser	parser/binary_tree	\
-			parser/redirects
+OBJ_DIRS =	execution	execution/builtins	main	parser	parser/binary_tree	\
 
 SRCS_MAIN =	main.c cleanup.c
 
@@ -32,15 +31,17 @@ SRCS_PARS =	parser_utils.c			parser.c			tokenizer.c	\
 
 SRCS_BNTR =	node_struct.c			node_utils.c		pipeline.c
 
-SRCS_EXECUTION =
+SRCS_BUILTINS =	cd.c echo.c export.c
+
+SRCS_EXECUTION =	execution.c input_output.c utils_execution.c utils2_execution.c and.c
 
 SRCS_PIPE =			fork.c			pipe.c			utils.c
 
 SRC_NAME =	$(addprefix main/,				$(SRCS_MAIN))		\
+			$(addprefix execution/builtins/,$(SRCS_BUILTINS))		\
+			$(addprefix execution/,			$(SRCS_EXECUTION))	\
 			$(addprefix parser/,			$(SRCS_PARS))		\
 			$(addprefix parser/binary_tree/,$(SRCS_BNTR))		\
-#			$(addprefix execution/,			$(SRCS_EXECUTION))	\
-			$(addprefix execution/pipe/,	$(SRCS_PIPE))		\
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 OBJS = $(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
