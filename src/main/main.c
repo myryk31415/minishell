@@ -52,6 +52,7 @@ int	main(void)
 		token_tree = NULL;
 		type = parser(&token_tree, exit_status),
 		execution(token_tree, type, &env);
+
 	}
 	return (0);
 }

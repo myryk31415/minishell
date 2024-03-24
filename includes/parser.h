@@ -73,11 +73,13 @@ int			is_quote(char c);
 int			is_separator(char c);
 int			is_redirect(t_token_type type);
 int			is_operator(t_token_type type);
+int			is_variable(char c);
 
 // redirects
 int			redirects_get(t_token **token_first, t_cmd **redirects);
 
 // tokenizer
+t_token_type	get_token_type(char *string);
 t_token		*tokenize_command(char *command);
 
 // tokens utils

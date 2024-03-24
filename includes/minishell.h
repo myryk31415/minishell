@@ -37,7 +37,6 @@ typedef enum e_node_type
 	OR,
 	PIPE,
 	CMD,
-	SYNTAX,
 }	t_node_type;
 
 typedef struct s_redir

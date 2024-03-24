@@ -26,7 +26,7 @@ t_node_type	get_cmd(t_token *token_first, void **head, t_cmd *redirects)
 	if (word_count == -1)
 	{
 		cmd_free(redirects);
-		return (SYNTAX);
+		return (ERROR);
 	}
 	redirects->args =  ft_calloc(word_count + 1, sizeof(char *));
 	if (!redirects->args)
@@ -49,20 +49,23 @@ t_node_type	check_brackets(t_token *token_first, void **head)
 	int				output;
 
 	if (!token_first)
-		return (SYNTAX);
+		return (ERROR);
 	output = redirects_get(&token_first, &redirects);
 	if (output == -1)
 		return (ERROR);
-	if (output == -2)
-		return (SYNTAX);
-	if (token_first->type == T_LPAREN)
+	if (token_first && token_first->type == T_LPAREN)
 	{
 		token_last = skip_parens(token_first, 1);
-		if (!token_last || token_last->next)
+		if (!token_last)
 		{
-			token_delete_all(&token_last);
 			free(redirects);
-			return (SYNTAX);
+			return (ERROR);
+		}
+		if (token_last->next)
+		{
+			print_syntax_err(token_last->next);
+			free(redirects);
+			return (ERROR);
 		}
 		token_last = token_last->prev;
 		token_delete(&token_last->next);
@@ -85,7 +88,7 @@ t_node_type	split_by_pipe(t_token *token_first, void **head)
 
 	token_last = get_pipe(token_first);
 	if (!token_first || !token_last)
-		return (SYNTAX);
+		return (ERROR);
 	if (token_last->type == T_PIPE)
 	{
 		node = new_node();
@@ -95,17 +98,17 @@ t_node_type	split_by_pipe(t_token *token_first, void **head)
 		if (!token_split(token_last, -1))
 		{
 			token_delete_all(&token_last);
-			return (SYNTAX);
+			return (ERROR);
 		}
 		node->type_left = check_brackets(token_first, &node->left);
-		if (node->type_left == SYNTAX)
+		if (node->type_left == ERROR)
 		{
 			token_delete_all(&token_last);
-			return (SYNTAX);
+			return (ERROR);
 		}
 		node->type_right = split_by_pipe(token_last, &node->right);
-		if (node->type_right == SYNTAX)
-			return (SYNTAX);
+		if (node->type_right == ERROR)
+			return (ERROR);
 		*head = node;
 		return (PIPE);
 	}
@@ -120,7 +123,7 @@ t_node_type	split_by_operator(t_token *token_last, void **head)
 
 	token_first = get_operator(token_last);
 	if (!token_first || !token_last)
-		return (SYNTAX);
+		return (ERROR);
 	if (token_first->type == T_AND || token_first->type == T_OR)
 	{
 		node = new_node();
@@ -133,11 +136,11 @@ t_node_type	split_by_operator(t_token *token_last, void **head)
 		token_delete(&token_first);
 		node->type_left = split_by_operator(token_split(token_first, -1),
 				&node->left);
-		if (node->type_left == SYNTAX)
-			return(token_delete_all(&token_first), SYNTAX);
+		if (node->type_left == ERROR)
+			return(token_delete_all(&token_first), ERROR);
 		node->type_right = split_by_pipe(token_first, &node->right);
-		if (node->type_right == SYNTAX)
-			return (SYNTAX);
+		if (node->type_right == ERROR)
+			return (ERROR);
 		*head = node;
 		return (return_value);
 	}

@@ -181,7 +181,7 @@ int	redirects_get(t_token **token_first, t_cmd **redirects)
 	output = redirect_alloc(token_first, *redirects);
 	if (output == -1)
 	{
-		free(*redirects);
+		cmd_free(*redirects);
 		*redirects = NULL;
 		return (-1);
 	}

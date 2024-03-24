@@ -62,14 +62,13 @@ t_node_type	parser(void **token_tree, int exit_status)
 
 	command = NULL;
 	(void)type_first;
-
 	while (!command || !*command)
 		command = new_prompt();
 	command = expand_variables(command, exit_status);
 	tokens = tokenize_command(command);
 	free(command);
 	type_first = tokens_to_tree(tokens, token_tree);
-	if (type_first == SYNTAX)
+	if (type_first == ERROR)
 		printf("syntax error\n");
 	// if (*token_tree)
 	// 	get_next_debug(*token_tree, type_first, 0);
