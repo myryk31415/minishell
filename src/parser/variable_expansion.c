@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:13:35 by padam             #+#    #+#             */
-/*   Updated: 2024/03/22 18:05:00 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/24 20:32:28 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ char	*get_variable(char **command, int exit_status)
 	int		i;
 
 	i = 0;
+	variable = NULL;
 	if (!*command)
 	{
 		print_syntax_err(NULL);
@@ -30,7 +31,10 @@ char	*get_variable(char **command, int exit_status)
 		(*command)++;
 	}
 	else if (!**command || !is_variable(**command))
-		variable = ft_strdup("$");
+	{
+		if (!**command || !is_quote(**command))
+			variable = ft_strdup("$");
+	}
 	else
 	{
 		while ((*command)[i] && is_variable((*command)[i]))
