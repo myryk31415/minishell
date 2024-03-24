@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_execution.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/23 12:56:48 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/25 00:18:40 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,25 +70,30 @@ char	*get_path(char *cmd, char **environ, char *var)
 
 int	is_builtin(t_cmd *token, int **pipes, int *redir, char ***env)
 {
-	if (!ft_strncmp(token->args[0], "cd", 2))
+	if (!ft_strncmp(token->args[0], "cd", 3))
 	{
 		command(token, pipes, redir);
 		return (cd(token->args[1], env));
 	}
-	if (!ft_strncmp(token->args[0], "echo", 4))
+	if (!ft_strncmp(token->args[0], "echo", 5))
 	{
 		command(token, pipes, redir);
 		return (echo(token->args));
 	}
-	if (!ft_strncmp(token->args[0], "pwd", 3))
+	if (!ft_strncmp(token->args[0], "pwd", 4))
 	{
 		command(token, pipes, redir);
 		return (pwd());
 	}
-	if (!ft_strncmp(token->args[0], "export", 6))
+	if (!ft_strncmp(token->args[0], "export", 7))
 	{
 		command(token, pipes, redir);
 		return (export(token->args, env));
+	}
+	if (!ft_strncmp(token->args[0], "exit", 5))
+	{
+		command(token, pipes, redir);
+		return (exit_shell(token->args));
 	}
 	return (1);
 }
