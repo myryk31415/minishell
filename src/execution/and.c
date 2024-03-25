@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 10:39:18 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/24 22:50:36 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/24 23:53:19 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	and_execute(t_node *token, int status, char ***env)
 {
 	if (token->type_left == CMD)
-		status = command_pipe((t_cmd *)token->left, NULL, 0, env);
+		status = command_no_pipe((t_cmd *)token->left, env);
 	else if (token->type_left == OR)
 		status = or_execute((t_node *)token->left, 0, env);
 	else if (token->type_left == AND)
@@ -25,7 +25,7 @@ int	and_execute(t_node *token, int status, char ***env)
 	else if (token->type_left == REDIR)
 		status = redirect((t_redir *)token->left, NULL, 0, *env);
 	if (!status && token->type_right == CMD)
-		status = command_pipe((t_cmd *)token->right, NULL, 0, env);
+		status = command_no_pipe((t_cmd *)token->right, env);
 	else if (!status && token->type_right == PIPE)
 		status = create_tree(0, (t_node *)token->right, 0, *env);
 	else if (!status && token->type_right == REDIR)

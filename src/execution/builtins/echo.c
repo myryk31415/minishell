@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:57:00 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/24 22:57:37 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/25 00:11:24 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int	echo(char **args)
 
 	if (!args | !*args)
 		return (-1);
+	if (!args[1])
+		return (ft_printf("\n"), 0);
 	i = n_flag(args[1]);
 	if (i == 2)
 		flag = true;

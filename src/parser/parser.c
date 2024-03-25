@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/03/22 09:09:13 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/24 23:17:18 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ t_node_type	parser(void **token_tree, int exit_status)
 	t_token		*tokens;
 	t_node_type	type_first;
 
-	command = NULL;
+		command = NULL;
 	(void)type_first;
 	while (!command || !*command)
 		command = new_prompt();
