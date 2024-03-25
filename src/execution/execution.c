@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/25 19:02:54 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/25 20:12:04 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ int	command_no_pipe(t_cmd *token, char ***env, int **pipes, int *redir)
 	int			id;
 
 	status = builtin(token, pipes, redir, env);
-			ft_putstr_fd("tet\n", 2);
 	if (status == 1)
 	{
 		id = fork();
@@ -84,7 +83,7 @@ int	command_no_pipe(t_cmd *token, char ***env, int **pipes, int *redir)
 
 void	command_no_fork(t_cmd *token, int **pipes, int *redir, char ***env)
 {
-	int status;
+	int	status;
 
 	status = is_builtin(token, pipes, redir, env);
 	if (status == 1)
@@ -93,9 +92,10 @@ void	command_no_fork(t_cmd *token, int **pipes, int *redir, char ***env)
 		exec(token->args, *env);
 	}
 	close_pipes(pipes);
-	exit(0);
+	exit(status);
 }
-int		command_pipe(t_cmd *token, int **pipes, int redirect, char ***env)
+
+int	command_pipe(t_cmd *token, int **pipes, int redirect, char ***env)
 {
 	static int	redir[2];
 	int			status;
@@ -129,15 +129,15 @@ int	create_tree(int *pre_fd, t_node *token, int status, char **env)
 	pipes = malloc(sizeof(int *) * 2);
 	if (!pipes)
 		perror("Malloc");
-	pipes[0] = fd;
-	pipes[1] = pre_fd;
 	if (status == 1)
 		pid = fork();
 	if (pid == -1)
 		perror("Fork");
-	if (pipe(pipes[0]) == -1)
+	if (pipe(fd) == -1)
 		perror("Pipe");
-	else if (!pid)
+	pipes[0] = fd;
+	pipes[1] = pre_fd;
+	if (!pid)
 		run_tree(token, pipes, &env);
 	else
 	{
@@ -160,17 +160,19 @@ void	run_tree(t_node *token, int **pipes, char ***env)
 		redirect((t_redir *)token->left, pipes, 1, *env);
 	if (pid && token->type_right == PIPE)
 		create_tree(pipes[0], (t_node *)token->right, 0, *env);
-	else if (pid && token->type_right == CMD)
+	else if (pid)
 	{
+		if (pipes[1])
+		{
+			close(pipes[1][0]);
+			close(pipes[1][1]);
+		}
 		pipes[1] = pipes[0];
 		pipes[0] = NULL;
-		command_pipe((t_cmd *)token->right, pipes, 0, env);
-	}
-	else if (pid && token->type_right == REDIR)
-	{
-		pipes[1] = pipes[0];
-		pipes[0] = NULL;
-		redirect((t_redir *)token->right, pipes, 1, *env);
+		if (token->type_right == CMD)
+			command_pipe((t_cmd *)token->right, pipes, 0, env);
+		else if (token->type_right == REDIR)
+			redirect((t_redir *)token->right, pipes, 1, *env);
 	}
 }
 
