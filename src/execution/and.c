@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 10:39:18 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/25 17:07:42 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/25 20:27:08 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,11 @@ int	and_execute(t_node *token, int status, int **pipes, char ***env)
 	if (!status && pipes && token->type_right == CMD)
 	{
 		pipes[0] = tmp_pipe;
+		if (pipes[1])
+		{
+			close(pipes[1][0]);
+			close(pipes[1][1]);
+		}
 		pipes[1] = NULL;
 		status = command_pipe((t_cmd *)token->right, pipes, 2, env);
 	}

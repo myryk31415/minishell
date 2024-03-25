@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/25 20:12:04 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/25 20:34:01 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ int	command_no_pipe(t_cmd *token, char ***env, int **pipes, int *redir)
 		{
 			close_pipes(pipes);
 			waitpid(id, &status, 0);
-			// ft_putstr_fd("tet\n", 2);
 		}
 	}
 	return (status);
@@ -159,14 +158,13 @@ void	run_tree(t_node *token, int **pipes, char ***env)
 	else if (!pid && token->type_left == REDIR)
 		redirect((t_redir *)token->left, pipes, 1, *env);
 	if (pid && token->type_right == PIPE)
+	{
+		close_pipe(pipes[1]);
 		create_tree(pipes[0], (t_node *)token->right, 0, *env);
+	}
 	else if (pid)
 	{
-		if (pipes[1])
-		{
-			close(pipes[1][0]);
-			close(pipes[1][1]);
-		}
+		close_pipe(pipes[1]);
 		pipes[1] = pipes[0];
 		pipes[0] = NULL;
 		if (token->type_right == CMD)

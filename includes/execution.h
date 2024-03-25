@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:29 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/25 13:09:49 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/25 20:33:16 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	execution(void *tree, t_node_type type, char ***env);
 int		is_builtin(t_cmd *token, int **pipes, int *redir, char ***env);
 void	command(t_cmd *token, int **pipes, int *redir);
 int		export(char **arg, char ***env);
+void	close_pipe(int *pipe);
 int		env(t_cmd *token, char **env);
 void	display_env(char **env);
 #endif
