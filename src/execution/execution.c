@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/25 13:13:21 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/25 18:05:47 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,27 @@ void	command(t_cmd *token, int **pipes, int *redir)
 	close_pipes(pipes);
 }
 
+int	builtin(t_cmd *token, int **pipes, int *redir, char ***env)
+{
+	int		old_stdin;
+	int		old_stdout;
+	int		status;
+
+	old_stdin = dup(STDIN_FILENO);
+	old_stdout = dup(STDOUT_FILENO);
+	status = is_builtin(token, pipes, redir, env);
+	dup2(old_stdin, STDIN_FILENO);
+	dup2(old_stdout, STDOUT_FILENO);
+	return (status);
+}
+
 int	command_no_pipe(t_cmd *token, char ***env, int **pipes, int *redir)
 {
 	int			status;
 	int			id;
-	// int			old_stdin;
-	// int			old_stdout;
 
-	// old_stdin = dup(STDIN_FILENO);
-	// old_stdout = dup(STDOUT_FILENO);
-	status = is_builtin(token, pipes, redir, env);
+	status = builtin(token, pipes, redir, env);
+			ft_putstr_fd("tet\n", 2);
 	if (status == 1)
 	{
 		id = fork();
@@ -59,17 +70,15 @@ int	command_no_pipe(t_cmd *token, char ***env, int **pipes, int *redir)
 		if (!id)
 		{
 			command(token, pipes, redir);
-			close_pipes(pipes);
 			exec(token->args, *env);
 		}
 		else
 		{
 			close_pipes(pipes);
 			waitpid(id, &status, 0);
+			// ft_putstr_fd("tet\n", 2);
 		}
 	}
-	// dup2(old_stdin, STDIN_FILENO);
-	// dup2(old_stdout, STDOUT_FILENO);
 	return (status);
 }
 
@@ -81,7 +90,6 @@ void	command_no_fork(t_cmd *token, int **pipes, int *redir, char ***env)
 	if (status == 1)
 	{
 		command(token, pipes, redir);
-		close_pipes(pipes);
 		exec(token->args, *env);
 	}
 	close_pipes(pipes);
@@ -117,12 +125,14 @@ int	create_tree(int *pre_fd, t_node *token, int status, char **env)
 	int	pid;
 	int	**pipes;
 
-	pipes = malloc(sizeof(int *) * 2 + 1);
+	pid = 0;
+	pipes = malloc(sizeof(int *) * 2);
 	if (!pipes)
 		perror("Malloc");
 	pipes[0] = fd;
 	pipes[1] = pre_fd;
-	pid = fork();
+	if (status == 1)
+		pid = fork();
 	if (pid == -1)
 		perror("Fork");
 	if (pipe(pipes[0]) == -1)
@@ -173,7 +183,7 @@ void	execution(void *tree, t_node_type type, char ***env)
 	else if (type == OR)
 		or_execute((t_node *)tree, 0, env);
 	else if (type == PIPE)
-		create_tree(0, (t_node *)tree, 0, *env);
+		create_tree(0, (t_node *)tree, 1, *env);
 	else if (type == REDIR)
 		redirect((t_redir *)tree, NULL, 0, *env);
 }

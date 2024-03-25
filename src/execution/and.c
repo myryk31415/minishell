@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 10:39:18 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/25 13:15:39 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/25 17:07:42 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,13 @@
 
 void	and_left(t_node *token, int *status, int ***pipes, char ***env)
 {
-	int	*tmp_pipe;
-
 	if (*status == 1)
 	{
-		tmp_pipe = *pipes[0];
 		*pipes[0] = NULL;
 		if (token->type_left == CMD)
 			*status = command_pipe((t_cmd *)token->left, *pipes, 2, env);
 		else if (token->type_left == REDIR)
 			*status = redirect((t_redir *)token->left, *pipes, 0, *env);
-		*pipes[0] = tmp_pipe;
-		*pipes[1] = NULL;
 	}
 	else if (token->type_left == CMD)
 		*status = command_pipe((t_cmd *)token->left, NULL, 2, env);
@@ -41,8 +36,19 @@ void	and_left(t_node *token, int *status, int ***pipes, char ***env)
 
 int	and_execute(t_node *token, int status, int **pipes, char ***env)
 {
+	int *tmp_pipe;
+
+	tmp_pipe = NULL;
+	if (pipes)
+		tmp_pipe = pipes[0];
 	and_left(token, &status, &pipes, env);
-	if (!status && token->type_right == CMD)
+	if (!status && pipes && token->type_right == CMD)
+	{
+		pipes[0] = tmp_pipe;
+		pipes[1] = NULL;
+		status = command_pipe((t_cmd *)token->right, pipes, 2, env);
+	}
+	else if (!status && token->type_right == CMD)
 		status = command_pipe((t_cmd *)token->right, pipes, 2, env);
 	else if (!status && token->type_right == PIPE)
 		status = create_tree(0, (t_node *)token->right, 0, *env);

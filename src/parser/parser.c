@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/03/24 23:17:18 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/25 16:06:46 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ char	*new_prompt(void)
 	free(prompt);
 	prompt = ft_strjoin(prompt_tmp, "$ ");
 	free(prompt_tmp);
-	ft_putstr_fd(prompt, 0);
-	// command = readline(prompt);
-	command = get_next_line(0);
+	// ft_putstr_fd(prompt, 0);
+	command = readline(prompt);
+	// command = get_next_line(0);
 	free(prompt);
 	if (command)
 		add_history(command);
