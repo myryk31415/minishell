@@ -6,38 +6,11 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/25 15:48:16 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/26 12:49:17 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
-
-char	*get_env(char **environ, char *var)
-{
-	int		i;
-	int		j;
-	char	*tmp;
-
-	i = 0;
-	while (environ[i])
-	{
-		j = 0;
-		while (environ[i][j] && environ[i][j] != '=')
-			j++;
-		tmp = ft_substr(environ[i], 0, j);
-		if (!tmp)
-			break ;
-		if (!ft_strncmp(tmp, var, ft_strlen(var))
-			&& !ft_strncmp(tmp, var, ft_strlen(tmp)))
-		{
-			free(tmp);
-			return (ft_strdup(environ[i] + j + 1));
-		}
-		free(tmp);
-		i++;
-	}
-	return (NULL);
-}
 
 char	*get_path(char *cmd, char **environ, char *var)
 {
@@ -68,33 +41,28 @@ char	*get_path(char *cmd, char **environ, char *var)
 	return (NULL);
 }
 
+
 int	is_builtin(t_cmd *token, int **pipes, int *redir, char ***env)
 {
-	if (!ft_strncmp(token->args[0], "cd", 3))
+	if (!ft_strncmp(token->args[0], "cd", 3) || !ft_strncmp(token->args[0], \
+		"echo", 5) || !ft_strncmp(token->args[0], "pwd", 4) || \
+		!ft_strncmp(token->args[0], "export", 7) || !ft_strncmp(token->args[0] ,\
+		"unset", 6) || !ft_strncmp(token->args[0], "exit", 5))
 	{
 		command(token, pipes, redir);
-		return (cd(token->args[1], env));
+		if (!ft_strncmp(token->args[0], "cd", 3))
+			return (cd(token->args[1], env));
+		else if (!ft_strncmp(token->args[0], "echo", 5))
+			return (echo(token->args));
+		else if (!ft_strncmp(token->args[0], "pwd", 4))
+			return (pwd());
+		else if (!ft_strncmp(token->args[0], "export", 7))
+			return (export(token->args, env));
+		// else if (!ft_strncmp(token->args[0], "exit", 5))
+		// 	return (exit_shell(token->args));
+		else if (!ft_strncmp(token->args[0], "unset", 6))
+			return (unset(token->args, env));
 	}
-	if (!ft_strncmp(token->args[0], "echo", 5))
-	{
-		command(token, pipes, redir);
-		return (echo(token->args));
-	}
-	if (!ft_strncmp(token->args[0], "pwd", 4))
-	{
-		command(token, pipes, redir);
-		return (pwd());
-	}
-	if (!ft_strncmp(token->args[0], "export", 7))
-	{
-		command(token, pipes, redir);
-		return (export(token->args, env));
-	}
-	// if (!ft_strncmp(token->args[0], "exit", 5))
-	// {
-	// 	command(token, pipes, redir);
-	// 	return (exit_shell(token->args));
-	// }
 	return (1);
 }
 

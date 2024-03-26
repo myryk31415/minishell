@@ -6,7 +6,7 @@
 #    By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/03/24 22:51:19 by antonweizma      ###   ########.fr        #
+#    Updated: 2024/03/26 12:49:29 by antonweizma      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ SRCS_PARS =	parser_utils.c			parser.c			tokenizer.c	\
 
 SRCS_BNTR =	node_struct.c			node_utils.c		pipeline.c
 
-SRCS_BUILTINS =	cd.c echo.c export.c
+SRCS_BUILTINS =	cd.c echo.c export.c unset.c
 
 SRCS_EXECUTION =	execution.c input_output.c utils_execution.c utils2_execution.c and.c
 

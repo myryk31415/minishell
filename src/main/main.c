@@ -6,12 +6,39 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:16:36 by padam             #+#    #+#             */
-/*   Updated: 2024/03/26 03:27:55 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/26 12:50:40 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "execution.h"
+
+char	*get_env(char **environ, char *var)
+{
+	int		i;
+	int		j;
+	char	*tmp;
+
+	i = 0;
+	while (environ[i])
+	{
+		j = 0;
+		while (environ[i][j] && environ[i][j] != '=')
+			j++;
+		tmp = ft_substr(environ[i], 0, j);
+		if (!tmp)
+			break ;
+		if (!ft_strncmp(tmp, var, ft_strlen(var))
+			&& !ft_strncmp(tmp, var, ft_strlen(tmp)))
+		{
+			free(tmp);
+			return (ft_strdup(environ[i] + j + 1));
+		}
+		free(tmp);
+		i++;
+	}
+	return (NULL);
+}
 
 char	**fill_env(void)
 {

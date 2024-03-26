@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 09:47:35 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/03/23 13:18:07 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/26 12:41:19 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	export(char **arg, char ***env)
 	if (ft_strncmp("OLDPWD=", arg[i], 7) && arg[1])
 		arg++;
 	if (!ft_strncmp("export", arg[i], 6) && !arg[1])
-		display_env(*env);
+		return (display_env(*env), 0);
 	name = get_name(arg[i]);
 	while (arg[i])
 	{
