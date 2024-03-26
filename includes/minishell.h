@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/03/26 16:10:00 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/26 19:46:54 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdbool.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <signal.h>
 
 typedef struct s_cmd
 {
@@ -58,7 +59,7 @@ t_node_type	parser(void **token_tree, int exit_status, char **env);
 
 //signal
 void		set_signal_action(void);
-
+void		signal_handler(int signal);
 //cleanup
 void		cmd_free(t_cmd *cmd);
 void		node_tree_delete(void *node, t_node_type type);
