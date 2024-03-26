@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:57:00 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/24 22:18:12 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/26 16:11:36 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,20 @@ int	echo(char **args)
 	bool	flag;
 
 	if (!args | !*args)
-		return (-1);
+		return (256);
+	if (!args[1])
+		return (ft_printf("\n"), 0);
 	i = n_flag(args[1]);
 	if (i == 2)
 		flag = true;
 	else
 		flag = false;
 	if (args[i])
-		if (ft_printf("%s", args[i++]) == 256)
-			return (-1);
+		if (ft_printf("%s", args[i++]) == -1)
+			return (256);
 	while (args[i])
-		if (ft_printf("%s", args[i++]) == 256)
-			return (-1);
+		if (ft_printf(" %s", args[i++]) == -1)
+			return (256);
 	if (flag == false)
 		ft_printf("\n");
 	return (0);
@@ -70,9 +72,10 @@ int	env(t_cmd *token, char **env)
 	char	**tmp_env;
 	char	**tmp_var;
 
-
 	tmp_env = env;
 	tmp_var = malloc(sizeof(char *) + 1);
+	if (!tmp_var)
+		return (-1);
 	if (!token->args)
 		display_env(env);
 	else

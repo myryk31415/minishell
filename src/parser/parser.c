@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/03/24 21:16:18 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/26 16:13:20 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ char	*get_current_folder(void)
 	return (folder);
 }
 
-char	*new_prompt(void)
+char	*new_prompt(char **env)
 {
 	char	*prompt;
 	char	*prompt_tmp;
 	char	*command;
 
-	prompt = ft_strjoin(getenv("USER"), "@minishell:");
+	prompt = ft_strjoin(get_env(env, "USER"), "@minishell:");
 	prompt_tmp = ft_strjoin(prompt, CYAN);
 	free(prompt);
 	prompt = ft_strjoin(prompt_tmp, get_current_folder());
@@ -54,17 +54,16 @@ char	*new_prompt(void)
 }
 
 
-t_node_type	parser(void **token_tree, int exit_status)
+t_node_type	parser(void **token_tree, int exit_status, char **env)
 {
 	char		*command;
 	t_token		*tokens;
 	t_node_type	type_first;
 
 	command = NULL;
-	(void)type_first;
 	while (!command || !*command)
-		command = new_prompt();
-	command = expand_variables(command, exit_status);
+		command = new_prompt(env);
+	command = expand_variables(command, exit_status, env);
 	tokens = tokenize_command(command);
 	free(command);
 	type_first = tokens_to_tree(tokens, token_tree);

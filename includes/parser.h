@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:14:04 by padam             #+#    #+#             */
-/*   Updated: 2024/03/21 22:31:31 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/26 16:03:49 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,5 +90,5 @@ t_token		*token_split(t_token *tokens, int direction);
 t_token		*skip_parens(t_token *tokens, int direction);
 
 // variable_expansion
-char		*expand_variables(char *command, int exit_status);
+char		*expand_variables(char *command, int exit_status, char **env);
 #endif

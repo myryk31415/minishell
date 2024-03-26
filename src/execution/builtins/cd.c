@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 10:14:07 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/23 12:57:32 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/26 16:02:36 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,14 +85,14 @@ int	cd(char	*arg, char ***env)
 	else if (arg[0] == '-')
 	{
 		if (get_env(*env, "OLDPWD") == NULL)
-			return (perror("bash: cd: OLDPWD not set"), 256);
+			return (ft_putstr_fd("bash: cd: OLDPWD not set\n", 2), 256);
 		else
 			path_to_dir = get_env(*env, "OLDPWD");
 	}
 	else
 		path_to_dir = cd_path(arg);
 	if (!path_to_dir)
-		return (perror(error_msg("bash: cd: ", arg)), -1);
+		return (perror(error_msg("bash: cd: ", arg)), 256);
 	if (access(path_to_dir, F_OK | X_OK))
 		return (perror(error_msg("bash: cd: ", arg)), free (path_to_dir), 256);
 	oldpwd_save(env, ft_strjoin("OLDPWD=", getcwd(NULL, PATH_MAX)));

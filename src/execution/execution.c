@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/24 22:19:27 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/26 16:11:01 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	command(t_cmd *token, int **pipes, int *redir)
 	output = 1;
 	if (token->redirect_in && *(token->redirect_in))
 		input = input_handling(token->redirect_in, token->heredoc);
-	else if (redir[0])
+	else if (redir && redir[0])
 	{
 		input = redir[0];
 		redir[0] = 0;
@@ -31,20 +31,75 @@ void	command(t_cmd *token, int **pipes, int *redir)
 	dup2(input, STDIN_FILENO);
 	if (token->redirect_out && *(token->redirect_out))
 		output = output_handling(token->redirect_out, token->append);
-	else if (redir[1])
+	else if (redir && redir[1])
 		output = redir[1];
 	else if (pipes && pipes[0])
 		output = pipes[0][1];
 	dup2(output, STDOUT_FILENO);
+	// if (output != 1 && redir && !redir[1])
+	// 	close(output);
 	close_pipes(pipes);
+}
+
+int	builtin(t_cmd *token, int **pipes, int *redir, char ***env)
+{
+	int		old_stdin;
+	int		old_stdout;
+	int		status;
+
+	old_stdin = dup(STDIN_FILENO);
+	old_stdout = dup(STDOUT_FILENO);
+	status = is_builtin(token, pipes, redir, env);
+	dup2(old_stdin, STDIN_FILENO);
+	dup2(old_stdout, STDOUT_FILENO);
+	return (status);
+}
+
+int	command_no_pipe(t_cmd *token, char ***env, int **pipes, int *redir)
+{
+	int			status;
+	int			id;
+
+	status = builtin(token, pipes, redir, env);
+	if (status == 1)
+	{
+		id = fork();
+		if (id == -1)
+			perror("Fork");
+		if (!id)
+		{
+			command(token, pipes, redir);
+			exec(token->args, *env);
+		}
+		else
+		{
+			close_pipes(pipes);
+			waitpid(id, &status, 0);
+		}
+	}
+	return (status);
+}
+
+void	command_no_fork(t_cmd *token, int **pipes, int *redir, char ***env)
+{
+	int	status;
+
+	status = is_builtin(token, pipes, redir, env);
+	if (status == 1)
+	{
+		command(token, pipes, redir);
+		exec(token->args, *env);
+	}
+	close_pipes(pipes);
+	exit(status);
 }
 
 int	command_pipe(t_cmd *token, int **pipes, int redirect, char ***env)
 {
-	int			id;
 	static int	redir[2];
 	int			status;
 
+	status = 256;
 	if (redirect == 1)
 	{
 		if (token->redirect_in && *(token->redirect_in))
@@ -55,37 +110,12 @@ int	command_pipe(t_cmd *token, int **pipes, int redirect, char ***env)
 	}
 	else
 	{
-		if (redirect == 3)
-			pipes = NULL;
-		status = is_builtin(token, pipes, redir, env);
-		if (status == 1)
-		{
-			if (redirect == 2)
-				id = 0;
-			else
-			{
-				id = fork();
-				if (id == -1)
-					perror("Fork");
-			}
-			if (!id)
-			{
-				if (redirect != 3)
-					command(token, pipes, redir);
-				exec(token->args, *env);
-			}
-			else
-			{
-					ft_putstr_fd("test\n", 2);
-				waitpid(id, &status, 0);
-				close_pipes(pipes);
-			}
-		}
-		if (redirect == 2)
-			exit(status);
-		return (status);
+		if (redirect == 0)
+			command_no_fork(token, pipes, redir, env);
+		else
+			status = command_no_pipe(token, env, pipes, redir);
 	}
-	return (256);
+	return (status);
 }
 
 int	create_tree(int *pre_fd, t_node *token, int status, char **env)
@@ -94,22 +124,27 @@ int	create_tree(int *pre_fd, t_node *token, int status, char **env)
 	int	pid;
 	int	**pipes;
 
-	pipes = malloc(sizeof(int *) * 2 + 1);
+	pid = 0;
+	pipes = malloc(sizeof(int *) * 2);
 	if (!pipes)
 		perror("Malloc");
-	pipes[0] = fd;
-	pipes[1] = pre_fd;
-	pid = fork();
+	if (status == 1)
+		pid = fork();
 	if (pid == -1)
 		perror("Fork");
-	if (pipe(pipes[0]) == -1)
+	if (pipe(fd) == -1)
 		perror("Pipe");
-	else if (!pid)
+	pipes[0] = fd;
+	pipes[1] = pre_fd;
+	if (!pid)
+	{
 		run_tree(token, pipes, &env);
+		exit(0);
+	}
 	else
 	{
-		waitpid(pid, &status, 0);
 		close_pipes(pipes);
+		waitpid(pid, &status, 0);
 	}
 	return (status);
 }
@@ -122,31 +157,37 @@ void	run_tree(t_node *token, int **pipes, char ***env)
 	if (pid == -1)
 		perror("Fork");
 	if (!pid && token->type_left == CMD)
-		command_pipe((t_cmd *)token->left, pipes, 2, env);
+		command_pipe((t_cmd *)token->left, pipes, 0, env);
 	else if (!pid && token->type_left == REDIR)
-		redirect((t_redir *)token->left, pipes, 0, *env);
+		redirect((t_redir *)token->left, pipes, 1, *env);
 	if (pid && token->type_right == PIPE)
-		create_tree(pipes[0], (t_node *)token->right, 0, *env);
-	else if (pid && token->type_right == CMD)
 	{
+		close_pipe(pipes[1]);
+		create_tree(pipes[0], (t_node *)token->right, 0, *env);
+	}
+	else if (pid)
+	{
+		close_pipe(pipes[1]);
 		pipes[1] = pipes[0];
 		pipes[0] = NULL;
-		command_pipe((t_cmd *)token->right, pipes, 2, env);
+		waitpid(pid, NULL, 0);
+		if (token->type_right == CMD)
+			command_pipe((t_cmd *)token->right, pipes, 0, env);
+		else if (token->type_right == REDIR)
+			redirect((t_redir *)token->right, pipes, 1, *env);
 	}
-	else if (pid && token->type_right == REDIR)
-		redirect((t_redir *)token->right, pipes, 0, *env);
 }
 
 void	execution(void *tree, t_node_type type, char ***env)
 {
 	if (type == CMD)
-		command_pipe((t_cmd *)tree, NULL, 0, env);
+		command_pipe((t_cmd *)tree, NULL, 2, env);
 	else if (type == AND)
-		and_execute((t_node *)tree, 0, env);
+		and_execute((t_node *)tree, 0, NULL, env);
 	else if (type == OR)
-		or_execute((t_node *)tree, 0, env);
+		or_execute((t_node *)tree, 0, NULL, env);
 	else if (type == PIPE)
-		create_tree(0, (t_node *)tree, 0, *env);
+		create_tree(0, (t_node *)tree, 1, *env);
 	else if (type == REDIR)
 		redirect((t_redir *)tree, NULL, 0, *env);
 }

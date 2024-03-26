@@ -3,41 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils_execution.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/23 12:56:48 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/26 16:11:19 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
-
-char	*get_env(char **environ, char *var)
-{
-	int		i;
-	int		j;
-	char	*tmp;
-
-	i = 0;
-	while (environ[i])
-	{
-		j = 0;
-		while (environ[i][j] && environ[i][j] != '=')
-			j++;
-		tmp = ft_substr(environ[i], 0, j);
-		if (!tmp)
-			break ;
-		if (!ft_strncmp(tmp, var, ft_strlen(var))
-			&& !ft_strncmp(tmp, var, ft_strlen(tmp)))
-		{
-			free(tmp);
-			return (ft_strdup(environ[i] + j + 1));
-		}
-		free(tmp);
-		i++;
-	}
-	return (NULL);
-}
 
 char	*get_path(char *cmd, char **environ, char *var)
 {
@@ -68,27 +41,32 @@ char	*get_path(char *cmd, char **environ, char *var)
 	return (NULL);
 }
 
+
 int	is_builtin(t_cmd *token, int **pipes, int *redir, char ***env)
 {
-	if (!ft_strncmp(token->args[0], "cd", 2))
+	if (!ft_strncmp(token->args[0], "cd", 3) || !ft_strncmp(token->args[0], \
+		"echo", 5) || !ft_strncmp(token->args[0], "pwd", 4) || \
+		!ft_strncmp(token->args[0], "export", 7) || !ft_strncmp(token->args[0] ,\
+		"unset", 6) || !ft_strncmp(token->args[0], "exit", 5))
 	{
 		command(token, pipes, redir);
-		return (cd(token->args[1], env));
+		if (!ft_strncmp(token->args[0], "cd", 3))
+			return (cd(token->args[1], env));
+		else if (!ft_strncmp(token->args[0], "echo", 5))
+			return (echo(token->args));
+		else if (!ft_strncmp(token->args[0], "pwd", 4))
+			return (pwd());
+		else if (!ft_strncmp(token->args[0], "export", 7))
+			return (export(token->args, env));
+		// else if (!ft_strncmp(token->args[0], "exit", 5))
+		// 	return (exit_shell(token->args));
+		else if (!ft_strncmp(token->args[0], "unset", 6))
+			return (unset(token->args, env));
 	}
-	if (!ft_strncmp(token->args[0], "echo", 4))
+	if (!ft_strncmp(token->args[0], "exit", 5))
 	{
 		command(token, pipes, redir);
-		return (echo(token->args));
-	}
-	if (!ft_strncmp(token->args[0], "pwd", 3))
-	{
-		command(token, pipes, redir);
-		return (pwd());
-	}
-	if (!ft_strncmp(token->args[0], "export", 6))
-	{
-		command(token, pipes, redir);
-		return (export(token->args, env));
+		return (exit_shell(token->args));
 	}
 	return (1);
 }
@@ -100,7 +78,8 @@ void	exec(char **cmd_arg, char **env)
 	if (!access(cmd_arg[0], F_OK | X_OK))
 	{
 		execve(cmd_arg[0], cmd_arg, env);
-		perror("Command not found");
+		ft_putstr_fd(ft_strjoin("minishell: ", \
+			ft_strjoin(cmd_arg[0], ": command not found\n")), 2);
 		exit(EXIT_FAILURE);
 	}
 	else
@@ -108,7 +87,8 @@ void	exec(char **cmd_arg, char **env)
 		if (!ft_strchr(cmd_arg[0], '/'))
 			cmd_path = get_path(cmd_arg[0], env, "PATH");
 		execve(cmd_path, cmd_arg, env);
-		perror("Command not found");
+		ft_putstr_fd(ft_strjoin("minishell: ", \
+			ft_strjoin(cmd_arg[0], ": command not found\n")), 2);
 		exit(EXIT_FAILURE);
 	}
 }
