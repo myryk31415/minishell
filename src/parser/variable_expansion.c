@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:13:35 by padam             #+#    #+#             */
-/*   Updated: 2024/03/26 16:05:01 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/26 16:15:32 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char	*get_expansion(char *command, int exit_status, int len, char **env)
 	{
 		tmp = &command[i + 1];
 		variable = get_variable(&tmp, exit_status, env);
-		tmp = get_expansion(tmp, exit_status, len + i + ft_strlen(variable));
+		tmp = get_expansion(tmp, exit_status, len + i + ft_strlen(variable), env);
 		ft_memcpy(tmp + len + i, variable, ft_strlen(variable));
 		// free(variable);
 	}
