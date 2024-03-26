@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:16:36 by padam             #+#    #+#             */
-/*   Updated: 2024/03/26 12:50:40 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/26 16:24:11 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ int	main(void)
 		token_tree = NULL;
 		type = parser(&token_tree, exit_status);
 		execution(token_tree, type, &env);
-
 	}
 	return (0);
 }
