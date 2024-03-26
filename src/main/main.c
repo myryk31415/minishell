@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:16:36 by padam             #+#    #+#             */
-/*   Updated: 2024/03/26 16:01:46 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/26 16:12:36 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,33 @@
 #include "execution.h"
 
 int	g_signal;
+
+char	*get_env(char **environ, char *var)
+{
+	int		i;
+	int		j;
+	char	*tmp;
+
+	i = 0;
+	while (environ[i])
+	{
+		j = 0;
+		while (environ[i][j] && environ[i][j] != '=')
+			j++;
+		tmp = ft_substr(environ[i], 0, j);
+		if (!tmp)
+			break ;
+		if (!ft_strncmp(tmp, var, ft_strlen(var))
+			&& !ft_strncmp(tmp, var, ft_strlen(tmp)))
+		{
+			free(tmp);
+			return (ft_strdup(environ[i] + j + 1));
+		}
+		free(tmp);
+		i++;
+	}
+	return (NULL);
+}
 
 char	**fill_env(void)
 {

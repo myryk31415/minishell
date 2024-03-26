@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/03/26 16:00:14 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/26 16:10:00 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,5 @@ void		set_signal_action(void);
 //cleanup
 void		cmd_free(t_cmd *cmd);
 void		node_tree_delete(void *node, t_node_type type);
+char		*get_env(char **environ, char *var);
 #endif
