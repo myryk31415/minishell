@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 10:14:07 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/26 16:41:57 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/26 17:08:22 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,12 @@ char	*add_path(char *path, char *tmp)
 	char	*new_path;
 	char	*tmp2;
 
-	tmp2 = ft_strjoin(path, "/");
+	if (tmp[0] != '/')
+		tmp2 = ft_strjoin(path, "/");
 	new_path = ft_strjoin(tmp2, tmp);
+	if (tmp[0] != '/')
+		free(tmp2);
 	free(tmp);
-	free(tmp2);
 	free(path);
 	return (new_path);
 }

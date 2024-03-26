@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/26 16:11:01 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/26 17:04:51 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ int	command_no_pipe(t_cmd *token, char ***env, int **pipes, int *redir)
 		{
 			close_pipes(pipes);
 			waitpid(id, &status, 0);
+			if (WIFSIGNALED(status))
+				ft_putnbr_fd(status, 2);
 		}
 	}
 	return (status);
