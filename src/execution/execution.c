@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/26 17:04:51 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/26 23:21:51 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ int	command_no_pipe(t_cmd *token, char ***env, int **pipes, int *redir)
 	int			status;
 	int			id;
 
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, signal_handler);
 	status = builtin(token, pipes, redir, env);
 	if (status == 1)
 	{
@@ -75,8 +77,6 @@ int	command_no_pipe(t_cmd *token, char ***env, int **pipes, int *redir)
 		{
 			close_pipes(pipes);
 			waitpid(id, &status, 0);
-			if (WIFSIGNALED(status))
-				ft_putnbr_fd(status, 2);
 		}
 	}
 	return (status);
@@ -123,60 +123,76 @@ int	command_pipe(t_cmd *token, int **pipes, int redirect, char ***env)
 int	create_tree(int *pre_fd, t_node *token, int status, char **env)
 {
 	int	fd[2];
-	int	pid;
+	// int	pid;
 	int	**pipes;
 
-	pid = 0;
+	// pid = 0;
 	pipes = malloc(sizeof(int *) * 2);
 	if (!pipes)
 		perror("Malloc");
-	if (status == 1)
-		pid = fork();
-	if (pid == -1)
-		perror("Fork");
+	// if (status == 1)
+	// 	pid = fork();
+	// if (pid == -1)
+	// 	perror("Fork");
 	if (pipe(fd) == -1)
 		perror("Pipe");
 	pipes[0] = fd;
 	pipes[1] = pre_fd;
-	if (!pid)
-	{
+	// if (!pid)
+	// {
 		run_tree(token, pipes, &env);
-		exit(0);
-	}
-	else
-	{
-		close_pipes(pipes);
-		waitpid(pid, &status, 0);
-	}
+	// }
+	// else
+	// {
+	// 	close_pipes(pipes);
+	// 	waitpid(pid, &status, 0);
+	// }
 	return (status);
 }
 
 void	run_tree(t_node *token, int **pipes, char ***env)
 {
 	int		pid;
+	int		id;
 
 	pid = fork();
+	id = 1;
 	if (pid == -1)
 		perror("Fork");
 	if (!pid && token->type_left == CMD)
 		command_pipe((t_cmd *)token->left, pipes, 0, env);
 	else if (!pid && token->type_left == REDIR)
 		redirect((t_redir *)token->left, pipes, 1, *env);
-	if (pid && token->type_right == PIPE)
-	{
-		close_pipe(pipes[1]);
-		create_tree(pipes[0], (t_node *)token->right, 0, *env);
-	}
 	else if (pid)
 	{
-		close_pipe(pipes[1]);
-		pipes[1] = pipes[0];
-		pipes[0] = NULL;
+		if (token->type_right != PIPE)
+		{
+			id = fork();
+			if (id == -1)
+				perror("Fork");
+			if (!id)
+			{
+				close_pipe(pipes[1]);
+				pipes[1] = pipes[0];
+				pipes[0] = NULL;
+				if (token->type_right == CMD)
+					command_pipe((t_cmd *)token->right, pipes, 0, env);
+				else if (token->type_right == REDIR)
+					redirect((t_redir *)token->right, pipes, 1, *env);
+				close_pipes(pipes);
+				exit(0);
+			}
+		}
+		if (id && token->type_right == PIPE)
+		{
+			close_pipe(pipes[1]);
+			create_tree(pipes[0], (t_node *)token->right, 0, *env);
+			close_pipes(pipes);
+			waitpid(pid, NULL, 0);
+		}
+		close_pipes(pipes);
+		waitpid(id, NULL, 0);
 		waitpid(pid, NULL, 0);
-		if (token->type_right == CMD)
-			command_pipe((t_cmd *)token->right, pipes, 0, env);
-		else if (token->type_right == REDIR)
-			redirect((t_redir *)token->right, pipes, 1, *env);
 	}
 }
 
