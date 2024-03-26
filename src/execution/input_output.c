@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/25 18:05:10 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/26 03:49:17 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	redirect_nodes(t_redir *token, int **pipes, char **env)
 	if (token->type == CMD)
 		command_pipe((t_cmd *)token->next, pipes, 0, &env);
 	else if (token->type == OR)
-		or_execute((t_node *)token->next, 0, &env);
+		or_execute((t_node *)token->next, 0, pipes, &env);
 	else if (token->type == AND)
 		and_execute((t_node *)token->next, 1, pipes, &env);
 	else if (token->type == PIPE)
@@ -93,7 +93,10 @@ int	redirect(t_redir *token, int **pipes, int status, char **env)
 	if (pid == -1)
 		perror("Fork");
 	if (!pid)
+	{
 		redirect_nodes(token, pipes, env);
+		exit (256);
+	}
 	else
 	{
 		close_pipes(pipes);

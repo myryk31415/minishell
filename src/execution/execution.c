@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/25 20:34:01 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/26 03:49:11 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,10 @@ int	create_tree(int *pre_fd, t_node *token, int status, char **env)
 	pipes[0] = fd;
 	pipes[1] = pre_fd;
 	if (!pid)
+	{
 		run_tree(token, pipes, &env);
+		exit(0);
+	}
 	else
 	{
 		close_pipes(pipes);
@@ -167,6 +170,7 @@ void	run_tree(t_node *token, int **pipes, char ***env)
 		close_pipe(pipes[1]);
 		pipes[1] = pipes[0];
 		pipes[0] = NULL;
+		waitpid(pid, NULL, 0);
 		if (token->type_right == CMD)
 			command_pipe((t_cmd *)token->right, pipes, 0, env);
 		else if (token->type_right == REDIR)
@@ -181,7 +185,7 @@ void	execution(void *tree, t_node_type type, char ***env)
 	else if (type == AND)
 		and_execute((t_node *)tree, 0, NULL, env);
 	else if (type == OR)
-		or_execute((t_node *)tree, 0, env);
+		or_execute((t_node *)tree, 0, NULL, env);
 	else if (type == PIPE)
 		create_tree(0, (t_node *)tree, 1, *env);
 	else if (type == REDIR)
