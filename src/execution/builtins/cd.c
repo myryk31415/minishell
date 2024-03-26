@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 10:14:07 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/26 17:42:55 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/26 17:50:39 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*add_path(char *path, char *tmp)
 	return (new_path);
 }
 
-char	*cd_path(char *arg)
+char	*cd_path(char *arg, char **env)
 {
 	char	*path;
 	char	*tmp;
@@ -53,6 +53,11 @@ char	*cd_path(char *arg)
 	j = 0;
 	if (arg[0] == '/')
 		path = ft_calloc(1, 1);
+	else if (arg[0] == '~')
+	{
+		path = ft_strdup(get_env(env, "HOME"));
+		i = 2;
+	}
 	else
 		path = ft_strdup(getcwd(NULL, PATH_MAX));
 	while (arg[i])
@@ -85,7 +90,7 @@ int	cd(char	*arg, char ***env)
 {
 	char		*path_to_dir;
 
-	if (!arg || ft_strncmp(arg, "~", 2))
+	if (!arg || !ft_strncmp(arg, "~", 2))
 		path_to_dir = get_env(*env, "HOME");
 	else if (arg[0] == '-')
 	{
@@ -95,7 +100,7 @@ int	cd(char	*arg, char ***env)
 			path_to_dir = get_env(*env, "OLDPWD");
 	}
 	else
-		path_to_dir = cd_path(arg);
+		path_to_dir = cd_path(arg, *env);
 	if (!path_to_dir)
 		return (perror(error_msg("bash: cd: ", arg)), 256);
 	if (access(path_to_dir, F_OK | X_OK))
