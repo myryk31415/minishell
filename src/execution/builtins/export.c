@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 09:47:35 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/03/26 12:41:19 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/26 16:23:56 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ char	*get_name(char *arg)
 
 int	check_if_assigned(char *name, char ***env, char *arg)
 {
-	// char	*tmp;
 	int		j;
 
 	j = 0;
@@ -39,9 +38,7 @@ int	check_if_assigned(char *name, char ***env, char *arg)
 		if (!ft_strncmp(name, env[0][j], ft_strlen(name))
 			&& (env[0][j])[ft_strlen(name)] == '=')
 		{
-			// tmp = env[j];
 			env[0][j] = arg;
-			// free(tmp);
 			return (0);
 		}
 		j++;
