@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 10:14:07 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/26 17:08:22 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/26 17:26:49 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@ char	*add_path(char *path, char *tmp)
 
 	if (tmp[0] != '/')
 		tmp2 = ft_strjoin(path, "/");
+	else
+		tmp2 = path;
 	new_path = ft_strjoin(tmp2, tmp);
-	if (tmp[0] != '/')
-		free(tmp2);
+	free(tmp2);
 	free(tmp);
-	free(path);
 	return (new_path);
 }
 
@@ -60,7 +60,7 @@ char	*cd_path(char *arg)
 		j = 1;
 		while (arg[i + j] && arg[i + j] != '/')
 			j++;
-		tmp = ft_calloc (sizeof(char), j);
+		tmp = ft_calloc(sizeof(char), j);
 		ft_strlcpy(tmp, arg + i, j + 1);
 		if (!ft_strncmp(tmp, "..", 2))
 			path = get_up_dir(path);
