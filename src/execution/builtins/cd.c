@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 10:14:07 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/26 17:26:49 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/26 17:42:55 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*cd_path(char *arg)
 	i = 0;
 	j = 0;
 	if (arg[0] == '/')
-		path = malloc(1);
+		path = ft_calloc(1, 1);
 	else
 		path = ft_strdup(getcwd(NULL, PATH_MAX));
 	while (arg[i])
@@ -85,7 +85,7 @@ int	cd(char	*arg, char ***env)
 {
 	char		*path_to_dir;
 
-	if (!arg || *arg == '~')
+	if (!arg || ft_strncmp(arg, "~", 2))
 		path_to_dir = get_env(*env, "HOME");
 	else if (arg[0] == '-')
 	{
