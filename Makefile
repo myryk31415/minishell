@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+         #
+#    By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/03/26 12:49:29 by antonweizma      ###   ########.fr        #
+#    Updated: 2024/03/26 16:07:52 by padam            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 CC = cc
-CFLAGS =  $(INCLUDES) -g3 -Wall -Wextra -Werror
+CFLAGS =  $(INCLUDES) -g3 -Wall -Wextra -Werror -Wall -Wextra -Werror
 INCLUDES = -I./includes
 LIBS = -lreadline
 LIBFT_DIR = libft
@@ -23,7 +23,7 @@ OBJ_PATH = obj
 
 OBJ_DIRS =	execution	execution/builtins	main	parser	parser/binary_tree	\
 
-SRCS_MAIN =	main.c cleanup.c
+SRCS_MAIN =	main.c cleanup.c signals.c
 
 SRCS_PARS =	parser_utils.c			parser.c			tokenizer.c	\
 			tokens_utils.c			redirects.c			cleanup.c\
@@ -31,7 +31,7 @@ SRCS_PARS =	parser_utils.c			parser.c			tokenizer.c	\
 
 SRCS_BNTR =	node_struct.c			node_utils.c		pipeline.c
 
-SRCS_BUILTINS =	cd.c echo.c export.c unset.c
+SRCS_BUILTINS =	cd.c echo.c export.c unset.c exit.c
 
 SRCS_EXECUTION =	execution.c input_output.c utils_execution.c utils2_execution.c and.c
 

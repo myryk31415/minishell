@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_execution.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/26 12:49:17 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/26 16:11:19 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,11 @@ int	is_builtin(t_cmd *token, int **pipes, int *redir, char ***env)
 		// 	return (exit_shell(token->args));
 		else if (!ft_strncmp(token->args[0], "unset", 6))
 			return (unset(token->args, env));
+	}
+	if (!ft_strncmp(token->args[0], "exit", 5))
+	{
+		command(token, pipes, redir);
+		return (exit_shell(token->args));
 	}
 	return (1);
 }

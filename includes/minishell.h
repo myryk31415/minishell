@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/03/26 12:39:26 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/26 16:10:00 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,10 @@ typedef struct s_node
 	t_node_type	type_right;
 }	t_node;
 
-t_node_type	parser(void **token_tree, int exit_status);
+t_node_type	parser(void **token_tree, int exit_status, char **env);
+
+//signal
+void		set_signal_action(void);
 
 //cleanup
 void		cmd_free(t_cmd *cmd);

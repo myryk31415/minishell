@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:16:36 by padam             #+#    #+#             */
-/*   Updated: 2024/03/26 16:24:11 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/26 16:12:46 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "execution.h"
+
+int	g_signal;
 
 char	*get_env(char **environ, char *var)
 {
@@ -70,14 +72,16 @@ int	main(void)
 	char		**env;
 	t_node_type	type;
 
+	g_signal = 0;
 	exit_status = 0;
+	set_signal_action();
 	env = fill_env();
 	if (!env)
 		return (-1);
 	while (1)
 	{
 		token_tree = NULL;
-		type = parser(&token_tree, exit_status);
+		type = parser(&token_tree, exit_status, env);
 		execution(token_tree, type, &env);
 	}
 	return (0);
