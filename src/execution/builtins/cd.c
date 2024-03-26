@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 10:14:07 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/26 17:50:39 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/26 18:06:27 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,24 +42,10 @@ char	*add_path(char *path, char *tmp)
 	return (new_path);
 }
 
-char	*cd_path(char *arg, char **env)
+char	*cd_copy_path(char *path, char *arg, int i, int j)
 {
-	char	*path;
 	char	*tmp;
-	int		i;
-	int		j;
 
-	i = 0;
-	j = 0;
-	if (arg[0] == '/')
-		path = ft_calloc(1, 1);
-	else if (arg[0] == '~')
-	{
-		path = ft_strdup(get_env(env, "HOME"));
-		i = 2;
-	}
-	else
-		path = ft_strdup(getcwd(NULL, PATH_MAX));
 	while (arg[i])
 	{
 		j = 1;
@@ -76,14 +62,25 @@ char	*cd_path(char *arg, char **env)
 	return (path);
 }
 
-void	oldpwd_save(char ***env, char *var)
+char	*cd_path(char *arg, char **env)
 {
-	char	**oldpwd;
+	char	*path;
+	int		i;
+	int		j;
 
-	oldpwd = malloc(sizeof(char *) * 1 + 1);
-	oldpwd[1] = NULL;
-	oldpwd[0] = var;
-	export(oldpwd, env);
+	i = 0;
+	j = 0;
+	if (arg[0] == '/')
+		path = ft_calloc(1, 1);
+	else if (arg[0] == '~')
+	{
+		path = ft_strdup(get_env(env, "HOME"));
+		i = 2;
+	}
+	else
+		path = ft_strdup(getcwd(NULL, PATH_MAX));
+	path = cd_copy_path(path, arg, i, j);
+	return (path);
 }
 
 int	cd(char	*arg, char ***env)

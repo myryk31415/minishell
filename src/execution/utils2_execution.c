@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 14:57:38 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/03/25 20:33:06 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/26 18:06:34 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,14 @@ void	close_pipe(int *pipe)
 		close(pipe[0]);
 		close(pipe[1]);
 	}
+}
+
+void	oldpwd_save(char ***env, char *var)
+{
+	char	**oldpwd;
+
+	oldpwd = malloc(sizeof(char *) * 1 + 1);
+	oldpwd[1] = NULL;
+	oldpwd[0] = var;
+	export(oldpwd, env);
 }
