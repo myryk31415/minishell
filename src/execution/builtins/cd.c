@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 10:14:07 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/27 15:47:48 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/27 17:59:16 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,25 +91,26 @@ int	cd(char	*arg, char ***env)
 	char	*path_to_dir;
 
 	if (!arg || !ft_strncmp(arg, "~", 2))
+	{
 		path_to_dir = get_env(*env, "HOME");
+		if (!path_to_dir)
+			return (ft_putstr_fd("minishell: cd: \
+HOME not set\n", 2), EXIT_FAILURE);
+	}
 	else if (arg[0] == '-')
 	{
 		path_to_dir = get_env(*env, "OLDPWD");
 		if (!path_to_dir)
-			return (free(path_to_dir), \
-				ft_putstr_fd("bash: cd: OLDPWD not set\n", 2), EXIT_FAILURE);
+			return (ft_putstr_fd("minishell: cd: \
+OLDPWD not set\n", 2), EXIT_FAILURE);
 	}
 	else
 		path_to_dir = cd_path(arg, *env);
 	if (!path_to_dir)
-		return (error_msg("bash: cd: ", arg), EXIT_FAILURE);
+		return (error_msg("minishell: cd: ", arg), EXIT_FAILURE);
 	if (access(path_to_dir, F_OK | X_OK))
-		return (error_msg("bash: cd: ", arg), free(path_to_dir), EXIT_FAILURE);
-	system("leaks minishell");
-	oldpwd_save(env);
-	chdir(path_to_dir);
-	if (arg && arg[0] == '-')
-		pwd();
-	free (path_to_dir);
+		return (error_msg("minishell: cd: ", arg), \
+			free(path_to_dir), EXIT_FAILURE);
+	oldpwd_save(env, path_to_dir, arg);
 	return (0);
 }

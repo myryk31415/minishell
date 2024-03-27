@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 14:57:38 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/03/27 15:30:55 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/27 17:57:51 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,17 @@ void	close_pipe(int *pipe)
 	}
 }
 
-void	oldpwd_save(char ***env)
+void	oldpwd_save(char ***env, char *path_to_dir, char *arg)
 {
 	char		*var;
 
 	var = getcwd(NULL, PATH_MAX);
 	pwd_export(ft_strjoin("OLDPWD=", var), env);
 	free(var);
+	chdir(path_to_dir);
+	if (arg && arg[0] == '-')
+		pwd();
+	free (path_to_dir);
 }
 
 void	close_in_and_out_files(int input, int output, int *redir, int **pipes)

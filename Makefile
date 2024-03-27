@@ -6,15 +6,14 @@
 #    By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/03/26 23:40:53 by antonweizma      ###   ########.fr        #
+#    Updated: 2024/03/27 18:31:39 by antonweizma      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 CC = cc
-CFLAGS =  $(INCLUDES) -g3 -Wall -Wextra -Werror -Wall -Wextra -Werror
-INCLUDES = -I./includes
+CFLAGS =  $(INCLUDES) -g3 -Wall -Wextra -Werror
 LIBS = -lreadline
 LIBFT_DIR = libft
 
