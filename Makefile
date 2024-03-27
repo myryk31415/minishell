@@ -6,7 +6,7 @@
 #    By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/03/26 19:45:51 by antonweizma      ###   ########.fr        #
+#    Updated: 2024/03/26 23:40:53 by antonweizma      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,9 +33,9 @@ SRCS_BNTR =	node_struct.c			node_utils.c		pipeline.c
 
 SRCS_BUILTINS =	cd.c echo.c export.c unset.c exit.c
 
-SRCS_EXECUTION =	execution.c input_output.c utils_execution.c utils2_execution.c and.c
+SRCS_EXECUTION =	execution.c input_output.c utils_execution.c utils2_execution.c and.c command.c
 
-SRCS_PIPE =			fork.c			pipe.c			utils.c
+SRCS_PIPE =		fork.c			pipe.c			utils.c
 
 SRC_NAME =	$(addprefix main/,				$(SRCS_MAIN))		\
 			$(addprefix execution/builtins/,$(SRCS_BUILTINS))		\
