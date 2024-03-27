@@ -6,15 +6,11 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/03/27 18:48:11 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/27 19:52:18 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
-void	debug_print_tree(t_node *node, int i);
-void	debug_print_redir(t_redir *redir, int i);
-void	debug_print_cmd(t_cmd *cmd);
 
 char	*get_current_folder(void)
 {
@@ -46,9 +42,9 @@ char	*new_prompt(char **env)
 	free(prompt);
 	prompt = ft_strjoin(prompt_tmp, "$ ");
 	free(prompt_tmp);
-	// command = readline(prompt);
-	ft_putstr_fd(prompt, 0);
-	command = get_next_line(0);
+	command = readline(prompt);
+	// ft_putstr_fd(prompt, 0);
+	// command = get_next_line(0);
 	free(prompt);
 	if (command && *command && *command != '\n')
 		add_history(command);
@@ -65,11 +61,11 @@ t_node_type	parser(void **token_tree, int exit_status, char **env)
 	command = NULL;
 	while (!command || !*command || *command == '\n')
 		command = new_prompt(env);
-	command = expand_variables(command, exit_status, env);
-	tokens = tokenize_command(command);
+	//command = expand_variables(command, exit_status, env);
+	tokens = get_next_token(command, NULL, exit_status, env);
 	free(command);
 	type_first = tokens_to_tree(tokens, token_tree);
-	climb_tree(*token_tree, type_first, env);
+	climb_tree(*token_tree, type_first, exit_status, env);
 	if (type_first == ERROR)
 		printf("syntax error\n");
 	// if (*token_tree)
