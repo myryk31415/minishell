@@ -23,6 +23,11 @@
 #### exit
 - exit
 
+### Pipes
+- echo a | cat -e
+- echo a | cat | cat | cat -e
+- echo a | cat >test | cat -e
+
 ### Variable expansion
 - echo $HOME
 - echo \$HOME$
@@ -72,3 +77,17 @@
 -	(cat <<he) <notfound
 	>jdfsa
 	>he
+
+### Syntax errors
+- ()
+- (())
+- &&
+- |
+- echo a &&
+- && echo a
+- echo a && && echo b
+- cat >
+- cat > >test
+- echo a |
+- echo a | | echo b
+- echo a | && echo b
