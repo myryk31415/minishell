@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 09:47:35 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/03/26 16:23:56 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/27 15:32:29 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,22 @@ char	*get_name(char *arg)
 	int		i;
 	char	*name;
 
+	system("leaks minishell");
 	i = 0;
-	while (arg[i] != '=')
+	while (arg && arg[i] != '=')
 		i++;
 	name = malloc(i + 1);
 	i = -1;
 	while (arg[++i] != '=')
 		name[i] = arg[i];
-	name[i] = 0;
+	name[i] = '\0';
 	return (name);
 }
 
 int	check_if_assigned(char *name, char ***env, char *arg)
 {
 	int		j;
+	char	*tmp;
 
 	j = 0;
 	while (env[0][j])
@@ -38,7 +40,9 @@ int	check_if_assigned(char *name, char ***env, char *arg)
 		if (!ft_strncmp(name, env[0][j], ft_strlen(name))
 			&& (env[0][j])[ft_strlen(name)] == '=')
 		{
+			tmp = env[0][j];
 			env[0][j] = arg;
+			free(tmp);
 			return (0);
 		}
 		j++;
@@ -73,14 +77,24 @@ char	**allocate_new_env(char **env, char *arg)
 	return (env);
 }
 
-void	display_env(char **env)
+int	pwd_export(char *arg, char ***env)
 {
-	int	i;
+	char	*name;
 
-	i = 0;
-	while (env[i])
-		ft_printf("%s\n", env[i++]);
+	name = ft_strdup("OLDPWD");
+	if (arg)
+	{
+		if (check_if_assigned(name, env, arg) == -1)
+		{
+			*env = allocate_new_env(*env, arg);
+			if (*env == NULL)
+				return (free(name), -1);
+		}
+	}
+	free(name);
+	return (0);
 }
+
 
 int	export(char **arg, char ***env)
 {

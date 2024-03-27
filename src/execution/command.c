@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 23:38:37 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/03/27 01:04:06 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/27 15:47:35 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,7 @@ void	in_and_out_handling(t_cmd *token, int **pipes, int *redir)
 	else if (pipes && pipes[0])
 		output = pipes[0][1];
 	dup2(output, STDOUT_FILENO);
-	// if (output != 1 && redir && !redir[1])
-	// 	close(output);
-	close_pipes(pipes);
+	close_in_and_out_files(input, output, redir, pipes);
 }
 
 int	builtin(t_cmd *token, int **pipes, int *redir, char ***env)
@@ -70,7 +68,7 @@ int	command_fork(t_cmd *token, char ***env, int **pipes, int *redir)
 			perror("Fork");
 		if (!id)
 		{
-			command(token, pipes, redir);
+			in_and_out_handling(token, pipes, redir);
 			exec(token->args, *env);
 		}
 		else
@@ -86,10 +84,12 @@ void	command_no_fork(t_cmd *token, int **pipes, int *redir, char ***env)
 {
 	int	status;
 
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, signal_handler);
 	status = is_builtin(token, pipes, redir, env);
 	if (status == 1)
 	{
-		command(token, pipes, redir);
+		in_and_out_handling(token, pipes, redir);
 		exec(token->args, *env);
 	}
 	close_pipes(pipes);
@@ -101,7 +101,7 @@ int	command(t_cmd *token, int **pipes, int redirect, char ***env)
 	static int	redir[2];
 	int			status;
 
-	status = 256;
+	status = EXIT_FAILURE;
 	if (redirect == 1)
 	{
 		if (token->redirect_in && *(token->redirect_in))
@@ -115,7 +115,7 @@ int	command(t_cmd *token, int **pipes, int redirect, char ***env)
 		if (redirect == 0)
 			command_no_fork(token, pipes, redir, env);
 		else
-			status = command_no_pipe(token, env, pipes, redir);
+			status = command_fork(token, env, pipes, redir);
 	}
 	return (status);
 }
