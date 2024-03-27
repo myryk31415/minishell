@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/27 15:48:40 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/27 15:54:00 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ int	redirect(t_redir *token, int **pipes, int status, char **env)
 		if (pipe_exit)
 			exit(status);
 	}
+		system("leaks minishell");
 	return (status);
 }
 

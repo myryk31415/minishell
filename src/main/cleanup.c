@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 17:10:56 by padam             #+#    #+#             */
-/*   Updated: 2024/03/21 22:31:51 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/27 15:57:20 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	node_tree_delete(void *node, t_node_type type)
 		cmd_free((t_cmd *)node);
 	else if (type == REDIR)
 	{
-		free(((t_redir *)node)->redirects);
+		cmd_free(((t_redir *)node)->redirects);
 		node_tree_delete(((t_redir *)node)->next, ((t_redir *)node)->type);
 		free(node);
 	}
