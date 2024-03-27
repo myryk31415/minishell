@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 12:18:20 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/03/26 16:35:56 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/27 15:47:59 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	unset(char **args, char ***env)
 	int	i;
 
 	if (!args | !*args)
-		return (256);
+		return (EXIT_FAILURE);
 	args++;
 	while (*args)
 	{

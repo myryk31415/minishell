@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/27 01:04:06 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/27 15:48:40 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	input_handling(char **input, int *heredoc)
 			file = open(input[j], O_RDONLY, 0666);
 			if (file == -1)
 			{
-				perror(error_msg("bash: ", input[j]));
-				exit(256);
+				error_msg("bash: ", input[j]);
+				exit(EXIT_FAILURE);
 			}
 		}
 		else
@@ -58,8 +58,8 @@ int	output_handling(char **output, int *append)
 					O_WRONLY | O_APPEND | O_CREAT, 0666);
 		if (file == -1)
 		{
-			perror(error_msg("bash: ", output[j]));
-			exit(256);
+			error_msg("bash: ", output[j]);
+			exit(EXIT_FAILURE);
 		}
 		j++;
 	}
@@ -72,7 +72,7 @@ void	redirect_nodes(t_redir *token, int **pipes, char **env)
 	if (token->type == CMD)
 		command((t_cmd *)token->next, pipes, 0, &env);
 	else if (token->type == OR)
-		or_execute((t_node *)token->next, 0, pipes, &env);
+		or_execute((t_node *)token->next, 1, pipes, &env);
 	else if (token->type == AND)
 		and_execute((t_node *)token->next, 1, pipes, &env);
 	else if (token->type == PIPE)
@@ -89,13 +89,13 @@ int	redirect(t_redir *token, int **pipes, int status, char **env)
 	pipe_exit = 0;
 	if (status == 1)
 		pipe_exit = 1;
-	pid = fork();
+	pid = fork(	);
 	if (pid == -1)
 		perror("Fork");
 	if (!pid)
 	{
 		redirect_nodes(token, pipes, env);
-		exit (256);
+		exit(EXIT_FAILURE);
 	}
 	else
 	{
@@ -107,10 +107,11 @@ int	redirect(t_redir *token, int **pipes, int status, char **env)
 	return (status);
 }
 
-char	*error_msg(char *cmd, char *file)
+void	error_msg(char *cmd, char *file)
 {
 	char	*tmp;
 
 	tmp = ft_strjoin(cmd, file);
-	return (tmp);
+	perror(tmp);
+	free(tmp);
 }

@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:57:00 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/27 01:04:06 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/27 15:47:59 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	echo(char **args)
 	bool	flag;
 
 	if (!args | !*args)
-		return (256);
+		return (EXIT_FAILURE);
 	if (!args[1])
 		return (ft_printf("\n"), 0);
 	i = n_flag(args[1]);
@@ -46,10 +46,10 @@ int	echo(char **args)
 		flag = false;
 	if (args[i])
 		if (ft_printf("%s", args[i++]) == -1)
-			return (256);
+			return (EXIT_FAILURE);
 	while (args[i])
 		if (ft_printf(" %s", args[i++]) == -1)
-			return (256);
+			return (EXIT_FAILURE);
 	if (flag == false)
 		ft_printf("\n");
 	return (0);
@@ -61,7 +61,7 @@ int	pwd(void)
 
 	cwd = getcwd(NULL, PATH_MAX);
 	if (!cwd)
-		return (free(cwd), perror("getcwd"), 256);
+		return (free(cwd), perror("getcwd"), EXIT_FAILURE);
 	ft_printf("%s\n", cwd);
 	free(cwd);
 	return (0);
