@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/03/27 15:12:21 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/27 16:23:28 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,9 @@ char	*new_prompt(char **env)
 	char	*prompt_tmp;
 	char	*command;
 
-	prompt = ft_strjoin(get_env(env, "USER"), "@minishell:");
+	prompt_tmp = get_env(env, "USER");
+	prompt = ft_strjoin(prompt_tmp, "@minishell:");
+	free(prompt_tmp);
 	prompt_tmp = ft_strjoin(prompt, CYAN);
 	free(prompt);
 	prompt = ft_strjoin(prompt_tmp, get_current_folder());
@@ -48,7 +50,7 @@ char	*new_prompt(char **env)
 	// ft_putstr_fd(prompt, 0);
 	// command = get_next_line(0);
 	free(prompt);
-	if (command)
+	if (command && *command && *command != '\n')
 		add_history(command);
 	return (command);
 }
@@ -61,7 +63,7 @@ t_node_type	parser(void **token_tree, int exit_status, char **env)
 	t_node_type	type_first;
 
 	command = NULL;
-	while (!command || !*command)
+	while (!command || !*command || *command == '\n')
 		command = new_prompt(env);
 	command = expand_variables(command, exit_status, env);
 	tokens = tokenize_command(command);
