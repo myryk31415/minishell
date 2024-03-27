@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:40:50 by padam             #+#    #+#             */
-/*   Updated: 2024/03/08 12:57:36 by aweizman         ###   ########.fr       */
+/*   Updated: 2024/03/27 18:22:04 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,13 @@ t_token	*handle_quotes(char **string, t_token *token_last)
 		return (NULL);
 	if (token_last && token_last->type == T_WORD)
 		token_last->value = ft_strjoin(token_last->value,
-				ft_substr(*string, 0, i));
+				ft_substr(*string, 0, i)); //free
 	else
 	{
 		token_last = token_add(token_last, T_WORD);
 		token_last->value = ft_substr(*string, 0, i);
 	}
+	token_last->quote = 2;
 	*string += i;
 	return (token_last);
 }

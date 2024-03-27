@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:34:22 by padam             #+#    #+#             */
-/*   Updated: 2024/03/27 14:56:22 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/27 18:22:34 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ int	get_input(t_token **token_first, t_cmd *redirects, bool value, int *count)
 		print_syntax_err(*token_first);
 		return (-1);
 	}
-	redirects->heredoc[*count] = value;
+	if (value)
+		redirects->heredoc[*count] = (*token_first)->quote;
 	redirects->redirect_in[*count] = (*token_first)->value;
 	(*token_first)->value = NULL;
 	token_delete(token_first);

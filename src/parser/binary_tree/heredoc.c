@@ -6,13 +6,13 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:47:36 by padam             #+#    #+#             */
-/*   Updated: 2024/03/27 15:16:11 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/27 18:41:58 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-int	here_doc(char *limiter)
+int	here_doc(char *limiter, int variable_expansion, char **env)
 {
 	char	*str;
 	int		fd[2];
@@ -24,6 +24,10 @@ int	here_doc(char *limiter)
 		str = readline(">");
 		if (str && *str)
 		{
+			(void)variable_expansion;
+			(void)env;
+			// if (variable_expansion)
+			// 	str = expand_variables(str, 0, env);
 			if (!ft_strncmp(str, limiter, ft_strlen(limiter))
 				&& !ft_strncmp(str, limiter, ft_strlen(str) - 1))
 			{
@@ -39,7 +43,7 @@ int	here_doc(char *limiter)
 	return (fd[0]);
 }
 
-int	handle_cmd(t_cmd *cmd)
+int	handle_cmd(t_cmd *cmd, char **env)
 {
 	int	i;
 
@@ -48,7 +52,10 @@ int	handle_cmd(t_cmd *cmd)
 	{
 		if (cmd->heredoc[i])
 		{
-			cmd->heredoc[i] = here_doc(cmd->redirect_in[i]);
+			if (cmd->heredoc[i] == 2)
+				cmd->heredoc[i] = here_doc(cmd->redirect_in[i], 0, env);
+			else
+				cmd->heredoc[i] = here_doc(cmd->redirect_in[i], 1, env);
 			free(cmd->redirect_in[i]);
 			cmd->redirect_in[i] = NULL;
 			if (cmd->heredoc[i] == -1)
@@ -59,7 +66,7 @@ int	handle_cmd(t_cmd *cmd)
 	return (0);
 }
 
-int	handle_redir(t_redir *redir)
+int	handle_redir(t_redir *redir, char **env)
 {
 	int		i;
 	t_cmd	*cmd;
@@ -70,7 +77,10 @@ int	handle_redir(t_redir *redir)
 	{
 		if (cmd->heredoc[i])
 		{
-			cmd->heredoc[i] = here_doc(cmd->redirect_in[i]);
+			if (cmd->heredoc[i] == 2)
+				cmd->heredoc[i] = here_doc(cmd->redirect_in[i], 0, env);
+			else
+				cmd->heredoc[i] = here_doc(cmd->redirect_in[i], 1, env);
 			free(cmd->redirect_in[i]);
 			cmd->redirect_in[i] = NULL;
 			if (cmd->heredoc[i] == -1)
@@ -79,26 +89,26 @@ int	handle_redir(t_redir *redir)
 		i++;
 	}
 	if (redir->next)
-		climb_tree(redir->next, redir->type);
+		climb_tree(redir->next, redir->type, env);
 	return (0);
 }
 
-int	climb_tree(void *ptr, t_node_type type)
+int	climb_tree(void *ptr, t_node_type type, char **env)
 {
 	t_node	*node;
 
 	if (type == CMD)
-		return (handle_cmd(ptr));
+		return (handle_cmd(ptr, env));
 	else if (type == REDIR)
-		return(handle_redir(ptr));
+		return(handle_redir(ptr, env));
 	else if (type == PIPE || type == AND || type == OR)
 	{
 		node = (t_node *)ptr;
 		if (node->left)
-			if (climb_tree(node->left, node->type_left) == -1)
+			if (climb_tree(node->left, node->type_left, env) == -1)
 				return (-1);
 		if (node->right)
-			return (climb_tree(node->right, node->type_right));
+			return (climb_tree(node->right, node->type_right, env));
 	}
 	return (-1);
 }

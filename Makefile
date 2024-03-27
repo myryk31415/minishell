@@ -6,14 +6,14 @@
 #    By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/03/27 15:15:20 by padam            ###   ########.fr        #
+#    Updated: 2024/03/27 18:31:29 by padam            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 CC = cc
-CFLAGS =  $(INCLUDES) -g3 -Wall -Wextra -Werror -Wall -Wextra -Werror
+CFLAGS =  $(INCLUDES) -g3 -Wall -Wextra -Werror
 INCLUDES = -I./includes
 LIBS = -lreadline
 LIBFT_DIR = libft

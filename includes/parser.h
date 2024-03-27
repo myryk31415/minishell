@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:14:04 by padam             #+#    #+#             */
-/*   Updated: 2024/03/27 15:15:52 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/27 18:24:31 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_token
 {
 	t_token_type	type;
 	char			*value;
+	int				quote;
 	struct s_token	*next;
 	struct s_token	*prev;
 }	t_token;
@@ -63,7 +64,7 @@ t_token		*get_operator(t_token *tokens);
 
 // redirects
 int			redirects_get(t_token **token_first, t_cmd **redirects);
-int			climb_tree(void *ptr, t_node_type type);
+int			climb_tree(void *ptr, t_node_type type, char **env);
 
 ///REST
 //cleanup
