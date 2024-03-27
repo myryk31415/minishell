@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:16:36 by padam             #+#    #+#             */
-/*   Updated: 2024/03/27 17:40:09 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/27 21:19:01 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	**fill_env(void)
 	i = 0;
 	while (environ[i])
 		i++;
-	env = malloc(sizeof(char *) * i + 1);
+	env = ft_calloc(i + 1, sizeof(char *));
 	if (!env)
 		return (perror("Malloc"), NULL);
 	i = -1;
@@ -61,7 +61,6 @@ char	**fill_env(void)
 		if (!env[i])
 			perror("Malloc");
 	}
-	env[i] = NULL;
 	return (env);
 }
 
