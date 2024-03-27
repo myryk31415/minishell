@@ -3,22 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 23:26:49 by padam             #+#    #+#             */
-/*   Updated: 2024/03/24 23:59:59 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/27 16:29:11 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <signal.h>
 
 extern int	g_signal;
 
-static void signal_handler(int signal)
+void	signal_handler(int signal)
 {
 	if (signal == SIGINT)
-		g_signal = signal;
+	{
+		ft_putstr_fd("\n", 2);
+		rl_on_new_line();
+		// rl_replace_line("");
+		rl_redisplay();
+	}
+	if (signal == SIGQUIT)
+	{
+		ft_putstr_fd("Quit: 3\n", 2);
+		rl_on_new_line();
+		// rl_replace_line("");
+		rl_redisplay();
+	}
+
 }
 
 void	set_signal_action(void)
@@ -32,4 +44,3 @@ void	set_signal_action(void)
 	if (sigaction(SIGINT, &signalaction, NULL) == -1)
 		printf("Error: could not set signal action");
 }
-

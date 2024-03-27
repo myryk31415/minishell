@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:16:36 by padam             #+#    #+#             */
-/*   Updated: 2024/03/26 16:12:46 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/27 17:40:09 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ int	main(void)
 
 	g_signal = 0;
 	exit_status = 0;
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, signal_handler);
 	set_signal_action();
 	env = fill_env();
 	if (!env)
@@ -82,7 +84,11 @@ int	main(void)
 	{
 		token_tree = NULL;
 		type = parser(&token_tree, exit_status, env);
+		// system("leaks minishell");
 		execution(token_tree, type, &env);
+		node_tree_delete(token_tree, type);
+		// system("leaks minishell");
 	}
+	free_env(&env);
 	return (0);
 }

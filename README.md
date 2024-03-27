@@ -1,6 +1,6 @@
 # Minishell
 This project is our own little shell written completely in C.
-While it is not as feature complete as bash or zsh, it provides most features typically used.
+While it is not as feature complete as minishell or zsh, it provides most features typically used.
 
 ## Features
 - executing commands

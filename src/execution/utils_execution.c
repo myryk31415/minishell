@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_execution.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/26 16:11:19 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/27 17:59:04 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,14 @@ char	*get_path(char *cmd, char **environ, char *var)
 	return (NULL);
 }
 
-
 int	is_builtin(t_cmd *token, int **pipes, int *redir, char ***env)
 {
 	if (!ft_strncmp(token->args[0], "cd", 3) || !ft_strncmp(token->args[0], \
 		"echo", 5) || !ft_strncmp(token->args[0], "pwd", 4) || \
-		!ft_strncmp(token->args[0], "export", 7) || !ft_strncmp(token->args[0] ,\
+		!ft_strncmp(token->args[0], "export", 7) || !ft_strncmp(token->args[0], \
 		"unset", 6) || !ft_strncmp(token->args[0], "exit", 5))
 	{
-		command(token, pipes, redir);
+		in_and_out_handling(token, pipes, redir);
 		if (!ft_strncmp(token->args[0], "cd", 3))
 			return (cd(token->args[1], env));
 		else if (!ft_strncmp(token->args[0], "echo", 5))
@@ -58,15 +57,10 @@ int	is_builtin(t_cmd *token, int **pipes, int *redir, char ***env)
 			return (pwd());
 		else if (!ft_strncmp(token->args[0], "export", 7))
 			return (export(token->args, env));
-		// else if (!ft_strncmp(token->args[0], "exit", 5))
-		// 	return (exit_shell(token->args));
+		else if (!ft_strncmp(token->args[0], "exit", 5))
+			return (exit_shell(0));
 		else if (!ft_strncmp(token->args[0], "unset", 6))
 			return (unset(token->args, env));
-	}
-	if (!ft_strncmp(token->args[0], "exit", 5))
-	{
-		command(token, pipes, redir);
-		return (exit_shell(token->args));
 	}
 	return (1);
 }
@@ -98,7 +92,7 @@ void	free_array(char **arr)
 	int	i;
 
 	i = -1;
-	while (arr[++i])
+	while (arr && arr[++i])
 		free(arr[i]);
 	free(arr);
 }

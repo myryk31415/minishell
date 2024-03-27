@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 14:57:38 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/03/26 18:06:34 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/27 17:57:51 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	close_pipes(int **pipes)
 		close(pipes[0][0]);
 		close(pipes[0][1]);
 	}
-
 }
 
 void	close_pipe(int *pipe)
@@ -36,12 +35,34 @@ void	close_pipe(int *pipe)
 	}
 }
 
-void	oldpwd_save(char ***env, char *var)
+void	oldpwd_save(char ***env, char *path_to_dir, char *arg)
 {
-	char	**oldpwd;
+	char		*var;
 
-	oldpwd = malloc(sizeof(char *) * 1 + 1);
-	oldpwd[1] = NULL;
-	oldpwd[0] = var;
-	export(oldpwd, env);
+	var = getcwd(NULL, PATH_MAX);
+	pwd_export(ft_strjoin("OLDPWD=", var), env);
+	free(var);
+	chdir(path_to_dir);
+	if (arg && arg[0] == '-')
+		pwd();
+	free (path_to_dir);
+}
+
+void	close_in_and_out_files(int input, int output, int *redir, int **pipes)
+{
+	if (output != 1 && (!redir || (redir && !redir[1])))
+		close(output);
+	if (input)
+		close(input);
+	close_pipes(pipes);
+
+}
+
+void	display_env(char **env)
+{
+	int	i;
+
+	i = 0;
+	while (env[i])
+		ft_printf("%s\n", env[i++]);
 }
