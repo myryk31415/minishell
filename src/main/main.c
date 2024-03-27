@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:16:36 by padam             #+#    #+#             */
-/*   Updated: 2024/03/27 15:38:27 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/27 16:00:55 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,10 @@ int	main(void)
 	{
 		token_tree = NULL;
 		type = parser(&token_tree, exit_status, env);
-		// system("leaks minishell");
+		system("leaks minishell");
 		execution(token_tree, type, &env);
 		node_tree_delete(token_tree, type);
-			// system("leaks minishell");
+		system("leaks minishell");
 	}
 	free_env(&env);
 	return (0);
