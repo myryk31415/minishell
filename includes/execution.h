@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:29 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/26 16:15:17 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/26 18:07:02 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int		pwd(void);
 int		echo(char **args);
 int		cd(char	*arg, char ***env);
 int		exit_shell(char **args);
+void	oldpwd_save(char ***env, char *var);
 int		and_execute(t_node *token, int status, int **pipes, char ***env);
 int		command_no_pipe(t_cmd *token, char ***env, int **pipes, int *redir);
 int		or_execute(t_node *token, int status, int **pipes, char ***env);
