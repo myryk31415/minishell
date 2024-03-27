@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 09:47:35 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/03/27 15:32:29 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/27 21:10:17 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ char	*get_name(char *arg)
 	int		i;
 	char	*name;
 
-	system("leaks minishell");
 	i = 0;
 	while (arg && arg[i] != '=')
 		i++;
@@ -59,7 +58,7 @@ char	**allocate_new_env(char **env, char *arg)
 	env_size = 0;
 	while (env[env_size++])
 		;
-	new_env = malloc(sizeof(char *) * env_size + 2);
+	new_env = malloc(sizeof(char *) * env_size + 1);
 	if (!new_env)
 		return (perror("Failed to allocate memory"), NULL);
 	env_size = -1;
@@ -69,7 +68,7 @@ char	**allocate_new_env(char **env, char *arg)
 		if (!new_env[env_size])
 			perror("Malloc");
 	}
-	new_env[env_size++] = arg;
+	new_env[env_size++] = ft_strdup(arg);
 	new_env[env_size] = 0;
 	tmp = env;
 	env = new_env;
