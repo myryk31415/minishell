@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   node_struct.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:38:13 by padam             #+#    #+#             */
-/*   Updated: 2024/03/21 22:33:14 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/27 16:04:46 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,18 @@ t_node_type	check_brackets(t_token *token_first, void **head)
 		token_last = token_last->prev;
 		token_delete(&token_last->next);
 		token_delete(&token_first);
+		if (!token_first)
+		{
+			free(redirects);
+			return (ERROR);
+		}
 		new_node = new_redir_node();
 		if (!new_node)
 			return(err_pars("malloc", redirects, &token_first));
 		new_node->redirects = redirects;
 		new_node->type = split_by_operator(token_last, &new_node->next);
+		if (new_node->type == ERROR)
+			return (ERROR);
 		*head = new_node;
 		return (REDIR);
 	}

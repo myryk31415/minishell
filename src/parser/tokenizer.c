@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:40:50 by padam             #+#    #+#             */
-/*   Updated: 2024/03/08 12:57:36 by aweizman         ###   ########.fr       */
+/*   Updated: 2024/03/27 19:49:26 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,24 @@ t_token_type	get_token_type(char *string)
 	return (token);
 }
 
+char	*var_expand(char *old_string, char *string, int exit_status, char **env)
+{
+	char *output;
+
+	string = expand_variables(string, exit_status, env);
+	output = ft_strjoin(old_string, string);
+	free(old_string);
+	free(string);
+	return (output);
+}
+
 //error handling
-t_token	*handle_quotes(char **string, t_token *token_last)
+t_token	*handle_quotes(char **string, t_token *token_last, int exit_status, char **env)
 {
 	char	quote;
 	int		i;
+	char	*tmp;
+	char	*tmp2;
 
 	i = 0;
 	quote = **string;
@@ -57,19 +70,24 @@ t_token	*handle_quotes(char **string, t_token *token_last)
 		i++;
 	if ((*string)[i] != quote)
 		return (NULL);
-	if (token_last && token_last->type == T_WORD)
-		token_last->value = ft_strjoin(token_last->value,
-				ft_substr(*string, 0, i));
-	else
-	{
+	if (!token_last || token_last->type != T_WORD)
 		token_last = token_add(token_last, T_WORD);
-		token_last->value = ft_substr(*string, 0, i);
+	if (quote == '\'')
+	{
+		tmp2 = ft_substr(*string, 0, i);
+		tmp = token_last->value;
+		token_last->value = ft_strjoin(tmp, tmp2);
+		free(tmp);
+		free(tmp2);
 	}
+	else
+		token_last->value = var_expand(token_last->value, ft_substr(*string, 0, i), exit_status, env);
+	token_last->quote = 2;
 	*string += i;
 	return (token_last);
 }
 
-t_token	*handle_command(char **string, t_token *token_last)
+t_token	*handle_word(char **string, t_token *token_last, int exit_status, char **env)
 {
 	t_token_type	token_type;
 	int				i;
@@ -80,19 +98,15 @@ t_token	*handle_command(char **string, t_token *token_last)
 		token_type = get_token_type((*string) + i++);
 	if (token_type != T_WORD)
 		i--;
-	if (token_last && token_last->type == T_WORD)
-		token_last->value = ft_strjoin(token_last->value,
-				ft_substr(*string, 0, i));
-	else
-	{
+	if (!token_last || token_last->type != T_WORD)
 		token_last = token_add(token_last, T_WORD);
-		token_last->value = ft_substr(*string, 0, i);
-	}
+	token_last->value = var_expand(token_last->value,
+		ft_substr(*string, 0, i), exit_status, env);
 	*string += i - 1;
 	return (token_last);
 }
 
-t_token	*get_next_token(char *string, t_token *token_last)
+t_token	*get_next_token(char *string, t_token *token_last, int exit_status, char **env)
 {
 	t_token_type	token_type;
 	int				i;
@@ -102,25 +116,25 @@ t_token	*get_next_token(char *string, t_token *token_last)
 		return (token_last);
 	token_type = get_token_type(string);
 	if (is_separator(*string) && is_separator(*(string + 1)))
-		return (get_next_token(string + 1, token_last));
+		return (get_next_token(string + 1, token_last, exit_status, env));
 	token_last = token_add(token_last, token_type);
 	if (is_quote(*string))
-		token_last = handle_quotes(&string, token_last);
+		token_last = handle_quotes(&string, token_last, exit_status, env);
 	else if (token_type == T_WORD)
-		token_last = handle_command(&string, token_last);
+		token_last = handle_word(&string, token_last, exit_status, env);
 	else if (token_type == T_AND || token_type == T_OR
 		|| token_type == T_REDIR_APPEND || token_type == T_REDIR_HEREDOC)
 		i += 1;
 	if (string[i])
-		token_last = get_next_token(string + i, token_last);
+		token_last = get_next_token(string + i, token_last, exit_status, env);
 	return (token_last);
 }
 
-t_token	*tokenize_command(char *command)
-{
-	//just call get_next_token directly
-	t_token			*tokens;
+// t_token	*tokenize_command(char *command, char **env)
+// {
+// 	//just call get_next_token directly
+// 	t_token			*tokens;
 
-	tokens = get_next_token(command, NULL);
-	return (tokens);
-}
+// 	tokens = get_next_token(command, NULL, env);
+// 	return (tokens);
+// }

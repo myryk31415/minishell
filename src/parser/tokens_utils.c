@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:11:07 by padam             #+#    #+#             */
-/*   Updated: 2024/03/13 15:47:26 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/27 18:21:53 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ t_token	*token_add(t_token *token_last, t_token_type token_type)
 	new_token->prev = token_last;
 	new_token->type = token_type;
 	new_token->value = NULL;
+	new_token->quote = 1;
 	if (token_last)
 		token_last->next = new_token;
 	return (new_token);

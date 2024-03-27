@@ -3,18 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/03/27 16:16:44 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/27 20:10:26 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
-void	debug_print_tree(t_node *node, int i);
-void	debug_print_redir(t_redir *redir, int i);
-void	debug_print_cmd(t_cmd *cmd);
 
 char	*get_current_folder(void)
 {
@@ -35,7 +31,9 @@ char	*new_prompt(char **env)
 	char	*prompt_tmp;
 	char	*command;
 
-	prompt = ft_strjoin(get_env(env, "USER"), "@minishell:");
+	prompt_tmp = get_env(env, "USER");
+	prompt = ft_strjoin(prompt_tmp, "@minishell:");
+	free(prompt_tmp);
 	prompt_tmp = ft_strjoin(prompt, CYAN);
 	free(prompt);
 	prompt = ft_strjoin(prompt_tmp, get_current_folder());
@@ -48,7 +46,7 @@ char	*new_prompt(char **env)
 	ft_putstr_fd(prompt, 0);
 	command = get_next_line(0);
 	free(prompt);
-	if (command)
+	if (command && *command && *command != '\n')
 		add_history(command);
 	return (command);
 }
@@ -63,10 +61,11 @@ t_node_type	parser(void **token_tree, int exit_status, char **env)
 	command = NULL;
 	while (!command || !*command || *command == '\n')
 		command = new_prompt(env);
-	command = expand_variables(command, exit_status, env);
-	tokens = tokenize_command(command);
+	//command = expand_variables(command, exit_status, env);
+	tokens = get_next_token(command, NULL, exit_status, env);
 	free(command);
 	type_first = tokens_to_tree(tokens, token_tree);
+	climb_tree(*token_tree, type_first, exit_status, env);
 	if (type_first == ERROR)
 		printf("syntax error\n");
 	// if (*token_tree)

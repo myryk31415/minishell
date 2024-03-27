@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:14:04 by padam             #+#    #+#             */
-/*   Updated: 2024/03/26 16:03:49 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/27 19:11:38 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,12 @@ typedef struct s_token
 {
 	t_token_type	type;
 	char			*value;
+	int				quote;
 	struct s_token	*next;
 	struct s_token	*prev;
 }	t_token;
 
+///BIN_TREE
 // node_struct
 t_node_type	tokens_to_tree(t_token *tokens, void **head);
 
@@ -55,6 +57,16 @@ t_node_type	tokens_to_tree(t_token *tokens, void **head);
 t_node		*new_node(void);
 t_redir		*new_redir_node(void);
 
+// pipeline
+int			count_words(t_token *tokens);
+t_token		*get_pipe(t_token *tokens);
+t_token		*get_operator(t_token *tokens);
+
+// redirects
+int			redirects_get(t_token **token_first, t_cmd **redirects);
+int			climb_tree(void *ptr, t_node_type type, int exit_status, char **env);
+
+///REST
 //cleanup
 t_node_type	err_pars(char *message, t_cmd *redirects, t_token **tokens);
 void		print_syntax_err(t_token *token);
@@ -63,11 +75,6 @@ void		print_syntax_err(t_token *token);
 void		debug_print_token_array(t_token *token_first);
 void		get_next_debug(void *ptr, t_node_type type, int i);
 
-// pipeline
-int			count_words(t_token *tokens);
-t_token		*get_pipe(t_token *tokens);
-t_token		*get_operator(t_token *tokens);
-
 // parser_utils
 int			is_quote(char c);
 int			is_separator(char c);
@@ -75,12 +82,9 @@ int			is_redirect(t_token_type type);
 int			is_operator(t_token_type type);
 int			is_variable(char c);
 
-// redirects
-int			redirects_get(t_token **token_first, t_cmd **redirects);
-
 // tokenizer
 t_token_type	get_token_type(char *string);
-t_token		*tokenize_command(char *command);
+t_token		*get_next_token(char *string, t_token *token_last, int exit_status, char **env);
 
 // tokens utils
 void		token_delete(t_token **tokens);
