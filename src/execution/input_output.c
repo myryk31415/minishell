@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_output.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/26 16:11:14 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/27 01:04:06 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ int	output_handling(char **output, int *append)
 
 void	redirect_nodes(t_redir *token, int **pipes, char **env)
 {
-	command_pipe(token->redirects, pipes, 1, &env);
+	command(token->redirects, pipes, 1, &env);
 	if (token->type == CMD)
-		command_pipe((t_cmd *)token->next, pipes, 0, &env);
+		command((t_cmd *)token->next, pipes, 0, &env);
 	else if (token->type == OR)
 		or_execute((t_node *)token->next, 0, pipes, &env);
 	else if (token->type == AND)

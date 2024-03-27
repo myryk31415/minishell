@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:57:00 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/26 16:11:36 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/27 01:04:06 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	env(t_cmd *token, char **env)
 		tmp_var[0] = token->args[1];
 		tmp_var[1] = NULL;
 		export(tmp_var, &tmp_env);
-		command_pipe(token, NULL, 3, &tmp_env);
+		command(token, NULL, 3, &tmp_env);
 	}
 	free(tmp_var);
 	return (0);
