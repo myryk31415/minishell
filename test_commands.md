@@ -44,17 +44,31 @@
 - echo \$HOME$HOME
 - echo \$HOME $HOME
 - cat <<stop
-	$HOME
-	stop
+	>$HOME
+	>stop
 - cat <<"stop"
-	$HOME
-	stop
+	>$HOME
+	>stop
 - cat <<'stop'
-	$HOME
-	stop
+	>$HOME
+	>stop
 - cat <<"st"op
-	$HOME
-	stop
+	>$HOME
+	>stop
 - cat <<st'op'
-	$HOME
-	stop
+	>$HOME
+	>stop
+
+### Redirects
+
+- cat test >output
+- cat <input
+- cat test <<heredoc
+- cat test >output && cat test >>output
+- cat test <input
+- cat <input \>output
+- cat <input <input2
+- cat >output >output2
+-	(cat <<he) <notfound
+	>jdfsa
+	>he
