@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 09:47:35 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/03/27 15:32:29 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/27 20:37:42 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ char	*get_name(char *arg)
 	int		i;
 	char	*name;
 
-	system("leaks minishell");
 	i = 0;
 	while (arg && arg[i] != '=')
 		i++;

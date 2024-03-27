@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/27 17:59:04 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/27 20:20:18 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ int	is_builtin(t_cmd *token, int **pipes, int *redir, char ***env)
 	if (!ft_strncmp(token->args[0], "cd", 3) || !ft_strncmp(token->args[0], \
 		"echo", 5) || !ft_strncmp(token->args[0], "pwd", 4) || \
 		!ft_strncmp(token->args[0], "export", 7) || !ft_strncmp(token->args[0], \
-		"unset", 6) || !ft_strncmp(token->args[0], "exit", 5))
+		"unset", 6) || !ft_strncmp(token->args[0], "exit", 5) || \
+		!ft_strncmp(token->args[0], "env", 4))
 	{
 		in_and_out_handling(token, pipes, redir);
 		if (!ft_strncmp(token->args[0], "cd", 3))
@@ -61,6 +62,8 @@ int	is_builtin(t_cmd *token, int **pipes, int *redir, char ***env)
 			return (exit_shell(0));
 		else if (!ft_strncmp(token->args[0], "unset", 6))
 			return (unset(token->args, env));
+		else if (!ft_strncmp(token->args[0], "env", 4))
+			return (env_cmd(token, *env));
 	}
 	return (1);
 }
