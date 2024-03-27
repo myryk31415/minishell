@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/27 15:54:00 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/27 17:36:15 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	input_handling(char **input, int *heredoc)
 			file = open(input[j], O_RDONLY, 0666);
 			if (file == -1)
 			{
-				error_msg("bash: ", input[j]);
+				error_msg("minishell: ", input[j]);
 				exit(EXIT_FAILURE);
 			}
 		}
@@ -58,7 +58,7 @@ int	output_handling(char **output, int *append)
 					O_WRONLY | O_APPEND | O_CREAT, 0666);
 		if (file == -1)
 		{
-			error_msg("bash: ", output[j]);
+			error_msg("minishell: ", output[j]);
 			exit(EXIT_FAILURE);
 		}
 		j++;
@@ -104,7 +104,6 @@ int	redirect(t_redir *token, int **pipes, int status, char **env)
 		if (pipe_exit)
 			exit(status);
 	}
-		system("leaks minishell");
 	return (status);
 }
 
