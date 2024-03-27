@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:34:22 by padam             #+#    #+#             */
-/*   Updated: 2024/03/27 18:22:34 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/27 21:05:57 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,13 +123,13 @@ int	redirect_alloc(t_token **token_first, t_cmd	*redirects)
 	redirects->redirect_in = ft_calloc(in_count + 1, sizeof(char *));
 	if (!redirects->redirect_in)
 		return (-1);
-	redirects->heredoc = ft_calloc(in_count + 1, sizeof(bool));
+	redirects->heredoc = ft_calloc(in_count + 1, sizeof(int));
 	if (!redirects->heredoc)
 		return (-1);
 	redirects->redirect_out = ft_calloc(out_count + 1, sizeof(char *));
 	if (!redirects->redirect_out)
 		return (-1);
-	redirects->append = ft_calloc(out_count + 1, sizeof(bool));
+	redirects->append = ft_calloc(out_count + 1, sizeof(int));
 	if (!redirects->append)
 		return (-1);
 	return (0);
