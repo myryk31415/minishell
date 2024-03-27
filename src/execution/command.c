@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 23:38:37 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/03/27 16:08:14 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/27 20:03:46 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	in_and_out_handling(t_cmd *token, int **pipes, int *redir)
 
 	input = 0;
 	output = 1;
-	if (token->redirect_in && *(token->redirect_in))
+	if ((token->redirect_in && *(token->redirect_in)) || \
+	(token->heredoc && *(token->heredoc)))
 		input = input_handling(token->redirect_in, token->heredoc);
 	else if (redir && redir[0])
 	{

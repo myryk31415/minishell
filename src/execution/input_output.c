@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/27 17:36:15 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/27 19:55:48 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	input_handling(char **input, int *heredoc)
 
 	file = 0;
 	j = 0;
-	while (input[j])
+	while (input[j] || heredoc[j])
 	{
 		if (file)
 			close(file);
