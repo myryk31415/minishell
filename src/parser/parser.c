@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/03/27 20:10:26 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/27 20:12:56 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ char	*new_prompt(char **env)
 	free(prompt);
 	prompt = ft_strjoin(prompt_tmp, "$ ");
 	free(prompt_tmp);
-	// command = readline(prompt);
-	ft_putstr_fd(prompt, 0);
-	command = get_next_line(0);
+	command = readline(prompt);
+	// ft_putstr_fd(prompt, 0);
+	// command = get_next_line(0);
 	free(prompt);
 	if (command && *command && *command != '\n')
 		add_history(command);
