@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/28 10:54:36 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/28 11:16:48 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,9 @@ int	redirect(t_redir *token, int **pipes, int status, t_exec exec)
 		close_pipes(pipes);
 		waitpid(pid, &status, 0);
 		if (pipe_exit)
-			exit(status);
+		{
+			exit_shell(&exec, NULL, (unsigned int) status);
+		}
 	}
 	return (status);
 }

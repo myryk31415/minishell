@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 00:09:23 by padam             #+#    #+#             */
-/*   Updated: 2024/03/28 11:02:49 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/28 11:16:21 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,8 @@ unsigned int	ft_u_atoi(const char *str)
 }
 
 
-void	exit_shell(t_exec *exec, char **arg)
+void	exit_shell(t_exec *exec, char **arg, unsigned int status)
 {
-	unsigned int	status;
-
-	status = 0;
 	if (arg && arg[1])
 		status = ft_u_atoi(arg[1]);
 	free_env(exec->env);

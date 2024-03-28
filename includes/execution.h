@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:29 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/28 10:59:36 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/28 11:14:27 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*get_path(char *cmd, char **environ, char *var);
 int		pwd(void);
 int		echo(char **args);
 int		cd(char	*arg, char ***env);
-void	exit_shell(t_exec *exec, char **arg);
+void	exit_shell(t_exec *exec, char **arg, unsigned int status);
 void	oldpwd_save(char ***env, char *path_to_dir, char *arg);
 int		and_execute(t_node *token, int status, int **pipes, t_exec *exec);
 int		command_fork(t_cmd *token, t_exec *exec, int **pipes, int *redir);

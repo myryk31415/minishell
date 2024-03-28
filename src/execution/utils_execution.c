@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/28 11:00:40 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/28 11:16:59 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	is_builtin(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 		else if (!ft_strncmp(token->args[0], "export", 7))
 			return (export(token->args, exec->env));
 		else if (!ft_strncmp(token->args[0], "exit", 5))
-			exit_shell(exec, token->args);
+			exit_shell(exec, token->args, 0);
 		else if (!ft_strncmp(token->args[0], "unset", 6))
 			return (unset(token->args, exec->env));
 		else if (!ft_strncmp(token->args[0], "env", 4))
@@ -74,18 +74,22 @@ void	execute(char **cmd_arg, t_exec *exec)
 
 	if (!access(cmd_arg[0], F_OK | X_OK))
 	{
+		node_tree_delete(exec->tree, exec->type);
 		execve(cmd_arg[0], cmd_arg, *(exec->env));
 		ft_putstr_fd(ft_strjoin("minishell: ", \
 			ft_strjoin(cmd_arg[0], ": command not found\n")), 2);
+		free_env(exec->env);
 		exit(EXIT_FAILURE);
 	}
 	else
 	{
 		if (!ft_strchr(cmd_arg[0], '/'))
 			cmd_path = get_path(cmd_arg[0], *(exec->env), "PATH");
+		node_tree_delete(exec->tree, exec->type);
 		execve(cmd_path, cmd_arg, *(exec->env));
 		ft_putstr_fd(ft_strjoin("minishell: ", \
 			ft_strjoin(cmd_arg[0], ": command not found\n")), 2);
+		free_env(exec->env);
 		exit(EXIT_FAILURE);
 	}
 }
