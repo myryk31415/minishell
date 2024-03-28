@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_execution.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/28 11:36:54 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/28 14:23:01 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	execute(char **cmd_arg, t_exec *exec)
 	if (!access(cmd_arg[0], F_OK | X_OK))
 	{
 		node_tree_delete(exec->tree, exec->type);
-		rl_clear_history();
+		// rl_clear_history();
 		execve(cmd_arg[0], cmd_arg, *(exec->env));
 		ft_putstr_fd(ft_strjoin("minishell: ", \
 			ft_strjoin(cmd_arg[0], ": command not found\n")), 2);
@@ -87,7 +87,7 @@ void	execute(char **cmd_arg, t_exec *exec)
 		if (!ft_strchr(cmd_arg[0], '/'))
 			cmd_path = get_path(cmd_arg[0], *(exec->env), "PATH");
 		node_tree_delete(exec->tree, exec->type);
-		rl_clear_history();
+		// rl_clear_history();
 		execve(cmd_path, cmd_arg, *(exec->env));
 		ft_putstr_fd(ft_strjoin("minishell: ", \
 			ft_strjoin(cmd_arg[0], ": command not found\n")), 2);

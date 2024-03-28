@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/28 11:16:48 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/28 14:26:55 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	redirect_nodes(t_redir *token, int **pipes, t_exec exec)
 	else if (token->type == AND)
 		and_execute((t_node *)token->next, 1, pipes, &exec);
 	else if (token->type == PIPE)
-		create_tree(0, (t_node *)token->next, 1, exec);
+		create_tree(0, (t_node *)token->next, exec);
 	else if (token->type == REDIR)
 		redirect((t_redir *)token->next, pipes, 1, exec);
 }
@@ -102,9 +102,7 @@ int	redirect(t_redir *token, int **pipes, int status, t_exec exec)
 		close_pipes(pipes);
 		waitpid(pid, &status, 0);
 		if (pipe_exit)
-		{
 			exit_shell(&exec, NULL, (unsigned int) status);
-		}
 	}
 	return (status);
 }

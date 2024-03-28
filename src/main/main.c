@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:16:36 by padam             #+#    #+#             */
-/*   Updated: 2024/03/28 13:44:25 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/28 14:29:14 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,18 +77,17 @@ t_exec	*fill_struct(void)
 		return (perror("Malloc"), NULL);
 	env[0] = fill_env();
 	exec->env = env;
+	exec->exit_status = EXIT_SUCCESS;
 	return (exec);
 }
 
 int	main(void)
 {
 	void		*token_tree;
-	int			exit_status;
 	t_node_type	type;
 	t_exec		*exec;
 
 	g_signal = 0;
-	exit_status = 0;
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, signal_handler);
 	// set_signal_action();
@@ -98,11 +97,11 @@ int	main(void)
 	while (1)
 	{
 		token_tree = NULL;
-		type = parser(&token_tree, exit_status, *(exec->env));
+		type = parser(&token_tree, exec->exit_status, *(exec->env));
 		// system("leaks minishell");
 		exec->tree = token_tree;
 		exec->type = type;
-		exit_status = execution(token_tree, type, exec);
+		execution(token_tree, type, exec);
 		node_tree_delete(token_tree, type);
 		// system("leaks minishell");
 	}
