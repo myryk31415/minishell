@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:16:36 by padam             #+#    #+#             */
-/*   Updated: 2024/03/27 21:26:06 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/28 10:58:21 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,31 +64,46 @@ char	**fill_env(void)
 	return (env);
 }
 
+t_exec	*fill_struct(void)
+{
+	t_exec		*exec;
+	char		***env;
+
+	exec = malloc(sizeof(t_exec));
+	if (!exec)
+		return (perror("Malloc"), NULL);
+	env = malloc(sizeof(char **));
+	if (!env)
+		return (perror("Malloc"), NULL);
+	env[0] = fill_env();
+	exec->env = env;
+	return (exec);
+}
+
 int	main(void)
 {
 	void		*token_tree;
 	int			exit_status;
-	char		***env;
 	t_node_type	type;
+	t_exec		*exec;
 
 	g_signal = 0;
 	exit_status = 0;
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, signal_handler);
-	set_signal_action();
-	env = malloc(sizeof(char **));
-	env[0] = fill_env();
-	if (!env)
+	// set_signal_action();
+	exec = fill_struct();
+	if (!exec)
 		return (-1);
 	while (1)
 	{
 		token_tree = NULL;
-		type = parser(&token_tree, exit_status, *env);
+		type = parser(&token_tree, exit_status, *(exec->env));
 		// system("leaks minishell");
-		execution(token_tree, type, env);
+		execution(token_tree, type, exec);
 		node_tree_delete(token_tree, type);
 		// system("leaks minishell");
 	}
-	free_env(env);
+	free_env(exec->env);
 	return (0);
 }

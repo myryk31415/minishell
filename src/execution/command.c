@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 23:38:37 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/03/27 21:24:09 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/28 10:40:45 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	in_and_out_handling(t_cmd *token, int **pipes, int *redir)
 	close_in_and_out_files(input, output, redir, pipes);
 }
 
-int	builtin(t_cmd *token, int **pipes, int *redir, char ***env)
+int	builtin(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 {
 	int		old_stdin;
 	int		old_stdout;
@@ -48,20 +48,20 @@ int	builtin(t_cmd *token, int **pipes, int *redir, char ***env)
 
 	old_stdin = dup(STDIN_FILENO);
 	old_stdout = dup(STDOUT_FILENO);
-	status = is_builtin(token, pipes, redir, env);
+	status = is_builtin(token, pipes, redir, exec);
 	dup2(old_stdin, STDIN_FILENO);
 	dup2(old_stdout, STDOUT_FILENO);
 	return (status);
 }
 
-int	command_fork(t_cmd *token, char ***env, int **pipes, int *redir)
+int	command_fork(t_cmd *token, t_exec *exec, int **pipes, int *redir)
 {
 	int			status;
 	int			id;
 
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, signal_handler);
-	status = builtin(token, pipes, redir, env);
+	status = builtin(token, pipes, redir, exec);
 	if (status == 1)
 	{
 		id = fork();
@@ -70,7 +70,7 @@ int	command_fork(t_cmd *token, char ***env, int **pipes, int *redir)
 		if (!id)
 		{
 			in_and_out_handling(token, pipes, redir);
-			exec(token->args, *env);
+			execute(token->args, exec);
 		}
 		else
 		{
@@ -81,23 +81,23 @@ int	command_fork(t_cmd *token, char ***env, int **pipes, int *redir)
 	return (status);
 }
 
-void	command_no_fork(t_cmd *token, int **pipes, int *redir, char ***env)
+void	command_no_fork(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 {
 	int	status;
 
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, signal_handler);
-	status = is_builtin(token, pipes, redir, env);
+	status = is_builtin(token, pipes, redir, exec);
 	if (status == 1)
 	{
 		in_and_out_handling(token, pipes, redir);
-		exec(token->args, *env);
+		execute(token->args, exec);
 	}
 	close_pipes(pipes);
 	exit(status);
 }
 
-int	command(t_cmd *token, int **pipes, int redirect, char ***env)
+int	command(t_cmd *token, int **pipes, int redirect, t_exec *exec)
 {
 	static int	redir[2];
 	int			status;
@@ -114,9 +114,9 @@ int	command(t_cmd *token, int **pipes, int redirect, char ***env)
 	else
 	{
 		if (redirect == 0)
-			command_no_fork(token, pipes, redir, env);
+			command_no_fork(token, pipes, redir, exec);
 		else
-			status = command_fork(token, env, pipes, redir);
+			status = command_fork(token, exec, pipes, redir);
 	}
 	return (status);
 }

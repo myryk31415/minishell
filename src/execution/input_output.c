@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_output.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/27 20:10:35 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/28 10:54:36 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,22 +66,22 @@ int	output_handling(char **output, int *append)
 	return (file);
 }
 
-void	redirect_nodes(t_redir *token, int **pipes, char **env)
+void	redirect_nodes(t_redir *token, int **pipes, t_exec exec)
 {
-	command(token->redirects, pipes, 1, &env);
+	command(token->redirects, pipes, 1, &exec);
 	if (token->type == CMD)
-		command((t_cmd *)token->next, pipes, 0, &env);
+		command((t_cmd *)token->next, pipes, 0, &exec);
 	else if (token->type == OR)
-		or_execute((t_node *)token->next, 1, pipes, &env);
+		or_execute((t_node *)token->next, 1, pipes, &exec);
 	else if (token->type == AND)
-		and_execute((t_node *)token->next, 1, pipes, &env);
+		and_execute((t_node *)token->next, 1, pipes, &exec);
 	else if (token->type == PIPE)
-		create_tree(0, (t_node *)token->next, 1, env);
+		create_tree(0, (t_node *)token->next, 1, exec);
 	else if (token->type == REDIR)
-		redirect((t_redir *)token->next, pipes, 1, env);
+		redirect((t_redir *)token->next, pipes, 1, exec);
 }
 
-int	redirect(t_redir *token, int **pipes, int status, char **env)
+int	redirect(t_redir *token, int **pipes, int status, t_exec exec)
 {
 	int	pid;
 	int	pipe_exit;
@@ -94,7 +94,7 @@ int	redirect(t_redir *token, int **pipes, int status, char **env)
 		perror("Fork");
 	if (!pid)
 	{
-		redirect_nodes(token, pipes, env);
+		redirect_nodes(token, pipes, exec);
 		exit(EXIT_FAILURE);
 	}
 	else

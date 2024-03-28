@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/27 21:03:19 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/28 11:00:40 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*get_path(char *cmd, char **environ, char *var)
 	return (NULL);
 }
 
-int	is_builtin(t_cmd *token, int **pipes, int *redir, char ***env)
+int	is_builtin(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 {
 	if (!ft_strncmp(token->args[0], "cd", 3) || !ft_strncmp(token->args[0], \
 		"echo", 5) || !ft_strncmp(token->args[0], "pwd", 4) || \
@@ -51,30 +51,30 @@ int	is_builtin(t_cmd *token, int **pipes, int *redir, char ***env)
 	{
 		in_and_out_handling(token, pipes, redir);
 		if (!ft_strncmp(token->args[0], "cd", 3))
-			return (cd(token->args[1], env));
+			return (cd(token->args[1], exec->env));
 		else if (!ft_strncmp(token->args[0], "echo", 5))
 			return (echo(token->args));
 		else if (!ft_strncmp(token->args[0], "pwd", 4))
 			return (pwd());
 		else if (!ft_strncmp(token->args[0], "export", 7))
-			return (export(token->args, env));
+			return (export(token->args, exec->env));
 		else if (!ft_strncmp(token->args[0], "exit", 5))
-			return (exit_shell(0));
+			exit_shell(exec, token->args);
 		else if (!ft_strncmp(token->args[0], "unset", 6))
-			return (unset(token->args, env));
+			return (unset(token->args, exec->env));
 		else if (!ft_strncmp(token->args[0], "env", 4))
-			return (env_cmd(token, *env));
+			return (env_cmd(token, *(exec->env)));
 	}
 	return (1);
 }
 
-void	exec(char **cmd_arg, char **env)
+void	execute(char **cmd_arg, t_exec *exec)
 {
 	char		*cmd_path;
 
 	if (!access(cmd_arg[0], F_OK | X_OK))
 	{
-		execve(cmd_arg[0], cmd_arg, env);
+		execve(cmd_arg[0], cmd_arg, *(exec->env));
 		ft_putstr_fd(ft_strjoin("minishell: ", \
 			ft_strjoin(cmd_arg[0], ": command not found\n")), 2);
 		exit(EXIT_FAILURE);
@@ -82,8 +82,8 @@ void	exec(char **cmd_arg, char **env)
 	else
 	{
 		if (!ft_strchr(cmd_arg[0], '/'))
-			cmd_path = get_path(cmd_arg[0], env, "PATH");
-		execve(cmd_path, cmd_arg, env);
+			cmd_path = get_path(cmd_arg[0], *(exec->env), "PATH");
+		execve(cmd_path, cmd_arg, *(exec->env));
 		ft_putstr_fd(ft_strjoin("minishell: ", \
 			ft_strjoin(cmd_arg[0], ": command not found\n")), 2);
 		exit(EXIT_FAILURE);
