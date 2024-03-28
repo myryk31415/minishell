@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/03/28 16:31:04 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/28 17:03:30 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ t_node_type	parser(void **token_tree, t_exec *exec)
 		command = new_prompt(*exec->env);
 		if (!command) //need to free
 		{
-			free(command);
+			free_env(exec->env);
+			free(exec);
 			ft_printf("\n");
 			exit(1);
 		}
@@ -79,9 +80,6 @@ t_node_type	parser(void **token_tree, t_exec *exec)
 	climb_tree(*token_tree, type_first, exec);
 	if (type_first == ERROR)
 		printf("syntax error\n");
-	// if (*token_tree)
-	// 	get_next_debug(*token_tree, type_first, 0);
-	// debug_print_token_array(tokens);
 	command = NULL;
 	return (type_first);
 }

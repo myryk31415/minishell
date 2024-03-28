@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 17:10:56 by padam             #+#    #+#             */
-/*   Updated: 2024/03/28 16:03:42 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/28 16:57:08 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,6 @@ void	cmd_free(t_cmd *cmd)
 	free(cmd);
 }
 
-void	free_env(char ***env)
-{
-	int	i;
-
-	i = -1;
-	while (env[0][++i])
-		free(env[0][i]);
-	free(env[0]);
-	free (env);
-}
-
 void	node_tree_delete(void *node, t_node_type type)
 {
 	if (type == CMD)
@@ -63,4 +52,15 @@ void	node_tree_delete(void *node, t_node_type type)
 		node_tree_delete(((t_node *)node)->right, ((t_node *)node)->type_right);
 		free(node);
 	}
+}
+
+void	free_env(char ***env)
+{
+	int	i;
+
+	i = -1;
+	while (env[0][++i])
+		free(env[0][i]);
+	free(env[0]);
+	free (env);
 }

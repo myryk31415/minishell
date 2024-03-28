@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/03/28 16:17:36 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/28 16:57:02 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void		signal_handler(int signal);
 //cleanup
 void		free_str_array(char **arr);
 void		cmd_free(t_cmd *cmd);
-void		free_env(char ***env);
 void		node_tree_delete(void *node, t_node_type type);
+void		free_env(char ***env);
 
 #endif
