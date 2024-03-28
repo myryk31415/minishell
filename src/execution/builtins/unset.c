@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 12:18:20 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/03/27 15:47:59 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/28 11:24:00 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	free_env(char ***env)
 	while (env[0][++i])
 		free(env[0][i]);
 	free(env[0]);
+	free (env);
 }
 
 char	**allocate_smaller_env(char **env, int i)

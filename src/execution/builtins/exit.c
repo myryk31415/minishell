@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 00:09:23 by padam             #+#    #+#             */
-/*   Updated: 2024/03/28 11:16:21 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/28 11:27:33 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ void	exit_shell(t_exec *exec, char **arg, unsigned int status)
 	if (arg && arg[1])
 		status = ft_u_atoi(arg[1]);
 	free_env(exec->env);
-	clear_history();
+	rl_clear_history();
 	node_tree_delete(exec->tree, exec->type);
+	free(exec);
 	exit(status);
 }

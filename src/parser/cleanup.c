@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 23:10:31 by padam             #+#    #+#             */
-/*   Updated: 2024/03/21 22:32:50 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/28 13:15:52 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_node_type	err_pars(char *message, t_cmd *redirects, t_token **tokens)
 {
 	char *error;
 
-	free(redirects);
+	cmd_free(redirects);
 	error = ft_strjoin("minishell: ", message);
 	perror(error);
 	free(error);

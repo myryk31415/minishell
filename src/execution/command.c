@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 23:38:37 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/03/28 10:40:45 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/28 11:45:29 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int	command_fork(t_cmd *token, t_exec *exec, int **pipes, int *redir)
 {
 	int			status;
 	int			id;
+	char		**tmp;
 
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, signal_handler);
@@ -70,7 +71,9 @@ int	command_fork(t_cmd *token, t_exec *exec, int **pipes, int *redir)
 		if (!id)
 		{
 			in_and_out_handling(token, pipes, redir);
-			execute(token->args, exec);
+			tmp = token->args;
+			token->args = NULL;
+			execute(tmp, exec);
 		}
 		else
 		{
@@ -84,6 +87,7 @@ int	command_fork(t_cmd *token, t_exec *exec, int **pipes, int *redir)
 void	command_no_fork(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 {
 	int	status;
+	char		**tmp;
 
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, signal_handler);
@@ -91,6 +95,9 @@ void	command_no_fork(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 	if (status == 1)
 	{
 		in_and_out_handling(token, pipes, redir);
+		tmp = token->args;
+		token->args = NULL;
+		execute(tmp, exec);
 		execute(token->args, exec);
 	}
 	close_pipes(pipes);

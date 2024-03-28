@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:38:13 by padam             #+#    #+#             */
-/*   Updated: 2024/03/27 16:04:46 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/28 13:15:16 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_node_type	check_brackets(t_token *token_first, void **head)
 {
 	t_token			*token_last;
 	t_cmd			*redirects;
-	t_redir			*new_node;
+	t_redir			*node;
 	int				output;
 
 	if (!token_first)
@@ -55,16 +55,22 @@ t_node_type	check_brackets(t_token *token_first, void **head)
 		return (ERROR);
 	if (token_first && token_first->type == T_LPAREN)
 	{
+		node = new_redir_node();
+		if (!node)
+			return(err_pars("malloc", redirects, &token_first));
 		token_last = skip_parens(token_first, 1);
 		if (!token_last)
 		{
-			free(redirects);
+			token_delete_all(&token_first);
+			free(node);
+			cmd_free(redirects);
 			return (ERROR);
 		}
 		if (token_last->next)
 		{
 			print_syntax_err(token_last->next);
-			free(redirects);
+			free(node);
+			cmd_free(redirects);
 			return (ERROR);
 		}
 		token_last = token_last->prev;
@@ -72,17 +78,19 @@ t_node_type	check_brackets(t_token *token_first, void **head)
 		token_delete(&token_first);
 		if (!token_first)
 		{
-			free(redirects);
+			free(node);
+			cmd_free(redirects);
 			return (ERROR);
 		}
-		new_node = new_redir_node();
-		if (!new_node)
-			return(err_pars("malloc", redirects, &token_first));
-		new_node->redirects = redirects;
-		new_node->type = split_by_operator(token_last, &new_node->next);
-		if (new_node->type == ERROR)
+		node->redirects = redirects;
+		node->type = split_by_operator(token_last, &node->next);
+		if (node->type == ERROR)
+		{
+			cmd_free(redirects);
+			free(node);
 			return (ERROR);
-		*head = new_node;
+		}
+		*head = node;
 		return (REDIR);
 	}
 	return (get_cmd(token_first, head, redirects));
@@ -101,21 +109,32 @@ t_node_type	split_by_pipe(t_token *token_first, void **head)
 		node = new_node();
 		if (!node)
 			return(err_pars("malloc", NULL, &token_first));
+		if (!token_last->next)
+		{
+			token_delete_all(&token_last);
+			free(node);
+			return (ERROR);
+		}
 		token_delete(&token_last);
 		if (!token_split(token_last, -1))
 		{
 			token_delete_all(&token_last);
+			free(node);
 			return (ERROR);
 		}
 		node->type_left = check_brackets(token_first, &node->left);
 		if (node->type_left == ERROR)
 		{
 			token_delete_all(&token_last);
+			free(node);
 			return (ERROR);
 		}
 		node->type_right = split_by_pipe(token_last, &node->right);
 		if (node->type_right == ERROR)
+		{
+			free(node);
 			return (ERROR);
+		}
 		*head = node;
 		return (PIPE);
 	}
@@ -140,14 +159,27 @@ t_node_type	split_by_operator(t_token *token_last, void **head)
 			return_value = AND;
 		else
 			return_value = OR;
+		if (!token_first->next)
+		{
+			token_delete_all(&token_first);
+			free(node);
+			return (ERROR);
+		}
 		token_delete(&token_first);
 		node->type_left = split_by_operator(token_split(token_first, -1),
 				&node->left);
 		if (node->type_left == ERROR)
-			return(token_delete_all(&token_first), ERROR);
-		node->type_right = split_by_pipe(token_first, &node->right);
-		if (node->type_right == ERROR)
+		{
+			token_delete_all(&token_first);
+			free(node);
 			return (ERROR);
+		}
+		node->type_right = split_by_pipe(token_first, &node->right);
+		if (node->type_left == ERROR)
+		{
+			free(node);
+			return (ERROR);
+		}
 		*head = node;
 		return (return_value);
 	}
@@ -156,6 +188,7 @@ t_node_type	split_by_operator(t_token *token_last, void **head)
 
 t_node_type	tokens_to_tree(t_token *token_last, void **node_tree)
 {
+	//call split_by_operator directly
 	t_node_type	node_type;
 
 	node_type = split_by_operator(token_last, node_tree);

@@ -66,8 +66,10 @@
 
 ### Redirects
 
-- cat test >output
 - cat <input
+- <input cat
+- cat test >output
+- >output cat test
 - cat test <<heredoc
 - cat test >output && cat test >>output
 - cat test <input
@@ -81,6 +83,7 @@
 ### Syntax errors
 - ()
 - (())
+- ()()
 - &&
 - |
 - echo a &&
@@ -89,5 +92,6 @@
 - cat >
 - cat > >test
 - echo a |
+- | echo a
 - echo a | | echo b
 - echo a | && echo b
