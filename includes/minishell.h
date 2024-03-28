@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/03/26 19:46:54 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/28 16:17:36 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,26 @@ typedef struct s_node
 	t_node_type	type_right;
 }	t_node;
 
-t_node_type	parser(void **token_tree, int exit_status, char **env);
+typedef struct s_exec
+{
+	char		***env;
+	void		*tree;
+	t_node_type	type;
+	int			exit_status;
+}	t_exec;
+
+t_node_type	parser(void **token_tree, t_exec *exec);
+
+char		*get_env(char **environ, char *var);
 
 //signal
 void		set_signal_action(void);
 void		signal_handler(int signal);
+
 //cleanup
+void		free_str_array(char **arr);
 void		cmd_free(t_cmd *cmd);
+void		free_env(char ***env);
 void		node_tree_delete(void *node, t_node_type type);
-char		*get_env(char **environ, char *var);
+
 #endif

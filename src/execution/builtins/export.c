@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 09:47:35 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/03/27 21:10:17 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/28 16:02:48 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char	**allocate_new_env(char **env, char *arg)
 	new_env[env_size] = 0;
 	tmp = env;
 	env = new_env;
-	free_array(tmp);
+	free_str_array(tmp);
 	return (env);
 }
 

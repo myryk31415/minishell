@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_execution.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/28 14:23:01 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/28 16:03:06 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,14 @@ char	*get_path(char *cmd, char **environ, char *var)
 		if (access(trial_path, F_OK | X_OK) == 0)
 		{
 			free(path_to_cmd);
-			free_array(cmd_path);
+			free_str_array(cmd_path);
 			return (trial_path);
 		}
 		free(trial_path);
 		i++;
 	}
 	if (!cmd_path)
-		free_array(cmd_path);
+		free_str_array(cmd_path);
 	if (!path_to_cmd)
 		free(cmd_path);
 	return (NULL);
@@ -94,14 +94,4 @@ void	execute(char **cmd_arg, t_exec *exec)
 		free_env(exec->env);
 		exit(EXIT_FAILURE);
 	}
-}
-
-void	free_array(char **arr)
-{
-	int	i;
-
-	i = -1;
-	while (arr && arr[++i])
-		free(arr[i]);
-	free(arr);
 }

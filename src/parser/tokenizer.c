@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:40:50 by padam             #+#    #+#             */
-/*   Updated: 2024/03/27 19:49:26 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/28 16:09:23 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,11 @@ t_token_type	get_token_type(char *string)
 	return (token);
 }
 
-char	*var_expand(char *old_string, char *string, int exit_status, char **env)
+char	*var_expand(char *old_string, char *string, t_exec *exec)
 {
 	char *output;
 
-	string = expand_variables(string, exit_status, env);
+	string = expand_variables(string, exec);
 	output = ft_strjoin(old_string, string);
 	free(old_string);
 	free(string);
@@ -54,7 +54,7 @@ char	*var_expand(char *old_string, char *string, int exit_status, char **env)
 }
 
 //error handling
-t_token	*handle_quotes(char **string, t_token *token_last, int exit_status, char **env)
+t_token	*handle_quotes(char **string, t_token *token_last, t_exec *exec)
 {
 	char	quote;
 	int		i;
@@ -81,13 +81,13 @@ t_token	*handle_quotes(char **string, t_token *token_last, int exit_status, char
 		free(tmp2);
 	}
 	else
-		token_last->value = var_expand(token_last->value, ft_substr(*string, 0, i), exit_status, env);
+		token_last->value = var_expand(token_last->value, ft_substr(*string, 0, i), exec);
 	token_last->quote = 2;
 	*string += i;
 	return (token_last);
 }
 
-t_token	*handle_word(char **string, t_token *token_last, int exit_status, char **env)
+t_token	*handle_word(char **string, t_token *token_last, t_exec *exec)
 {
 	t_token_type	token_type;
 	int				i;
@@ -101,12 +101,12 @@ t_token	*handle_word(char **string, t_token *token_last, int exit_status, char *
 	if (!token_last || token_last->type != T_WORD)
 		token_last = token_add(token_last, T_WORD);
 	token_last->value = var_expand(token_last->value,
-		ft_substr(*string, 0, i), exit_status, env);
+		ft_substr(*string, 0, i), exec);
 	*string += i - 1;
 	return (token_last);
 }
 
-t_token	*get_next_token(char *string, t_token *token_last, int exit_status, char **env)
+t_token	*get_next_token(char *string, t_token *token_last, t_exec *exec)
 {
 	t_token_type	token_type;
 	int				i;
@@ -116,17 +116,17 @@ t_token	*get_next_token(char *string, t_token *token_last, int exit_status, char
 		return (token_last);
 	token_type = get_token_type(string);
 	if (is_separator(*string) && is_separator(*(string + 1)))
-		return (get_next_token(string + 1, token_last, exit_status, env));
+		return (get_next_token(string + 1, token_last, exec));
 	token_last = token_add(token_last, token_type);
 	if (is_quote(*string))
-		token_last = handle_quotes(&string, token_last, exit_status, env);
+		token_last = handle_quotes(&string, token_last, exec);
 	else if (token_type == T_WORD)
-		token_last = handle_word(&string, token_last, exit_status, env);
+		token_last = handle_word(&string, token_last, exec);
 	else if (token_type == T_AND || token_type == T_OR
 		|| token_type == T_REDIR_APPEND || token_type == T_REDIR_HEREDOC)
 		i += 1;
 	if (string[i])
-		token_last = get_next_token(string + i, token_last, exit_status, env);
+		token_last = get_next_token(string + i, token_last, exec);
 	return (token_last);
 }
 

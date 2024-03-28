@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:29 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/28 14:12:17 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/28 16:08:35 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,9 @@
 # include <stdarg.h>
 # include <sys/wait.h>
 
-typedef struct s_exec
-{
-	char		***env;
-	void		*tree;
-	t_node_type	type;
-	int			exit_status;
-}	t_exec;
-
 void	execute(char **cmd_arg, t_exec *exec);
 void	close_pipes(int **pipes);
-void	free_array(char **arr);
+void	free_str_array(char **arr);
 int		redirect(t_redir *token, int **pipes, int status, t_exec exec);
 int		output_handling(char **output, int *append);
 int		input_handling(char **input, int *heredoc);

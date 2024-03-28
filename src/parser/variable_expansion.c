@@ -6,13 +6,13 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:13:35 by padam             #+#    #+#             */
-/*   Updated: 2024/03/26 16:15:32 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/28 16:32:32 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-char	*get_variable(char **command, int exit_status, char **env)
+char	*get_variable(char **command, t_exec *exec)
 {
 	char	*variable;
 	char	*tmp;
@@ -27,7 +27,7 @@ char	*get_variable(char **command, int exit_status, char **env)
 	}
 	if (**command == '?')
 	{
-		variable = ft_itoa(exit_status);
+		variable = ft_itoa(exec->exit_status);
 		(*command)++;
 	}
 	else if (!**command || !is_variable(**command))
@@ -40,14 +40,14 @@ char	*get_variable(char **command, int exit_status, char **env)
 		while ((*command)[i] && is_variable((*command)[i]))
 			i++;
 		tmp = ft_substr(*command, 0, i);
-		variable = get_env(env, tmp);
+		variable = get_env(*exec->env, tmp);
 		free(tmp);
 		(*command) += i;
 	}
 	return (variable);
 }
 
-char	*get_expansion(char *command, int exit_status, int len, char **env)
+char	*get_expansion(char *command, int len, t_exec *exec)
 {
 	char	*tmp;
 	int		i;
@@ -68,10 +68,10 @@ char	*get_expansion(char *command, int exit_status, int len, char **env)
 	if (command[i] == '$')
 	{
 		tmp = &command[i + 1];
-		variable = get_variable(&tmp, exit_status, env);
-		tmp = get_expansion(tmp, exit_status, len + i + ft_strlen(variable), env);
+		variable = get_variable(&tmp, exec);
+		tmp = get_expansion(tmp, len + i + ft_strlen(variable), exec);
 		ft_memcpy(tmp + len + i, variable, ft_strlen(variable));
-		// free(variable);
+		free(variable);
 	}
 	else
 		tmp = ft_calloc(len + i + 1, sizeof(char));
@@ -79,12 +79,12 @@ char	*get_expansion(char *command, int exit_status, int len, char **env)
 	return (tmp);
 }
 
-char	*expand_variables(char *command, int exit_status, char **env)
+char	*expand_variables(char *command, t_exec *exec)
 {
 	char	*tmp;
 
 	tmp = command;
-	command = get_expansion(command, exit_status, 0, env);
+	command = get_expansion(command, 0, exec);
 	free(tmp);
 	return (command);
 }

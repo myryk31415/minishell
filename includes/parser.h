@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:14:04 by padam             #+#    #+#             */
-/*   Updated: 2024/03/27 19:11:38 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/28 16:16:24 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define PARSER_H
 
 # include "minishell.h"
-
 
 // colors
 # define RESET "\033[0m"
@@ -64,7 +63,7 @@ t_token		*get_operator(t_token *tokens);
 
 // redirects
 int			redirects_get(t_token **token_first, t_cmd **redirects);
-int			climb_tree(void *ptr, t_node_type type, int exit_status, char **env);
+int			climb_tree(void *ptr, t_node_type type, t_exec *exec);
 
 ///REST
 //cleanup
@@ -84,7 +83,7 @@ int			is_variable(char c);
 
 // tokenizer
 t_token_type	get_token_type(char *string);
-t_token		*get_next_token(char *string, t_token *token_last, int exit_status, char **env);
+t_token		*get_next_token(char *string, t_token *token_last, t_exec *exec);
 
 // tokens utils
 void		token_delete(t_token **tokens);
@@ -94,5 +93,5 @@ t_token		*token_split(t_token *tokens, int direction);
 t_token		*skip_parens(t_token *tokens, int direction);
 
 // variable_expansion
-char		*expand_variables(char *command, int exit_status, char **env);
+char		*expand_variables(char *command, t_exec *exec);
 #endif

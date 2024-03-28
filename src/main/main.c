@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:16:36 by padam             #+#    #+#             */
-/*   Updated: 2024/03/28 14:29:14 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/28 16:05:47 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int	main(void)
 	while (1)
 	{
 		token_tree = NULL;
-		type = parser(&token_tree, exec->exit_status, *(exec->env));
+		type = parser(&token_tree, exec);
 		// system("leaks minishell");
 		exec->tree = token_tree;
 		exec->type = type;

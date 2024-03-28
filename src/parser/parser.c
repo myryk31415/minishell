@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/03/28 11:51:07 by padam            ###   ########.fr       */
+/*   Updated: 2024/03/28 16:31:04 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,13 @@ char	*new_prompt(char **env)
 	ft_putstr_fd(prompt, 0);
 	command = get_next_line(0);
 	free(prompt);
-	if (command && *command && *command != '\n')
-		add_history(command);
+	// if (command && *command && *command != '\n')
+	// 	add_history(command);
 	return (command);
 }
 
 
-t_node_type	parser(void **token_tree, int exit_status, char **env)
+t_node_type	parser(void **token_tree, t_exec *exec)
 {
 	char		*command;
 	t_token		*tokens;
@@ -65,13 +65,18 @@ t_node_type	parser(void **token_tree, int exit_status, char **env)
 	while (!command || !*command || *command == '\n')
 	{
 		free(command);
-		command = new_prompt(env);
+		command = new_prompt(*exec->env);
+		if (!command) //need to free
+		{
+			free(command);
+			ft_printf("\n");
+			exit(1);
+		}
 	}
-	//command = expand_variables(command, exit_status, env);
-	tokens = get_next_token(command, NULL, exit_status, env);
+	tokens = get_next_token(command, NULL, exec);
 	free(command);
 	type_first = tokens_to_tree(tokens, token_tree);
-	climb_tree(*token_tree, type_first, exit_status, env);
+	climb_tree(*token_tree, type_first, exec);
 	if (type_first == ERROR)
 		printf("syntax error\n");
 	// if (*token_tree)

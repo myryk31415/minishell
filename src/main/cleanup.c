@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 17:10:56 by padam             #+#    #+#             */
-/*   Updated: 2024/03/27 15:57:20 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/28 16:03:42 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,17 @@ void	cmd_free(t_cmd *cmd)
 	free(cmd->heredoc);
 	free(cmd->append);
 	free(cmd);
+}
+
+void	free_env(char ***env)
+{
+	int	i;
+
+	i = -1;
+	while (env[0][++i])
+		free(env[0][i]);
+	free(env[0]);
+	free (env);
 }
 
 void	node_tree_delete(void *node, t_node_type type)
