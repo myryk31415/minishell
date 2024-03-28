@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 00:09:23 by padam             #+#    #+#             */
-/*   Updated: 2024/03/28 11:00:00 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/03/28 11:02:49 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,6 @@ void	exit_shell(t_exec *exec, char **arg)
 		status = ft_u_atoi(arg[1]);
 	free_env(exec->env);
 	clear_history();
-	// node_tree_delete(exec->tree, exec->type);
+	node_tree_delete(exec->tree, exec->type);
 	exit(status);
 }
