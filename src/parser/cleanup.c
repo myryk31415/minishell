@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 23:10:31 by padam             #+#    #+#             */
-/*   Updated: 2024/03/28 13:15:52 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/07 18:32:08 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,19 @@ void	print_syntax_err(t_token *token)
 	char	*type_list[] = {"word", "separator", "|", "&&", "||", "(", ")",
 				 "<", ">", ">>", "<<"};
 	if (!token)
-		printf("minishell: syntax error near missing tokens\n") ;
+		ft_putstr_fd("minishell: syntax error near missing tokens\n", 2);
 	else if (token->value)
-		printf("minishell: syntax error near unexpected token `%s'\n",
-			token->value);
+	{
+
+		ft_putstr_fd("minishell: syntax error near unexpected token `\n", 2);
+		ft_putstr_fd(token->value, 2);
+		ft_putstr_fd("'\n", 2);
+	}
 	else
-		printf("minishell: syntax error near unexpected token `%s'\n",
-			type_list[token->type]);
+	{
+		ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+		ft_putstr_fd(type_list[token->type], 2);
+		ft_putstr_fd("'\n", 2);
+	}
 	token_delete_all(&token);
 }
