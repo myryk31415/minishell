@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:11:07 by padam             #+#    #+#             */
-/*   Updated: 2024/03/27 18:21:53 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/07 20:49:39 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	token_delete_all(t_token **tokens)
 	if ((*tokens)->next)
 	{
 		while ((*tokens)->prev)
-			*tokens = (*tokens)->prev;
+			tokens = &(*tokens)->prev;
 		while (*tokens)
 		{
 			tmp = *tokens;

@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:34:22 by padam             #+#    #+#             */
-/*   Updated: 2024/03/27 21:05:57 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/07 21:35:53 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,12 @@ int	get_input(t_token **token_first, t_cmd *redirects, bool value, int *count)
 		print_syntax_err(*token_first);
 		return (-1);
 	}
+	if (!(*token_first)->value)
+	{
+		ft_printf("minishell: ambiguous redirect\n");
+		token_delete_all(token_first);
+		return (-1);
+	}
 	if (value)
 		redirects->heredoc[*count] = (*token_first)->quote;
 	redirects->redirect_in[*count] = (*token_first)->value;
@@ -70,6 +76,12 @@ int	get_output(t_token **token_first, t_cmd *redirects, bool value, int *count)
 	if (!(*token_first) || (*token_first)->type != T_WORD)
 	{
 		print_syntax_err(*token_first);
+		return (-1);
+	}
+	if (!(*token_first)->value)
+	{
+		ft_printf("minishell: ambiguous redirect\n");
+		token_delete_all(token_first);
 		return (-1);
 	}
 	redirects->append[*count] = value;

@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:13:35 by padam             #+#    #+#             */
-/*   Updated: 2024/03/28 16:32:32 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/07 21:32:42 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*get_variable(char **command, t_exec *exec)
 	return (variable);
 }
 
-char	*get_expansion(char *command, int len, t_exec *exec)
+char	*get_expansion(char *command, int len, t_exec *exec, int not_empty)
 {
 	char	*tmp;
 	int		i;
@@ -69,12 +69,20 @@ char	*get_expansion(char *command, int len, t_exec *exec)
 	{
 		tmp = &command[i + 1];
 		variable = get_variable(&tmp, exec);
-		tmp = get_expansion(tmp, len + i + ft_strlen(variable), exec);
+		if (variable || i)
+			not_empty = 1;
+		tmp = get_expansion(tmp, len + i + ft_strlen(variable), exec, not_empty);
 		ft_memcpy(tmp + len + i, variable, ft_strlen(variable));
 		free(variable);
 	}
 	else
+	{
+		if (i)
+			not_empty = 1;
+		if (!not_empty)
+			return (NULL);
 		tmp = ft_calloc(len + i + 1, sizeof(char));
+	}
 	ft_memcpy(tmp + len, command, i);
 	return (tmp);
 }
@@ -84,7 +92,7 @@ char	*expand_variables(char *command, t_exec *exec)
 	char	*tmp;
 
 	tmp = command;
-	command = get_expansion(command, 0, exec);
+	command = get_expansion(command, 0, exec, 0);
 	free(tmp);
 	return (command);
 }

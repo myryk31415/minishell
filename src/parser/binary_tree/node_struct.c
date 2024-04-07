@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:38:13 by padam             #+#    #+#             */
-/*   Updated: 2024/03/28 13:15:16 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/07 21:34:48 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ t_node_type	get_cmd(t_token *token_first, void **head, t_cmd *redirects)
 		return(err_pars("malloc", redirects, &token_first));
 	while (token_first)
 	{
-		redirects->args[i++] = token_first->value;
+		if (token_first->value)
+			redirects->args[i++] = token_first->value;
 		token_first->value = NULL;
 		token_delete(&token_first);
 	}
@@ -41,7 +42,7 @@ t_node_type	get_cmd(t_token *token_first, void **head, t_cmd *redirects)
 	return (CMD);
 }
 
-t_node_type	check_brackets(t_token *token_first, void **head)
+t_node_type	check_parens(t_token *token_first, void **head)
 {
 	t_token			*token_last;
 	t_cmd			*redirects;
@@ -122,7 +123,7 @@ t_node_type	split_by_pipe(t_token *token_first, void **head)
 			free(node);
 			return (ERROR);
 		}
-		node->type_left = check_brackets(token_first, &node->left);
+		node->type_left = check_parens(token_first, &node->left);
 		if (node->type_left == ERROR)
 		{
 			token_delete_all(&token_last);
@@ -138,7 +139,7 @@ t_node_type	split_by_pipe(t_token *token_first, void **head)
 		*head = node;
 		return (PIPE);
 	}
-	return (check_brackets(token_first, head));
+	return (check_parens(token_first, head));
 }
 
 t_node_type	split_by_operator(t_token *token_last, void **head)

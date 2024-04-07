@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:40:50 by padam             #+#    #+#             */
-/*   Updated: 2024/03/28 16:09:23 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/07 21:57:30 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,13 @@ t_token_type	get_token_type(char *string)
 	return (token);
 }
 
-char	*var_expand(char *old_string, char *string, t_exec *exec)
+char	*var_expand(char *old_string, char *string, int quotes, t_exec *exec)
 {
 	char *output;
 
 	string = expand_variables(string, exec);
+	if (!string && !old_string && !quotes)
+		return (NULL);
 	output = ft_strjoin(old_string, string);
 	free(old_string);
 	free(string);
@@ -81,7 +83,7 @@ t_token	*handle_quotes(char **string, t_token *token_last, t_exec *exec)
 		free(tmp2);
 	}
 	else
-		token_last->value = var_expand(token_last->value, ft_substr(*string, 0, i), exec);
+		token_last->value = var_expand(token_last->value, ft_substr(*string, 0, i), 1, exec);
 	token_last->quote = 2;
 	*string += i;
 	return (token_last);
@@ -101,7 +103,7 @@ t_token	*handle_word(char **string, t_token *token_last, t_exec *exec)
 	if (!token_last || token_last->type != T_WORD)
 		token_last = token_add(token_last, T_WORD);
 	token_last->value = var_expand(token_last->value,
-		ft_substr(*string, 0, i), exec);
+		ft_substr(*string, 0, i), 0, exec);
 	*string += i - 1;
 	return (token_last);
 }
