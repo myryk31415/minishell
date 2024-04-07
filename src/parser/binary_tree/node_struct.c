@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:38:13 by padam             #+#    #+#             */
-/*   Updated: 2024/04/07 21:34:48 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/08 01:01:52 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ t_node_type	check_parens(t_token *token_first, void **head)
 		token_delete(&token_first);
 		if (!token_first)
 		{
+			print_syntax_err(NULL);
 			free(node);
 			cmd_free(redirects);
 			return (ERROR);
@@ -110,19 +111,14 @@ t_node_type	split_by_pipe(t_token *token_first, void **head)
 		node = new_node();
 		if (!node)
 			return(err_pars("malloc", NULL, &token_first));
-		if (!token_last->next)
+		if (!token_last->next || !token_last->prev)
 		{
-			token_delete_all(&token_last);
+			print_syntax_err(token_last);
 			free(node);
 			return (ERROR);
 		}
 		token_delete(&token_last);
-		if (!token_split(token_last, -1))
-		{
-			token_delete_all(&token_last);
-			free(node);
-			return (ERROR);
-		}
+		token_split(token_last, -1);
 		node->type_left = check_parens(token_first, &node->left);
 		if (node->type_left == ERROR)
 		{
@@ -160,9 +156,9 @@ t_node_type	split_by_operator(t_token *token_last, void **head)
 			return_value = AND;
 		else
 			return_value = OR;
-		if (!token_first->next)
+		if (!token_first->prev || !token_first->next)
 		{
-			token_delete_all(&token_first);
+			print_syntax_err(token_first);
 			free(node);
 			return (ERROR);
 		}
@@ -171,7 +167,6 @@ t_node_type	split_by_operator(t_token *token_last, void **head)
 				&node->left);
 		if (node->type_left == ERROR)
 		{
-			token_delete_all(&token_first);
 			free(node);
 			return (ERROR);
 		}

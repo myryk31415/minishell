@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/03/29 23:31:30 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/08 00:42:07 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,10 @@ t_node_type	parser(void **token_tree, t_exec *exec)
 	free(command);
 	type_first = tokens_to_tree(tokens, token_tree);
 	climb_tree(*token_tree, type_first, exec);
+	// if (type_first == ERROR)
+	// 	ft_putstr_fd("syntax error\n", 2);
 	if (type_first == ERROR)
-		ft_putstr_fd("syntax error\n", 2);
+		exec->exit_status = 2;
 	command = NULL;
 	return (type_first);
 }
