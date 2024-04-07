@@ -6,7 +6,7 @@
 #    By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/03/27 21:23:57 by padam            ###   ########.fr        #
+#    Updated: 2024/04/08 00:13:52 by padam            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,7 +61,7 @@ $(OBJ_PATH)	:
 	@mkdir -p $(addprefix $(OBJ_PATH)/,$(OBJ_DIRS))
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c | $(OBJ_PATH)
-	@printf "%-200s\r" "$(CC) $(CFLAGS) -o $@"
+	@printf "%-100s\r" "$(CC) $(CFLAGS) -o $@"
 	@$(CC) $(CFLAGS) -o $@ -c $<
 
 init_submodules:
@@ -71,12 +71,12 @@ update_submodules:
 	git submodule update --recursive --remote
 
 clean:
-	rm -rf $(OBJ_PATH)
-	make -C $(LIBFT_DIR) clean
+	@rm -rf $(OBJ_PATH)
+	@make -C $(LIBFT_DIR) clean
 
 fclean: clean
-	rm -f $(NAME)
-	make -C $(LIBFT_DIR) fclean
+	@rm -f $(NAME)
+	@make -C $(LIBFT_DIR) fclean
 
 re: fclean all
 
