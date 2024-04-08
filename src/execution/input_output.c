@@ -6,11 +6,31 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/28 14:26:55 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/08 18:12:34 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+
+int	input_permission(char **input, int *heredoc, int j)
+{
+	int	file;
+
+	if (access(R_OK, input[j]))
+	{
+		file = open(input[j], O_RDONLY, 0666);
+		if (file == -1)
+		{
+			error_msg("minishell: ", input[j]);
+			exit(EXIT_FAILURE);
+		}
+	}
+	else
+	{
+		error_msg("minishell: ", input[j]);
+		exit(EXIT_FAILURE);
+	}
+}
 
 int	input_handling(char **input, int *heredoc)
 {
@@ -24,14 +44,7 @@ int	input_handling(char **input, int *heredoc)
 		if (file)
 			close(file);
 		if (heredoc[j] == 0)
-		{
-			file = open(input[j], O_RDONLY, 0666);
-			if (file == -1)
-			{
-				error_msg("minishell: ", input[j]);
-				exit(EXIT_FAILURE);
-			}
-		}
+			file = input_permission(input, heredoc, j);
 		else
 			file = heredoc[j];
 		j++;
