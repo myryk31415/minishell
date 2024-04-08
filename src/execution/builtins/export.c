@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 09:47:35 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/08 17:35:32 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/08 17:53:43 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char	**allocate_new_env(char **env, char *arg)
 	env_size = 0;
 	while (env[env_size])
 		env_size++;
-	new_env = malloc(sizeof(char *) * env_size + 1);
+	new_env = ft_calloc(env_size + 2, sizeof(char *));
 	if (!new_env)
 		return (perror("Failed to allocate memory"), NULL);
 	env_size = -1;
@@ -102,7 +102,7 @@ int	pwd_export(char *arg, char ***env)
 		{
 			*env = allocate_new_env(*env, arg);
 			if (*env == NULL)
-				return (free(name), -1);
+				return (free(name), EXIT_FAILURE);
 		}
 	}
 	free(name);
