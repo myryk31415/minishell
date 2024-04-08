@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/08 18:20:35 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/08 18:27:14 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,44 @@ int	input_permission(char **input, int j)
 	}
 	else if (errno == EACCES)
 	{
-		// error_msg("minishell: ", input[j]);
 		ft_putstr_fd("minishell: Permission denied\n", 2);
 		exit(EXIT_FAILURE);
 	}
 	else if (errno == ENOENT)
 	{
-		// error_msg("minishell: ", input[j]);
 		ft_putstr_fd("minishell: No such file or directory\n", 2);
+		exit(EXIT_FAILURE);
+	}
+	return (file);
+}
+
+int	output_permission(char **output, int *append, int j)
+{
+	int	file;
+
+	file = 0;
+	if (access(output[j], W_OK))
+	{
+		if (append[j] == 0)
+			file = open(output[j],
+					O_WRONLY | O_TRUNC | O_CREAT, 0666);
+		else
+			file = open(output[j],
+					O_WRONLY | O_APPEND | O_CREAT, 0666);
+	}
+	else if (errno == EACCES)
+	{
+		ft_putstr_fd("minishell: Permission denied\n", 2);
+		exit(EXIT_FAILURE);
+	}
+	else if (errno == ENOENT)
+	{
+		ft_putstr_fd("minishell: No such file or directory\n", 2);
+		exit(EXIT_FAILURE);
+	}
+	if (!file || file == -1)
+	{
+		error_msg("minishell: ", output[j]);
 		exit(EXIT_FAILURE);
 	}
 	return (file);
@@ -72,17 +102,7 @@ int	output_handling(char **output, int *append)
 	{
 		if (file)
 			close(file);
-		if (append[j] == 0)
-			file = open(output[j],
-					O_WRONLY | O_TRUNC | O_CREAT, 0666);
-		else
-			file = open(output[j],
-					O_WRONLY | O_APPEND | O_CREAT, 0666);
-		if (file == -1)
-		{
-			error_msg("minishell: ", output[j]);
-			exit(EXIT_FAILURE);
-		}
+		output_permission(output, append, j);
 		j++;
 	}
 	return (file);
