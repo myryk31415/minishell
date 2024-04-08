@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 23:38:37 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/08 13:20:14 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/08 16:43:04 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	command_no_fork(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, signal_handler);
 	exec->exit_status = is_builtin(token, pipes, redir, exec);
-	if (exec->exit_status == 1)
+	if (exec->exit_status == -1)
 	{
 		in_and_out_handling(token, pipes, redir);
 		tmp = token->args;
