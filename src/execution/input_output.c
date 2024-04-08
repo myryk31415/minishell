@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/08 18:27:14 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/08 18:29:02 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int	output_handling(char **output, int *append)
 	{
 		if (file)
 			close(file);
-		output_permission(output, append, j);
+		file = output_permission(output, append, j);
 		j++;
 	}
 	return (file);
