@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 00:09:23 by padam             #+#    #+#             */
-/*   Updated: 2024/03/28 14:27:56 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/08 12:59:30 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,9 @@ void	exit_shell(t_exec *exec, char **arg, unsigned int status)
 	unsigned int	exit_status;
 
 	exit_status = status;
+	if (arg[1] && arg[2])
+		return (ft_putstr_fd("minishell: exit: \
+too many arguments\n", 2), EXIT_FAILURE);
 	if (arg && arg[1])
 		exit_status = ft_u_atoi(arg[1]);
 

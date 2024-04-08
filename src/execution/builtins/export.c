@@ -6,11 +6,18 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 09:47:35 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/03/28 16:02:48 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/08 12:57:43 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+void	*print_error(char *arg)
+{
+	ft_putstr_fd("minishell: export: `", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd("': not a valid identifier\n", 2);
+	return (NULL);
+}
 
 char	*get_name(char *arg)
 {
@@ -18,13 +25,21 @@ char	*get_name(char *arg)
 	char	*name;
 
 	i = 0;
-	while (arg && arg[i] != '=')
+	if (!ft_isalpha(arg[0]) && arg[0] != '_')
+		return (print_error(arg));
+	while (arg[i] && arg[i] != '=')
+	{
+		if (!ft_isalnum(arg[i]) && !ft_strchr("_+", arg[i]))
+			return (print_error(arg));
 		i++;
-	name = malloc(i + 1);
-	i = -1;
-	while (arg[++i] != '=')
+	}
+	if (i == 0)
+		return (print_error(arg));
+	if (!arg[i])
+		i = 0;
+	name = ft_calloc(i + 1, 1);
+	while (i-- > 0)
 		name[i] = arg[i];
-	name[i] = '\0';
 	return (name);
 }
 
@@ -40,7 +55,7 @@ int	check_if_assigned(char *name, char ***env, char *arg)
 			&& (env[0][j])[ft_strlen(name)] == '=')
 		{
 			tmp = env[0][j];
-			env[0][j] = arg;
+			env[0][j] = ft_strdup(arg);
 			free(tmp);
 			return (0);
 		}
@@ -56,8 +71,8 @@ char	**allocate_new_env(char **env, char *arg)
 	char	**tmp;
 
 	env_size = 0;
-	while (env[env_size++])
-		;
+	while (env[env_size])
+		env_size++;
 	new_env = malloc(sizeof(char *) * env_size + 1);
 	if (!new_env)
 		return (perror("Failed to allocate memory"), NULL);
@@ -101,11 +116,15 @@ int	export(char **arg, char ***env)
 	int		i;
 
 	i = 0;
-	if (ft_strncmp("OLDPWD=", arg[i], 7) && arg[1])
+	if (ft_strncmp("OLDPWD=", arg[0], 7) && arg[1])
 		arg++;
-	if (!ft_strncmp("export", arg[i], 6) && !arg[1])
+	if (!ft_strncmp("export", arg[0], 6) && !arg[1])
 		return (display_env(*env), 0);
 	name = get_name(arg[i]);
+	if (!name)
+		return (EXIT_FAILURE);
+	if (!*name)
+		return (free(name), 0);
 	while (arg[i])
 	{
 		if (check_if_assigned(name, env, arg[i]) == -1)

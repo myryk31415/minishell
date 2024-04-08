@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 10:14:07 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/28 10:39:23 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/08 12:54:07 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,9 @@ int	cd(char	*arg, char ***env)
 {
 	char	*path_to_dir;
 
+	if (arg[1] && arg[2])
+		return (ft_putstr_fd("minishell: cd: \
+too many arguments\n", 2), EXIT_FAILURE);
 	if (!arg || !ft_strncmp(arg, "~", 2))
 	{
 		path_to_dir = get_env(*env, "HOME");
