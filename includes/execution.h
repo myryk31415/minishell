@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:29 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/28 16:08:35 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/08 16:25:01 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	error_msg(char *cmd, char *file);
 char	*get_path(char *cmd, char **environ, char *var);
 int		pwd(void);
 int		echo(char **args);
-int		cd(char	*arg, char ***env);
+int		cd(char	**arg, char ***env);
 void	exit_shell(t_exec *exec, char **arg, unsigned int status);
 void	oldpwd_save(char ***env, char *path_to_dir, char *arg);
 void	and_execute(t_node *token, int status, int **pipes, t_exec *exec);

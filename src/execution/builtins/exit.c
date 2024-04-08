@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 00:09:23 by padam             #+#    #+#             */
-/*   Updated: 2024/04/08 13:21:41 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/08 16:41:08 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,20 @@ void	exit_shell(t_exec *exec, char **arg, unsigned int status)
 
 	exit_status = status;
 	if (arg && arg[1])
+	{
 		exit_status = ft_u_atoi(arg[1]);
-	if (arg[1] && arg[2])
+	}
+	if (arg[1] && !ft_isnumber(arg[1]))
 	{
 		exit_status = EXIT_FAILURE;
 		ft_putstr_fd("minishell: exit: \
-	too many arguments\n", 2);
+numeric argument required\n", 2);
+	}
+	else if (arg[1] && arg[2])
+	{
+		exit_status = EXIT_FAILURE;
+		ft_putstr_fd("minishell: exit: \
+too many arguments\n", 2);
 	}
 	free_env(exec->env);
 	// rl_clear_history();
