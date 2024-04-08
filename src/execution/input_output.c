@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/08 18:17:22 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/08 18:20:35 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,16 @@ int	input_permission(char **input, int j)
 			exit(EXIT_FAILURE);
 		}
 	}
-	else
+	else if (errno == EACCES)
 	{
-		error_msg("minishell: ", input[j]);
+		// error_msg("minishell: ", input[j]);
+		ft_putstr_fd("minishell: Permission denied\n", 2);
+		exit(EXIT_FAILURE);
+	}
+	else if (errno == ENOENT)
+	{
+		// error_msg("minishell: ", input[j]);
+		ft_putstr_fd("minishell: No such file or directory\n", 2);
 		exit(EXIT_FAILURE);
 	}
 	return (file);
