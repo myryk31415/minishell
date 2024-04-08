@@ -6,17 +6,18 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/08 18:12:34 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/08 18:17:22 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-int	input_permission(char **input, int *heredoc, int j)
+int	input_permission(char **input, int j)
 {
 	int	file;
 
-	if (access(R_OK, input[j]))
+	file = 0;
+	if (access(input[j], R_OK))
 	{
 		file = open(input[j], O_RDONLY, 0666);
 		if (file == -1)
@@ -30,6 +31,7 @@ int	input_permission(char **input, int *heredoc, int j)
 		error_msg("minishell: ", input[j]);
 		exit(EXIT_FAILURE);
 	}
+	return (file);
 }
 
 int	input_handling(char **input, int *heredoc)
@@ -44,7 +46,7 @@ int	input_handling(char **input, int *heredoc)
 		if (file)
 			close(file);
 		if (heredoc[j] == 0)
-			file = input_permission(input, heredoc, j);
+			file = input_permission(input, j);
 		else
 			file = heredoc[j];
 		j++;
