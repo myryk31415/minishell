@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 00:09:23 by padam             #+#    #+#             */
-/*   Updated: 2024/04/08 16:41:08 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/08 16:47:00 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	exit_shell(t_exec *exec, char **arg, unsigned int status)
 	}
 	if (arg[1] && !ft_isnumber(arg[1]))
 	{
-		exit_status = EXIT_FAILURE;
+		exit_status = 2;
 		ft_putstr_fd("minishell: exit: \
 numeric argument required\n", 2);
 	}
