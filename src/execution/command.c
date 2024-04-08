@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 23:38:37 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/03/28 14:13:37 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/08 13:20:14 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	command_fork(t_cmd *token, t_exec *exec, int **pipes, int *redir)
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, signal_handler);
 	builtin(token, pipes, redir, exec);
-	if (exec->exit_status == 1)
+	if (exec->exit_status == -1)
 	{
 		id = fork();
 		if (id == -1)
