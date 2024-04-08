@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 17:10:56 by padam             #+#    #+#             */
-/*   Updated: 2024/03/28 16:57:08 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/08 17:43:53 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,5 @@ void	free_env(char ***env)
 		free(env[0][i]);
 	free(env[0]);
 	free (env);
+	env = NULL;
 }

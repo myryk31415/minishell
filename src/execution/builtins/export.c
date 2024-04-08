@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 09:47:35 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/08 12:57:43 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/08 17:35:32 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ int	export(char **arg, char ***env)
 	i = 0;
 	if (ft_strncmp("OLDPWD=", arg[0], 7) && arg[1])
 		arg++;
-	if (!ft_strncmp("export", arg[0], 6) && !arg[1])
+	else if (!ft_strncmp("export", arg[0], 6) && !arg[1])
 		return (display_env(*env), 0);
 	name = get_name(arg[i]);
 	if (!name)
