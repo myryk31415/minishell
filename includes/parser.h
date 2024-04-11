@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:14:04 by padam             #+#    #+#             */
-/*   Updated: 2024/03/28 16:16:24 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/11 14:59:33 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int			is_variable(char c);
 
 // tokenizer
 t_token_type	get_token_type(char *string);
-t_token		*get_next_token(char *string, t_token *token_last, t_exec *exec);
+t_token		*get_next_token(char *string, t_token *token_last);
 
 // tokens utils
 void		token_delete(t_token **tokens);
@@ -92,6 +92,4 @@ t_token		*token_add(t_token *tokens, t_token_type token_type);
 t_token		*token_split(t_token *tokens, int direction);
 t_token		*skip_parens(t_token *tokens, int direction);
 
-// variable_expansion
-char		*expand_variables(char *command, t_exec *exec);
 #endif

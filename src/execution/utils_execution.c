@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/08 16:32:43 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/11 15:04:43 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ char	*get_path(char *cmd, char **environ, char *var)
 
 int	is_builtin(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 {
+	expand_variables(token->args, exec);
 	if (!ft_strncmp(token->args[0], "cd", 3) || !ft_strncmp(token->args[0], \
 		"echo", 5) || !ft_strncmp(token->args[0], "pwd", 4) || \
 		!ft_strncmp(token->args[0], "export", 7) || !ft_strncmp(token->args[0], \
@@ -72,6 +73,7 @@ void	execute(char **cmd_arg, t_exec *exec)
 {
 	char		*cmd_path;
 
+	expand_variables(cmd_arg, exec);
 	if (!access(cmd_arg[0], F_OK | X_OK))
 	{
 		node_tree_delete(exec->tree, exec->type);

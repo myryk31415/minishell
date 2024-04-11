@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/03/28 16:57:02 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/11 15:00:19 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,9 @@ typedef struct s_exec
 t_node_type	parser(void **token_tree, t_exec *exec);
 
 char		*get_env(char **environ, char *var);
+
+// variable_expansion
+void		expand_variables(char **command, t_exec *exec);
 
 //signal
 void		set_signal_action(void);

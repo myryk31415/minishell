@@ -6,7 +6,7 @@
 #    By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/04/08 00:13:52 by padam            ###   ########.fr        #
+#    Updated: 2024/04/11 14:46:53 by padam            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,26 +21,30 @@ LIBFT_DIR = libft
 SRC_PATH = src
 OBJ_PATH = obj
 
-OBJ_DIRS =	execution	execution/builtins	main	parser	parser/binary_tree	\
+OBJ_DIRS =	execution	execution/builtins	main	main/expansion \
+			parser	parser/binary_tree	\
 
 SRCS_MAIN =	main.c cleanup.c signals.c
 
+SRCS_EXP =	variable_expansion.c
+
 SRCS_PARS =	parser_utils.c			parser.c			tokenizer.c	\
 			tokens_utils.c			debug.c				cleanup.c	\
-			variable_expansion.c
 
 SRCS_BNTR =	node_struct.c			node_utils.c		pipeline.c	\
 			redirects.c				heredoc.c
 
-SRCS_BUILTINS =	cd.c echo.c export.c unset.c exit.c
+SRCS_BUILT =	cd.c		echo.c	export.c	unset.c		exit.c
 
-SRCS_EXECUTION =	execution.c input_output.c utils_execution.c utils2_execution.c and.c command.c
+SRCS_EXEC =	execution.c		input_output.c		utils_execution.c \
+			utils2_execution.c 		and.c command.c
 
 SRCS_PIPE =		fork.c			pipe.c			utils.c
 
 SRC_NAME =	$(addprefix main/,				$(SRCS_MAIN))		\
-			$(addprefix execution/builtins/,$(SRCS_BUILTINS))		\
-			$(addprefix execution/,			$(SRCS_EXECUTION))	\
+			$(addprefix main/expansion/,			$(SRCS_EXP))		\
+			$(addprefix execution/builtins/,$(SRCS_BUILT))	\
+			$(addprefix execution/,			$(SRCS_EXEC))	\
 			$(addprefix parser/,			$(SRCS_PARS))		\
 			$(addprefix parser/binary_tree/,$(SRCS_BNTR))		\
 

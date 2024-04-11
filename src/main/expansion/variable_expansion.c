@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:13:35 by padam             #+#    #+#             */
-/*   Updated: 2024/04/07 21:32:42 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/11 14:59:05 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,12 +87,25 @@ char	*get_expansion(char *command, int len, t_exec *exec, int not_empty)
 	return (tmp);
 }
 
-char	*expand_variables(char *command, t_exec *exec)
+void	expand_variables(char **command, t_exec *exec)
 {
 	char	*tmp;
 
-	tmp = command;
-	command = get_expansion(command, 0, exec, 0);
-	free(tmp);
-	return (command);
+	while (*command)
+	{
+		tmp = *command;
+		*command = get_expansion(*command, 0, exec, 0);
+		free(tmp);
+		command++;
+	}
 }
+
+// char	*expand_variables(char *command, t_exec *exec)
+// {
+// 	char	*tmp;
+
+// 	tmp = command;
+// 	command = get_expansion(command, 0, exec, 0);
+// 	free(tmp);
+// 	return (command);
+// }
