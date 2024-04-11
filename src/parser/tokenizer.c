@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:40:50 by padam             #+#    #+#             */
-/*   Updated: 2024/04/11 14:47:47 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/12 00:23:58 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,19 @@ t_token	*handle_word(char **string, t_token *token_last)
 {
 	t_token_type	token_type;
 	int				i;
+	char			quote;
 
-	i = 1;
+	i = 0;
+	quote = 0;
 	token_type = T_WORD;
-	while (token_type == T_WORD && (*string)[i])
+	while ((token_type == T_WORD || quote) && (*string)[i])
+	{
+		if (quote && (*string)[i] == quote)
+			quote = 0;
+		else if ((*string)[i] == '\'' || (*string)[i] == '"')
+			quote = (*string)[i];
 		token_type = get_token_type((*string) + i++);
+	}
 	if (token_type != T_WORD)
 		i--;
 	if (!token_last || token_last->type != T_WORD)

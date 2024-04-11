@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:47:36 by padam             #+#    #+#             */
-/*   Updated: 2024/04/11 15:02:57 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/11 23:21:49 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,10 @@ int	here_doc(char *limiter, int variable_expansion, t_exec *exec)
 		str = readline(">");
 		if (str && *str)
 		{
-			if (variable_expansion)
-				expand_variables(&str, exec);
+			(void)variable_expansion;
+			(void)exec;
+			// if (variable_expansion)
+			// 	expand_variables(&str, exec);
 			if (!ft_strncmp(str, limiter, ft_strlen(limiter))
 				&& !ft_strncmp(str, limiter, ft_strlen(str) - 1))
 			{

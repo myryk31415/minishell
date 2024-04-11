@@ -6,7 +6,7 @@
 #    By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/04/11 14:46:53 by padam            ###   ########.fr        #
+#    Updated: 2024/04/11 23:26:13 by padam            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ OBJ_DIRS =	execution	execution/builtins	main	main/expansion \
 
 SRCS_MAIN =	main.c cleanup.c signals.c
 
-SRCS_EXP =	variable_expansion.c
+SRCS_EXP =	variable_expansion.c expander.c
 
 SRCS_PARS =	parser_utils.c			parser.c			tokenizer.c	\
 			tokens_utils.c			debug.c				cleanup.c	\

@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 14:48:01 by padam             #+#    #+#             */
-/*   Updated: 2024/04/11 14:55:34 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/12 00:07:04 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,67 +25,60 @@ char	*var_expand(char *old_string, char *string, int quotes, t_exec *exec)
 	return (output);
 }
 
-//error handling
-t_token	*handle_quotes(char **string, t_token *token_last, t_exec *exec)
+char *extract(char *old_string, char *string)
 {
-	char	quote;
-	int		i;
-	char	*tmp;
-	char	*tmp2;
+	char *output;
 
-	i = 0;
-	quote = **string;
-	(*string)++;
-	if (!**string)
-		return (NULL);
-	while ((*string)[i + 1] && (*string)[i] != quote)
-		i++;
-	if ((*string)[i] != quote)
-		return (NULL);
-	if (!token_last || token_last->type != T_WORD)
-		token_last = token_add(token_last, T_WORD);
-	if (quote == '\'')
-	{
-		tmp2 = ft_substr(*string, 0, i);
-		tmp = token_last->value;
-		token_last->value = ft_strjoin(tmp, tmp2);
-		free(tmp);
-		free(tmp2);
-	}
-	else
-		token_last->value = var_expand(token_last->value, ft_substr(*string, 0, i), 1, exec);
-	token_last->quote = 2;
-	*string += i;
-	return (token_last);
+	output = ft_strjoin(old_string, string);
+	free(old_string);
+	free(string);
+	return (output);
 }
 
-char *handle_word(char *str)
-{
-	
-}
-
-char *expander(char *str, t_exec *exec)
+char *expander(char *arg, t_exec *exec)
 {
 	char *output;
 	char *tmp;
-	char *tmp2;
 	int i;
 
-	i = 0;
+	tmp = arg;
 	output = NULL;
-	while (str[i])
+	while (*arg)
 	{
-		if (str[i] == '\'')
-			tmp = handle_quotes(&str, output, exec);
-		else if (str[i] == '\"')
-			tmp = handle_quotes(&str, output, exec);
+		i = 0;
+		if (*arg == '\'')
+		{
+			arg++;
+			while (arg[i] != '\'')
+				i++;
+			output = extract(output, ft_substr(arg, 0, i));
+			i++;
+		}
+		else if (*arg == '"')
+		{
+			arg++;
+			while (arg[i] != '"')
+				i++;
+			output = var_expand(output, ft_substr(arg, 0, i), 1, exec);
+			i++;
+		}
 		else
-			tmp = handle_word(str);
-		output = tmp2;
-		output = ft_strjoin(output, tmp);
-		free(tmp);
-		free(tmp2);
+		{
+			while (arg[i] && arg[i] != '\'' && arg[i] != '"')
+				i++;
+			output = var_expand(output, ft_substr(arg, 0, i), 0, exec);
+		}
+		arg += i;
 	}
-	output = var_expand(output, str, 0, exec);
+	free(tmp);
 	return (output);
+}
+
+void	expander_array(char **args, t_exec *exec)
+{
+	while (*args)
+	{
+		*args = expander(*args, exec);
+		args++;
+	}
 }
