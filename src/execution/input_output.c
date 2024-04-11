@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_output.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/11 15:06:21 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/12 00:37:37 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,14 @@ int	output_permission(char **output, int *append, int j)
 	return (file);
 }
 
-int	input_handling(char **input, int *heredoc)
+int	input_handling(char **input, int *heredoc, t_exec *exec)
 {
 	int			j;
 	int			file;
 
 	file = 0;
 	j = 0;
+	expander_array(input, exec);
 	while (input[j] || heredoc[j])
 	{
 		if (file)
@@ -77,13 +78,14 @@ int	input_handling(char **input, int *heredoc)
 	return (file);
 }
 
-int	output_handling(char **output, int *append)
+int	output_handling(char **output, int *append, t_exec *exec)
 {
-	int		file;
-	int		j;
+	int			j;
+	int			file;
 
-	j = 0;
 	file = 0;
+	j = 0;
+	expander_array(output, exec);
 	while (output[j])
 	{
 		if (file)

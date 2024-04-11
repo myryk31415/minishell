@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:29 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/11 15:24:18 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/12 00:40:24 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void	execute(char **cmd_arg, t_exec *exec);
 void	close_pipes(int **pipes);
 void	free_str_array(char **arr);
 int		redirect(t_redir *token, int **pipes, int status, t_exec exec);
-int		output_handling(char **output, int *append);
-int		input_handling(char **input, int *heredoc);
+int		output_handling(char **output, int *append, t_exec *exec);
+int		input_handling(char **input, int *heredoc, t_exec *exec);
 void	command(t_cmd *token, int **pipes, int redirect, t_exec *exec);
 void	error_msg(char *cmd, char *file);
 char	*get_path(char *cmd, char **environ, char *var);
@@ -41,7 +41,7 @@ void	run_tree(t_node *token, int **pipes, t_exec *exec, int id);
 int		create_tree(int *pre_fd, t_node *token, t_exec exec);
 void	execution(void *tree, t_node_type type, t_exec *exec);
 int		is_builtin(t_cmd *token, int **pipes, int *redir, t_exec *exec);
-int		in_and_out_handling(t_cmd *token, int **pipes, int *redir);
+int		in_and_out_handling(t_cmd *token, int **pipes, int *redir, t_exec *exec);
 int		export(char **arg, char ***env);
 void	close_pipe(int *pipe);
 int		env_cmd(t_cmd *token, char **env);

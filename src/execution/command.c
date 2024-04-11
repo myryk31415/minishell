@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 23:38:37 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/11 15:25:05 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/12 00:41:05 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-int	in_handling(t_cmd *token, int **pipes, int *redir)
+int	in_handling(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 {
 	int	input;
 
@@ -20,7 +20,7 @@ int	in_handling(t_cmd *token, int **pipes, int *redir)
 	input = 0;
 	if ((token->redirect_in && *(token->redirect_in)) || \
 	(token->heredoc && *(token->heredoc)))
-		input = input_handling(token->redirect_in, token->heredoc);
+		input = input_handling(token->redirect_in, token->heredoc, exec);
 	else if (redir && redir[0])
 	{
 		input = redir[0];
@@ -34,17 +34,17 @@ int	in_handling(t_cmd *token, int **pipes, int *redir)
 	return (0);
 }
 
-int	in_and_out_handling(t_cmd *token, int **pipes, int *redir)
+int	in_and_out_handling(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 {
 	int	output;
 	int	input;
 
 	output = 1;
-	input = in_handling(token, pipes, redir);
+	input = in_handling(token, pipes, redir, exec);
 	if (input == -1)
 		return (EXIT_FAILURE);
 	if (token->redirect_out && *(token->redirect_out))
-		output = output_handling(token->redirect_out, token->append);
+		output = output_handling(token->redirect_out, token->append, exec);
 	else if (redir && redir[1])
 		output = redir[1];
 	else if (pipes && pipes[0])
@@ -83,7 +83,7 @@ void	command_fork(t_cmd *token, t_exec *exec, int **pipes, int *redir)
 			perror("Fork");
 		if (!id)
 		{
-			if (in_and_out_handling(token, pipes, redir) == 1)
+			if (in_and_out_handling(token, pipes, redir, exec) == 1)
 				exit_shell(exec, NULL, EXIT_FAILURE);
 			tmp = token->args;
 			token->args = NULL;
@@ -106,7 +106,7 @@ void	command_no_fork(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 	exec->exit_status = is_builtin(token, pipes, redir, exec);
 	if (exec->exit_status == -1)
 	{
-		in_and_out_handling(token, pipes, redir);
+		in_and_out_handling(token, pipes, redir, exec);
 		tmp = token->args;
 		token->args = NULL;
 		execute(tmp, exec);
@@ -122,9 +122,9 @@ void	command(t_cmd *token, int **pipes, int redirect, t_exec *exec)
 	if (redirect == 1)
 	{
 		if (token->redirect_in && *(token->redirect_in))
-			redir[0] = input_handling(token->redirect_in, token->heredoc);
+			redir[0] = input_handling(token->redirect_in, token->heredoc, exec);
 		if (token->redirect_out && *(token->redirect_out))
-			redir[1] = output_handling(token->redirect_out, token->append);
+			redir[1] = output_handling(token->redirect_out, token->append, exec);
 		return ;
 	}
 	else
