@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/28 14:22:11 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/09 10:56:58 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,7 @@ void	execution(void *tree, t_node_type type, t_exec *exec)
 		exec->exit_status = create_tree(0, (t_node *)tree, *exec);
 	else if (type == REDIR)
 		exec->exit_status = redirect((t_redir *)tree, NULL, 0, *exec);
+	if (exec->exit_status == 256)
+		exec->exit_status = 1;
 	return ;
 }

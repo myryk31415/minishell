@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/08 18:29:02 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/11 15:06:21 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,7 @@ int	input_permission(char **input, int j)
 	{
 		file = open(input[j], O_RDONLY, 0666);
 		if (file == -1)
-		{
-			error_msg("minishell: ", input[j]);
-			exit(EXIT_FAILURE);
-		}
-	}
-	else if (errno == EACCES)
-	{
-		ft_putstr_fd("minishell: Permission denied\n", 2);
-		exit(EXIT_FAILURE);
-	}
-	else if (errno == ENOENT)
-	{
-		ft_putstr_fd("minishell: No such file or directory\n", 2);
-		exit(EXIT_FAILURE);
+			return (error_msg("minishell: ", input[j]), -1);
 	}
 	return (file);
 }
@@ -44,30 +31,27 @@ int	output_permission(char **output, int *append, int j)
 	int	file;
 
 	file = 0;
-	if (access(output[j], W_OK))
-	{
+	// if (access(output[j], W_OK))
+	// {
 		if (append[j] == 0)
 			file = open(output[j],
 					O_WRONLY | O_TRUNC | O_CREAT, 0666);
 		else
 			file = open(output[j],
 					O_WRONLY | O_APPEND | O_CREAT, 0666);
-	}
-	else if (errno == EACCES)
-	{
-		ft_putstr_fd("minishell: Permission denied\n", 2);
-		exit(EXIT_FAILURE);
-	}
-	else if (errno == ENOENT)
-	{
-		ft_putstr_fd("minishell: No such file or directory\n", 2);
-		exit(EXIT_FAILURE);
-	}
+	// }
+	// else if (errno == EACCES)
+	// {
+	// 	ft_putstr_fd("minishell: Permission denied\n", 2);
+	// 	exit(EXIT_FAILURE);
+	// }
+	// else if (errno == ENOENT)
+	// {
+	// 	ft_putstr_fd("minishell: No such file or directory\n", 2);
+	// 	exit(EXIT_FAILURE);
+	// }r
 	if (!file || file == -1)
-	{
-		error_msg("minishell: ", output[j]);
-		exit(EXIT_FAILURE);
-	}
+		return (error_msg("minishell: ", output[j]), -1);
 	return (file);
 }
 
@@ -87,6 +71,8 @@ int	input_handling(char **input, int *heredoc)
 		else
 			file = heredoc[j];
 		j++;
+		if (file == -1)
+			return (file);
 	}
 	return (file);
 }
@@ -104,6 +90,8 @@ int	output_handling(char **output, int *append)
 			close(file);
 		file = output_permission(output, append, j);
 		j++;
+		if (file == -1)
+			return (file);
 	}
 	return (file);
 }

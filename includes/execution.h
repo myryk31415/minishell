@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:29 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/08 18:08:43 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/11 15:24:18 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	run_tree(t_node *token, int **pipes, t_exec *exec, int id);
 int		create_tree(int *pre_fd, t_node *token, t_exec exec);
 void	execution(void *tree, t_node_type type, t_exec *exec);
 int		is_builtin(t_cmd *token, int **pipes, int *redir, t_exec *exec);
-void	in_and_out_handling(t_cmd *token, int **pipes, int *redir);
+int		in_and_out_handling(t_cmd *token, int **pipes, int *redir);
 int		export(char **arg, char ***env);
 void	close_pipe(int *pipe);
 int		env_cmd(t_cmd *token, char **env);

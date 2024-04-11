@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 14:57:38 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/03/27 17:57:51 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/11 15:23:31 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,11 @@ void	oldpwd_save(char ***env, char *path_to_dir, char *arg)
 
 void	close_in_and_out_files(int input, int output, int *redir, int **pipes)
 {
+	close_pipes(pipes);
 	if (output != 1 && (!redir || (redir && !redir[1])))
 		close(output);
 	if (input)
 		close(input);
-	close_pipes(pipes);
-
 }
 
 void	display_env(char **env)

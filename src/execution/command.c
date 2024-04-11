@@ -6,19 +6,18 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 23:38:37 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/08 16:43:04 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/11 15:25:05 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-void	in_and_out_handling(t_cmd *token, int **pipes, int *redir)
+int	in_handling(t_cmd *token, int **pipes, int *redir)
 {
 	int	input;
-	int	output;
+
 
 	input = 0;
-	output = 1;
 	if ((token->redirect_in && *(token->redirect_in)) || \
 	(token->heredoc && *(token->heredoc)))
 		input = input_handling(token->redirect_in, token->heredoc);
@@ -29,15 +28,32 @@ void	in_and_out_handling(t_cmd *token, int **pipes, int *redir)
 	}
 	else if (pipes && pipes[1])
 		input = pipes[1][0];
+	if (input == -1)
+		return (input);
 	dup2(input, STDIN_FILENO);
+	return (0);
+}
+
+int	in_and_out_handling(t_cmd *token, int **pipes, int *redir)
+{
+	int	output;
+	int	input;
+
+	output = 1;
+	input = in_handling(token, pipes, redir);
+	if (input == -1)
+		return (EXIT_FAILURE);
 	if (token->redirect_out && *(token->redirect_out))
 		output = output_handling(token->redirect_out, token->append);
 	else if (redir && redir[1])
 		output = redir[1];
 	else if (pipes && pipes[0])
 		output = pipes[0][1];
+	if (output == -1)
+		return (EXIT_FAILURE);
 	dup2(output, STDOUT_FILENO);
 	close_in_and_out_files(input, output, redir, pipes);
+	return (EXIT_SUCCESS);
 }
 
 void	builtin(t_cmd *token, int **pipes, int *redir, t_exec *exec)
@@ -67,7 +83,8 @@ void	command_fork(t_cmd *token, t_exec *exec, int **pipes, int *redir)
 			perror("Fork");
 		if (!id)
 		{
-			in_and_out_handling(token, pipes, redir);
+			if (in_and_out_handling(token, pipes, redir) == 1)
+				exit_shell(exec, NULL, EXIT_FAILURE);
 			tmp = token->args;
 			token->args = NULL;
 			execute(tmp, exec);
