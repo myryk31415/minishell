@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/04/11 23:31:22 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/12 15:05:14 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <signal.h>
-
+# include <sys/types.h>
+# include <dirent.h>
 typedef struct s_cmd
 {
 	char	**args;
@@ -69,7 +70,7 @@ char		*get_env(char **environ, char *var);
 
 // variable_expansion
 char		*expand_variables(char *command, t_exec *exec);
-void		expander_array(char **args, t_exec *exec);
+char		**expander_array(char **args, t_exec *exec);
 
 //signal
 void		set_signal_action(void);

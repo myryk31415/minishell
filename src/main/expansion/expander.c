@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 14:48:01 by padam             #+#    #+#             */
-/*   Updated: 2024/04/12 00:07:04 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/12 14:49:06 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,39 @@ char *expander(char *arg, t_exec *exec)
 	return (output);
 }
 
-void	expander_array(char **args, t_exec *exec)
+char 	**expander_array(char **args, t_exec *exec)
 {
-	while (*args)
+	int		i;
+	int		j;
+	int		k;
+	char 	**new_args;
+
+	j = 0;
+	new_args = NULL;
+	while (args[j])
 	{
-		*args = expander(*args, exec);
-		args++;
+		args[j] = expander(args[j], exec);
+		j++;
 	}
+	i = 0;
+	k = 0;
+	while (k < j)
+		if (!args[k++])
+			i++;
+	if (i)
+	{
+		new_args = ft_calloc(j - i + 1, sizeof(char *));
+		k = 0;
+		i = 0;
+		while (k <= j)
+		{
+			if (!args[k])
+				k++;
+			else
+				new_args[i++] = ft_strdup(args[k++]);
+		}
+		free_str_array(args);
+		return (new_args);
+	}
+	return (args);
 }

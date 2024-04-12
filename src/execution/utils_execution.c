@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/12 14:00:46 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/12 15:24:03 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ char	*get_path(char *cmd, char **environ, char *var)
 
 int	is_builtin(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 {
-	expander_array(token->args, exec);
-	if (!ft_strncmp(token->args[0], "cd", 3) || !ft_strncmp(token->args[0], \
-		"echo", 5) || !ft_strncmp(token->args[0], "pwd", 4) || \
+	token->args = expander_array(token->args, exec);
+	if (*(token->args) && (!ft_strncmp(token->args[0], "cd", 3) || !ft_strncmp\
+	(token->args[0],"echo", 5) || !ft_strncmp(token->args[0], "pwd", 4) || \
 		!ft_strncmp(token->args[0], "export", 7) || !ft_strncmp(token->args[0], \
 		"unset", 6) || !ft_strncmp(token->args[0], "exit", 5) || \
-		!ft_strncmp(token->args[0], "env", 4))
+		!ft_strncmp(token->args[0], "env", 4)))
 	{
 		if (in_and_out_handling(token, pipes, redir, exec) == 1)
 			return (EXIT_FAILURE);
@@ -70,31 +70,61 @@ int	is_builtin(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 	return (-1);
 }
 
+void	error_message(char *cmd_path, t_exec *exec)
+{
+	DIR *folder;
+	int	file;
+	int	exit_status;
+
+	file = open(cmd_path, O_WRONLY);
+	folder = opendir(cmd_path);
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(cmd_path, 2);
+	if (ft_strchr(cmd_path, '/') == NULL)
+		ft_putendl_fd(": command not found", 2);
+	else if (file == -1 && folder == NULL)
+		ft_putendl_fd(": No such file or directory", 2);
+	else if (file == -1 && folder != NULL)
+		ft_putendl_fd(": is a directory", 2);
+	else if (file != -1 && folder == NULL)
+		ft_putendl_fd(": Permission denied", 2);
+	if (ft_strchr(cmd_path, '/') == NULL || (file == -1 && folder == NULL))
+		exit_status = 126;
+	else
+		exit_status = 127;
+	if (folder)
+		closedir(folder);
+	if (file)
+		close(file);
+	free_env(exec->env);
+	free(exec);
+	exit(exit_status);
+}
+
 void	execute(char **cmd_arg, t_exec *exec)
 {
 	char		*cmd_path;
 
-	expander_array(cmd_arg, exec);
+	// cmd_arg = expander_array(cmd_arg, exec);
 	if (!access(cmd_arg[0], F_OK | X_OK))
 	{
 		node_tree_delete(exec->tree, exec->type);
 		// rl_clear_history();
 		execve(cmd_arg[0], cmd_arg, *(exec->env));
-		ft_putstr_fd(ft_strjoin("minishell: ", \
-			ft_strjoin(cmd_arg[0], ": command not found\n")), 2);
-		free_env(exec->env);
-		exit(EXIT_FAILURE);
+		error_message(cmd_arg[0], exec);
 	}
 	else
 	{
-		if (!ft_strchr(cmd_arg[0], '/'))
+		if (!*cmd_arg)
+			exit_shell(exec, NULL, EXIT_SUCCESS);
+
 			cmd_path = get_path(cmd_arg[0], *(exec->env), "PATH");
+			if (!cmd_path)
+				cmd_path = *cmd_arg;
 		node_tree_delete(exec->tree, exec->type);
 		// rl_clear_history();
-		execve(cmd_path, cmd_arg, *(exec->env));
-		ft_putstr_fd(ft_strjoin("minishell: ", \
-			ft_strjoin(cmd_arg[0], ": command not found\n")), 2);
-		free_env(exec->env);
-		exit(EXIT_FAILURE);
+		if (ft_strchr(cmd_arg[0], '/'))
+			execve(cmd_path, cmd_arg, *(exec->env));
+		error_message(cmd_path, exec);
 	}
 }

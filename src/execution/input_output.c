@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/12 13:46:50 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/12 14:35:43 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	input_handling(char **input, int *heredoc, t_exec *exec)
 
 	file = 0;
 	j = 0;
-	expander_array(input, exec);
+	input = expander_array(input, exec);
 	while (input[j] || heredoc[j])
 	{
 		if (file)
@@ -79,7 +79,7 @@ int	output_handling(char **output, int *append, t_exec *exec)
 
 	file = 0;
 	j = 0;
-	expander_array(output, exec);
+	output = expander_array(output, exec);
 	while (output[j])
 	{
 		if (file)
