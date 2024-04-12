@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_output.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/12 00:37:37 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/12 13:46:50 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,9 @@ int	input_permission(char **input, int j)
 	int	file;
 
 	file = 0;
-	if (access(input[j], R_OK))
-	{
-		file = open(input[j], O_RDONLY, 0666);
-		if (file == -1)
-			return (error_msg("minishell: ", input[j]), -1);
-	}
+	file = open(input[j], O_RDONLY, 0666);
+	if (file == -1)
+		return (error_msg("minishell: ", input[j]), -1);
 	return (file);
 }
 
@@ -31,15 +28,12 @@ int	output_permission(char **output, int *append, int j)
 	int	file;
 
 	file = 0;
-	// if (access(output[j], W_OK))
-	// {
-		if (append[j] == 0)
-			file = open(output[j],
-					O_WRONLY | O_TRUNC | O_CREAT, 0666);
-		else
-			file = open(output[j],
-					O_WRONLY | O_APPEND | O_CREAT, 0666);
-	// }
+	if (append[j] == 0)
+		file = open(output[j],
+				O_WRONLY | O_TRUNC | O_CREAT, 0666);
+	else
+		file = open(output[j],
+				O_WRONLY | O_APPEND | O_CREAT, 0666);
 	// else if (errno == EACCES)
 	// {
 	// 	ft_putstr_fd("minishell: Permission denied\n", 2);

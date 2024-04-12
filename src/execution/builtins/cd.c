@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 10:14:07 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/11 15:43:45 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/12 13:43:22 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,9 @@ int	cd(char	**arg, char ***env)
 {
 	char	*path;
 
+	arg++;
 	if (arg[0] && arg[1])
-		return (ft_putstr_fd("minishell: cd: \
-too many arguments\n", 2), EXIT_FAILURE);
+		return (ft_putstr_fd("minishell: cd: too many arguments\n", 2), 1);
 	if (!*arg || !ft_strncmp(*arg, "~", 2))
 	{
 		path = get_env(*env, "HOME");
