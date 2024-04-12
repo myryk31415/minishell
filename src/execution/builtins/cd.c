@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 10:14:07 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/08 16:31:46 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/11 15:43:45 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,33 +88,29 @@ char	*cd_path(char *arg, char **env)
 
 int	cd(char	**arg, char ***env)
 {
-	char	*path_to_dir;
+	char	*path;
 
-	arg++;
 	if (arg[0] && arg[1])
 		return (ft_putstr_fd("minishell: cd: \
 too many arguments\n", 2), EXIT_FAILURE);
 	if (!*arg || !ft_strncmp(*arg, "~", 2))
 	{
-		path_to_dir = get_env(*env, "HOME");
-		if (!path_to_dir)
+		path = get_env(*env, "HOME");
+		if (!path)
 			return (ft_putstr_fd("minishell: cd: \
 HOME not set\n", 2), EXIT_FAILURE);
 	}
 	else if ((*arg)[0] == '-')
 	{
-		path_to_dir = get_env(*env, "OLDPWD");
-		if (!path_to_dir)
+		path = get_env(*env, "OLDPWD");
+		if (!path)
 			return (ft_putstr_fd("minishell: cd: \
 OLDPWD not set\n", 2), EXIT_FAILURE);
 	}
 	else
-		path_to_dir = cd_path(*arg, *env);
-	if (!path_to_dir)
-		return (error_msg("minishell: cd: ", *arg), EXIT_FAILURE);
-	if (access(path_to_dir, F_OK | X_OK))
-		return (error_msg("minishell: cd: ", *arg), \
-			free(path_to_dir), EXIT_FAILURE);
-	oldpwd_save(env, path_to_dir, *arg);
+		path = cd_path(*arg, *env);
+	if (!path || access(path, F_OK | X_OK))
+		return (error_msg("minishell: cd: ", *arg), free(path), EXIT_FAILURE);
+	oldpwd_save(env, path, *arg);
 	return (0);
 }

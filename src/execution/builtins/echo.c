@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:57:00 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/27 20:22:13 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/11 15:40:17 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,13 @@ int	env_cmd(t_cmd *token, char **env)
 {
 	// char	**tmp_env;
 	// char	**tmp_var;
-
 	(void)token;
 	// tmp_env = env;
 	// tmp_var = malloc(sizeof(char *) + 1);
 	// if (!tmp_var)
 	// 	return (-1);
 	// if (!token->args)
-		display_env(env);
+	display_env(env);
 	// else
 	// {
 	// 	tmp_var[0] = token->args[1];
