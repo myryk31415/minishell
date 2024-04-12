@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/12 15:24:03 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/12 15:29:16 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	is_builtin(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 	return (-1);
 }
 
-void	error_message(char *cmd_path, t_exec *exec)
+int	error_message(char *cmd_path)
 {
 	DIR *folder;
 	int	file;
@@ -96,35 +96,36 @@ void	error_message(char *cmd_path, t_exec *exec)
 		closedir(folder);
 	if (file)
 		close(file);
-	free_env(exec->env);
-	free(exec);
-	exit(exit_status);
+	return (exit_status);
 }
 
 void	execute(char **cmd_arg, t_exec *exec)
 {
 	char		*cmd_path;
+	int			exit_status;
 
-	// cmd_arg = expander_array(cmd_arg, exec);
 	if (!access(cmd_arg[0], F_OK | X_OK))
 	{
 		node_tree_delete(exec->tree, exec->type);
-		// rl_clear_history();
 		execve(cmd_arg[0], cmd_arg, *(exec->env));
-		error_message(cmd_arg[0], exec);
+		exit_status = error_message(cmd_arg[0]);
+		free_env(exec->env);
+		free(exec);
+		exit(exit_status);
 	}
 	else
 	{
 		if (!*cmd_arg)
 			exit_shell(exec, NULL, EXIT_SUCCESS);
-
-			cmd_path = get_path(cmd_arg[0], *(exec->env), "PATH");
-			if (!cmd_path)
-				cmd_path = *cmd_arg;
+		cmd_path = get_path(cmd_arg[0], *(exec->env), "PATH");
+		if (!cmd_path)
+			cmd_path = *cmd_arg;
 		node_tree_delete(exec->tree, exec->type);
-		// rl_clear_history();
 		if (ft_strchr(cmd_arg[0], '/'))
 			execve(cmd_path, cmd_arg, *(exec->env));
-		error_message(cmd_path, exec);
+		exit_status = error_message(cmd_path);
+		free_env(exec->env);
+		free(exec);
+		exit(exit_status);
 	}
 }
