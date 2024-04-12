@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/09 10:56:58 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/12 13:54:54 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ void	run_tree(t_node *token, int **pipes, t_exec *exec, int id)
 
 void	execution(void *tree, t_node_type type, t_exec *exec)
 {
-
 	if (type == CMD)
 		command((t_cmd *)tree, NULL, 2, exec);
 	else if (type == AND)

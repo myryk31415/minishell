@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 23:38:37 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/12 00:41:05 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/12 13:53:05 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,8 @@ void	command_no_fork(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 	exec->exit_status = is_builtin(token, pipes, redir, exec);
 	if (exec->exit_status == -1)
 	{
-		in_and_out_handling(token, pipes, redir, exec);
+		if (in_and_out_handling(token, pipes, redir, exec) == 1)
+			exit_shell(exec, NULL, EXIT_FAILURE);
 		tmp = token->args;
 		token->args = NULL;
 		execute(tmp, exec);
