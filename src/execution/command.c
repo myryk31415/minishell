@@ -6,21 +6,64 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 23:38:37 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/14 22:17:52 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/14 23:35:40 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-int	in_handling(t_cmd *token, int **pipes, int *redir, t_exec *exec)
+// int	in_handling(t_cmd *token, int **pipes, int *redir, t_exec *exec)
+// {
+// 	int	input;
+
+
+// 	input = 0;
+// 	if ((token->redirect_in && *(token->redirect_in)) || (token->heredoc && *(token->heredoc)))
+// 		input = input_handling(token->redirect_in, token->heredoc, exec);
+// 	else if (redir && redir[0])
+// 	{
+// 		input = redir[0];
+// 		redir[0] = 0;
+// 	}
+// 	else if (pipes && pipes[1])
+// 		input = pipes[1][0];
+// 	if (input == -1)
+// 		return (input);
+// 	dup2(input, STDIN_FILENO);
+// 	return (0);
+// }
+
+// int	in_and_out_handling(t_cmd *token, int **pipes, int *redir, t_exec *exec)
+// {
+// 	int	output;
+// 	int	input;
+
+// 	output = 1;
+// 	input = in_handling(token, pipes, redir, exec);
+// 	if (input == -1)
+// 		return (EXIT_FAILURE);
+// 	if (token->redirect_out && *(token->redirect_out))
+// 		output = output_handling(token->redirect_out, token->append, exec);
+// 	else if (redir && redir[1])
+// 		output = redir[1];
+// 	else if (pipes && pipes[0])
+// 		output = pipes[0][1];
+// 	if (output == -1)
+// 		return (EXIT_FAILURE);
+// 	dup2(output, STDOUT_FILENO);
+// 	close_in_and_out_files(input, output, redir, pipes);
+// 	return (EXIT_SUCCESS);
+// }
+
+int	in_and_out_handling(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 {
-	int	input;
+	int input_output[2];
+	int input;
+	int output;
 
-
-	input = 0;
-	if ((token->redirect_in && *(token->redirect_in)) || \
-	(token->heredoc && *(token->heredoc)))
-		input = input_handling(token->redirect_in, token->heredoc, exec);
+	handle_both(input_output, token->redirects, token->redirect_type, exec);
+	if (input_output[0])
+		input = input_output[0];
 	else if (redir && redir[0])
 	{
 		input = redir[0];
@@ -29,22 +72,10 @@ int	in_handling(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 	else if (pipes && pipes[1])
 		input = pipes[1][0];
 	if (input == -1)
-		return (input);
-	dup2(input, STDIN_FILENO);
-	return (0);
-}
-
-int	in_and_out_handling(t_cmd *token, int **pipes, int *redir, t_exec *exec)
-{
-	int	output;
-	int	input;
-
-	output = 1;
-	input = in_handling(token, pipes, redir, exec);
-	if (input == -1)
 		return (EXIT_FAILURE);
-	if (token->redirect_out && *(token->redirect_out))
-		output = output_handling(token->redirect_out, token->append, exec);
+	dup2(input, STDIN_FILENO);
+	if (input_output[1])
+		output = input_output[1];
 	else if (redir && redir[1])
 		output = redir[1];
 	else if (pipes && pipes[0])
@@ -123,11 +154,11 @@ void	command(t_cmd *token, int **pipes, int redirect, t_exec *exec)
 	if (redirect == 1)
 	{
 		if (token->redirects && *(token->redirects))
-			handle_both(&redir, token->redirects, token->redirect_type, exec);
-		if (token->redirect_in && *(token->redirect_in))
-			redir[0] = input_handling(token->redirect_in, token->heredoc, exec);
-		if (token->redirect_out && *(token->redirect_out))
-			redir[1] = output_handling(token->redirect_out, token->append, exec);
+			handle_both(redir, token->redirects, token->redirect_type, exec);
+		// if (token->redirect_in && *(token->redirect_in))
+		// 	redir[0] = input_handling(token->redirect_in, token->heredoc, exec);
+		// if (token->redirect_out && *(token->redirect_out))
+		// 	redir[1] = output_handling(token->redirect_out, token->append, exec);
 		return ;
 	}
 	else

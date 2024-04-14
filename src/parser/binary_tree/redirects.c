@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:34:22 by padam             #+#    #+#             */
-/*   Updated: 2024/04/14 21:55:24 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/14 22:50:48 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	redirects_count(t_token *tokens)
 	return (count);
 }
 
-int	get_output(t_token **token_first, t_cmd *redirects, int value, int *count)
+int	get_redir(t_token **token_first, t_cmd *redirects, int value, int *count)
 {
 	token_delete(token_first);
 	if (!(*token_first) || (*token_first)->type != T_WORD)
@@ -72,13 +72,13 @@ int	redirects_fill(t_token **token_first, t_cmd *redirects)
 		if ((*token_first)->type == T_LPAREN)
 			token_first = &skip_parens(*token_first, 1)->next;
 		else if ((*token_first)->type == T_REDIR_OUT)
-			output = get_input(token_first, redirects, 0, &count);
+			output = get_redir(token_first, redirects, 0, &count);
 		else if ((*token_first)->type == T_REDIR_APPEND)
-			output = get_input(token_first, redirects, 1, &count);
+			output = get_redir(token_first, redirects, 1, &count);
 		else if ((*token_first)->type == T_REDIR_IN)
-			output = get_input(token_first, redirects, 2, &count);
+			output = get_redir(token_first, redirects, 2, &count);
 		else if ((*token_first)->type == T_REDIR_HEREDOC)
-			output = get_input(token_first, redirects, 3, &count);
+			output = get_redir(token_first, redirects, 3, &count);
 		else
 			token_first = &((*token_first)->next);
 		if (output == -1)

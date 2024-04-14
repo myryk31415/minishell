@@ -3,36 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   input_output.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/12 14:35:43 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/14 23:40:56 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-int	input_permission(char **input, int j)
+int	input_permission(char *input)
 {
 	int	file;
 
 	file = 0;
-	file = open(input[j], O_RDONLY, 0666);
+	file = open(input, O_RDONLY, 0666);
 	if (file == -1)
-		return (error_msg("minishell: ", input[j]), -1);
+		return (error_msg("minishell: ", input), -1);
 	return (file);
 }
 
-int	output_permission(char **output, int *append, int j)
+int	output_permission(char *output, int append)
 {
 	int	file;
 
 	file = 0;
-	if (append[j] == 0)
-		file = open(output[j],
+	if (append == 0)
+		file = open(output,
 				O_WRONLY | O_TRUNC | O_CREAT, 0666);
 	else
-		file = open(output[j],
+		file = open(output,
 				O_WRONLY | O_APPEND | O_CREAT, 0666);
 	// else if (errno == EACCES)
 	// {
@@ -45,52 +45,86 @@ int	output_permission(char **output, int *append, int j)
 	// 	exit(EXIT_FAILURE);
 	// }r
 	if (!file || file == -1)
-		return (error_msg("minishell: ", output[j]), -1);
+		return (error_msg("minishell: ", output), -1);
 	return (file);
 }
 
-int	input_handling(char **input, int *heredoc, t_exec *exec)
+int	handle_both(int *redir, char **redirects, int *redirect_type, t_exec *exec)
 {
-	int			j;
-	int			file;
+	int		i;
 
-	file = 0;
-	j = 0;
-	input = expander_array(input, exec);
-	while (input[j] || heredoc[j])
+	(void)exec; //make heredoc expansion
+	i = 0;
+	redir[0] = 0;
+	redir[1] = 1;
+	while (redirects[i] || redirect_type[i] == 3)
 	{
-		if (file)
-			close(file);
-		if (heredoc[j] == 0)
-			file = input_permission(input, j);
+		if (redirect_type[i] == 0 || redirect_type[i] == 1)
+		{
+			if (redir[1] > 1)
+				close(redir[1]);
+			redir[1] = output_permission(redirects[i], redirect_type[i]);
+		}
 		else
-			file = heredoc[j];
-		j++;
-		if (file == -1)
-			return (file);
+		{
+			if (redir[0])
+				close(redir[0]);
+			if (redirect_type[i] == 2)
+				redir[0] = input_permission(redirects[i]);
+			else if (redirect_type[i] > 0)
+				redir[0] = redirect_type[i];
+			else
+				redir[0] = -redirect_type[i];
+		}
+		if (redir[0] == -1 || redir[1] == -1)
+			return (-1);
+		i++;
 	}
-	return (file);
+	return (0);
 }
 
-int	output_handling(char **output, int *append, t_exec *exec)
-{
-	int			j;
-	int			file;
+// int	input_handling(char **input, int *heredoc, t_exec *exec)
+// {
+// 	int			j;
+// 	int			file;
 
-	file = 0;
-	j = 0;
-	output = expander_array(output, exec);
-	while (output[j])
-	{
-		if (file)
-			close(file);
-		file = output_permission(output, append, j);
-		j++;
-		if (file == -1)
-			return (file);
-	}
-	return (file);
-}
+// 	file = 0;
+// 	j = 0;
+// 	input = expander_array(input, exec);
+// 	while (input[j] || heredoc[j])
+// 	{
+// 		if (file)
+// 			close(file);
+// 		if (heredoc[j] == 0)
+// 			file = input_permission(input, j);
+// 		else
+// 			file = heredoc[j];
+// 		j++;
+// 		if (file == -1)
+// 			return (file);
+// 	}
+// 	return (file);
+// }
+
+// int	output_handling(char **output, int *append, t_exec *exec)
+// {
+// 	int			j;
+// 	int			file;
+
+// 	file = 0;
+// 	j = 0;
+// 	output = expander_array(output, exec);
+// 	while (output[j])
+// 	{
+// 		if (file)
+// 			close(file);
+// 		file = output_permission(output, append, j);
+// 		j++;
+// 		if (file == -1)
+// 			return (file);
+// 	}
+// 	return (file);
+// }
 
 void	redirect_nodes(t_redir *token, int **pipes, t_exec exec)
 {

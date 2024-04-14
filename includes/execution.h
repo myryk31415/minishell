@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:29 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/12 00:40:24 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/14 23:24:59 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,9 @@ void	execute(char **cmd_arg, t_exec *exec);
 void	close_pipes(int **pipes);
 void	free_str_array(char **arr);
 int		redirect(t_redir *token, int **pipes, int status, t_exec exec);
-int		output_handling(char **output, int *append, t_exec *exec);
-int		input_handling(char **input, int *heredoc, t_exec *exec);
+int		handle_both(int *redir, char **redirects, int *redirect_type, t_exec *exec);
+// int		output_handling(char **output, int *append, t_exec *exec);
+// int		input_handling(char **input, int *heredoc, t_exec *exec);
 void	command(t_cmd *token, int **pipes, int redirect, t_exec *exec);
 void	error_msg(char *cmd, char *file);
 char	*get_path(char *cmd, char **environ, char *var);
