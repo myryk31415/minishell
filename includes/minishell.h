@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/04/12 15:05:14 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/14 21:42:05 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,12 @@
 # include <signal.h>
 # include <sys/types.h>
 # include <dirent.h>
+
 typedef struct s_cmd
 {
 	char	**args;
-	char	**redirect_in;
-	int		*heredoc;
-	char	**redirect_out;
-	int		*append;
+	char	**redirects;
+	int		*redirect_type;
 }	t_cmd;
 
 typedef enum e_node_type

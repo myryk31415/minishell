@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:14:04 by padam             #+#    #+#             */
-/*   Updated: 2024/04/11 14:59:33 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/14 22:03:47 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ t_token		*get_operator(t_token *tokens);
 
 // redirects
 int			redirects_get(t_token **token_first, t_cmd **redirects);
-int			climb_tree(void *ptr, t_node_type type, t_exec *exec);
+int			climb_tree(void *ptr, t_node_type type);
 
 ///REST
 //cleanup

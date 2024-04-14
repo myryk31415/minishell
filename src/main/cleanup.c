@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 17:10:56 by padam             #+#    #+#             */
-/*   Updated: 2024/04/08 17:43:53 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/14 22:11:54 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,8 @@ void	cmd_free(t_cmd *cmd)
 	if (!cmd)
 		return ;
 	free_str_array(cmd->args);
-	free_str_array(cmd->redirect_in);
-	free_str_array(cmd->redirect_out);
-	free(cmd->heredoc);
-	free(cmd->append);
+	free_str_array(cmd->redirects);
+	free(cmd->redirect_type);
 	free(cmd);
 }
 

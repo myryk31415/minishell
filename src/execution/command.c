@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 23:38:37 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/12 13:53:05 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/14 22:17:52 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,8 @@ void	command(t_cmd *token, int **pipes, int redirect, t_exec *exec)
 
 	if (redirect == 1)
 	{
+		if (token->redirects && *(token->redirects))
+			handle_both(&redir, token->redirects, token->redirect_type, exec);
 		if (token->redirect_in && *(token->redirect_in))
 			redir[0] = input_handling(token->redirect_in, token->heredoc, exec);
 		if (token->redirect_out && *(token->redirect_out))
