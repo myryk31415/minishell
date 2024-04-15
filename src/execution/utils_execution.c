@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_execution.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/12 15:29:16 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/15 15:50:06 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,11 @@ char	*get_path(char *cmd, char **environ, char *var)
 	char	*path_to_cmd;
 	char	*trial_path;
 	int		i;
+	char 	*tmp;
 
-	cmd_path = ft_split(get_env(environ, var), ':');
+	tmp = get_env(environ, var);
+	cmd_path = ft_split(tmp, ':');
+	free(tmp);
 	path_to_cmd = ft_strjoin("/", cmd);
 	i = 0;
 	while (cmd_path && path_to_cmd && cmd_path[i])
@@ -72,28 +75,52 @@ int	is_builtin(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 
 int	error_message(char *cmd_path)
 {
-	DIR *folder;
+	// DIR *folder;
 	int	file;
 	int	exit_status;
 
-	file = open(cmd_path, O_WRONLY);
-	folder = opendir(cmd_path);
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(cmd_path, 2);
+	// ft_putstr_fd("minishell: ", 2);
+	// ft_putstr_fd(cmd_path, 2);
 	if (ft_strchr(cmd_path, '/') == NULL)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd_path, 2);
 		ft_putendl_fd(": command not found", 2);
-	else if (file == -1 && folder == NULL)
-		ft_putendl_fd(": No such file or directory", 2);
-	else if (file == -1 && folder != NULL)
-		ft_putendl_fd(": is a directory", 2);
-	else if (file != -1 && folder == NULL)
-		ft_putendl_fd(": Permission denied", 2);
-	if (ft_strchr(cmd_path, '/') == NULL || (file == -1 && folder == NULL))
 		exit_status = 126;
+	}
 	else
-		exit_status = 127;
-	if (folder)
-		closedir(folder);
+	{
+		// folder = opendir(cmd_path);
+		// perror("minishell");
+		file = open(cmd_path, O_WRONLY);
+		if (file == -1)
+		{
+			ft_putstr_fd("minishell: ", 2);
+			perror(cmd_path);
+			exit_status = 126;
+		}
+		else
+		{
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(cmd_path, 2);
+			ft_putendl_fd(": Permission denied", 2);
+			exit_status = 127;
+		}
+	}
+	// if (ft_strchr(cmd_path, '/') == NULL)
+	// 	ft_putendl_fd(": command not fominishell: 5und", 2);
+	// else if (file == -1 && folder == NULL)
+	// 	ft_putendl_fd(": No such file or directory", 2);
+	// else if (file == -1 && folder != NULL)
+	// 	ft_putendl_fd(": Is a directory", 2);
+	// else if (file != -1 && folder == NULL)
+	// 	ft_putendl_fd(": Permission denied", 2);
+	// if (ft_strchr(cmd_path, '/') == NULL || (file == -1 && folder == NULL))
+	// 	exit_status = 126;
+	// else
+	// 	exit_status = 127;
+	// if (folder)
+	// 	closedir(folder);
 	if (file)
 		close(file);
 	return (exit_status);
@@ -104,28 +131,30 @@ void	execute(char **cmd_arg, t_exec *exec)
 	char		*cmd_path;
 	int			exit_status;
 
-	if (!access(cmd_arg[0], F_OK | X_OK))
+	if (ft_strchr(*cmd_arg, '/') || !ft_strncmp(*cmd_arg, "~", 2))
 	{
+		//tilde expansion here wiiiuuuuiii
 		node_tree_delete(exec->tree, exec->type);
-		execve(cmd_arg[0], cmd_arg, *(exec->env));
-		exit_status = error_message(cmd_arg[0]);
+		if (!access(*cmd_arg, F_OK | X_OK))
+			execve(*cmd_arg, cmd_arg, *(exec->env));
+		exit_status = error_message(*cmd_arg);
 		free_env(exec->env);
-		free(exec);
+		// free(exec);
 		exit(exit_status);
 	}
 	else
 	{
 		if (!*cmd_arg)
 			exit_shell(exec, NULL, EXIT_SUCCESS);
-		cmd_path = get_path(cmd_arg[0], *(exec->env), "PATH");
+		cmd_path = get_path(*cmd_arg, *(exec->env), "PATH");
 		if (!cmd_path)
 			cmd_path = *cmd_arg;
 		node_tree_delete(exec->tree, exec->type);
-		if (ft_strchr(cmd_arg[0], '/'))
+		if (ft_strchr(cmd_path, '/') && **cmd_arg != '.')
 			execve(cmd_path, cmd_arg, *(exec->env));
 		exit_status = error_message(cmd_path);
 		free_env(exec->env);
-		free(exec);
+		// free(exec);
 		exit(exit_status);
 	}
 }

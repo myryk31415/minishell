@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/14 23:40:56 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/15 15:32:57 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,15 @@ int	handle_both(int *redir, char **redirects, int *redirect_type, t_exec *exec)
 {
 	int		i;
 
-	(void)exec; //make heredoc expansion
 	i = 0;
 	redir[0] = 0;
-	redir[1] = 1;
+	redir[1] = 0;
+	expander_array(redirects, exec);
 	while (redirects[i] || redirect_type[i] == 3)
 	{
 		if (redirect_type[i] == 0 || redirect_type[i] == 1)
 		{
-			if (redir[1] > 1)
+			if (redir[1])
 				close(redir[1]);
 			redir[1] = output_permission(redirects[i], redirect_type[i]);
 		}

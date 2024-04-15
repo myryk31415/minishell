@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 23:38:37 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/14 23:35:40 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/15 12:46:01 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ int	in_and_out_handling(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 	int input;
 	int output;
 
+	input = 0;
+	output = 1;
 	handle_both(input_output, token->redirects, token->redirect_type, exec);
 	if (input_output[0])
 		input = input_output[0];
