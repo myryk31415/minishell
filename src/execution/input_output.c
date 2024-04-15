@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/15 15:32:57 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/15 16:57:38 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	handle_both(int *redir, char **redirects, int *redirect_type, t_exec *exec)
 			else if (redirect_type[i] > 0)
 				redir[0] = redirect_type[i];
 			else
-				redir[0] = -redirect_type[i];
+				redir[0] = heredoc_expand(-redirect_type[i], exec);
 		}
 		if (redir[0] == -1 || redir[1] == -1)
 			return (-1);

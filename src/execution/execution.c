@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/12 13:54:54 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/15 16:44:37 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ int	create_tree(int *pre_fd, t_node *token, t_exec exec)
 
 void	run_tree(t_node *token, int **pipes, t_exec *exec, int id)
 {
+	int	status;
+
 	if (token->type_right != PIPE)
 	{
 		id = fork();
@@ -65,7 +67,9 @@ void	run_tree(t_node *token, int **pipes, t_exec *exec, int id)
 		close_pipes(pipes);
 	}
 	close_pipes(pipes);
-	waitpid(id, &(exec->exit_status), 0);
+	waitpid(id, &status, 0);
+	if (WIFEXITED(status))
+		exec->exit_status = WEXITSTATUS(status);
 }
 
 void	execution(void *tree, t_node_type type, t_exec *exec)

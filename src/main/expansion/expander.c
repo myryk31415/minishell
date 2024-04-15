@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 14:48:01 by padam             #+#    #+#             */
-/*   Updated: 2024/04/12 14:49:06 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/15 16:55:04 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,4 +109,25 @@ char 	**expander_array(char **args, t_exec *exec)
 		return (new_args);
 	}
 	return (args);
+}
+
+int	heredoc_expand(int heredoc, t_exec *exec)
+{
+	char *tmp;
+	int		fd[2];
+
+	if (pipe(fd) == -1)
+		return(perror("minishell: Pipe:"), -1);
+	while (1)
+	{
+		tmp = get_next_line(heredoc);
+		if (!tmp)
+			break ;
+		tmp = expand_variables(tmp, exec);
+		write(fd[1], tmp, ft_strlen(tmp));
+			free(tmp);
+	}
+	close(heredoc);
+	close(fd[0]);
+	return (fd[0]);
 }

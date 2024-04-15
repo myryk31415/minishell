@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 23:38:37 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/15 12:46:01 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/15 17:04:10 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ void	command_fork(t_cmd *token, t_exec *exec, int **pipes, int *redir)
 {
 	int			id;
 	char		**tmp;
+	int			status;
 
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, signal_handler);
@@ -125,7 +126,9 @@ void	command_fork(t_cmd *token, t_exec *exec, int **pipes, int *redir)
 		else
 		{
 			close_pipes(pipes);
-			waitpid(id, &exec->exit_status, 0);
+			waitpid(id, &status, 0);
+			if (WIFEXITED(status))
+				exec->exit_status = WEXITSTATUS(status);
 		}
 	}
 }

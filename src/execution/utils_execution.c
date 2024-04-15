@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/15 15:50:06 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/15 16:42:29 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	is_builtin(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 
 int	error_message(char *cmd_path)
 {
-	// DIR *folder;
+	DIR *folder;
 	int	file;
 	int	exit_status;
 
@@ -86,26 +86,27 @@ int	error_message(char *cmd_path)
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd_path, 2);
 		ft_putendl_fd(": command not found", 2);
-		exit_status = 126;
+		exit_status = 127;
 	}
 	else
 	{
-		// folder = opendir(cmd_path);
-		// perror("minishell");
+		folder = opendir(cmd_path);
 		file = open(cmd_path, O_WRONLY);
 		if (file == -1)
 		{
 			ft_putstr_fd("minishell: ", 2);
 			perror(cmd_path);
 			exit_status = 126;
+			if (!folder)
+				exit_status = 127;
 		}
-		else
-		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(cmd_path, 2);
-			ft_putendl_fd(": Permission denied", 2);
-			exit_status = 127;
-		}
+		// else
+		// {
+		// 	ft_putstr_fd("minishell: ", 2);
+		// 	ft_putstr_fd(cmd_path, 2);
+		// 	ft_putendl_fd(": Permission denied", 2);
+		// 	exit_status = 127;
+		// }
 	}
 	// if (ft_strchr(cmd_path, '/') == NULL)
 	// 	ft_putendl_fd(": command not fominishell: 5und", 2);
