@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 00:09:23 by padam             #+#    #+#             */
-/*   Updated: 2024/04/15 12:46:26 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/23 19:28:17 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ numeric argument required\n", 2);
 		ft_putstr_fd("minishell: exit: \
 too many arguments\n", 2);
 	}
+	else if (!status)
+		exit_status = exec->exit_status;
 	free_env(exec->env);
 	// rl_clear_history();
 	node_tree_delete(exec->tree, exec->type);
