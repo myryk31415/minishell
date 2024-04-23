@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/23 17:23:48 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/23 17:31:55 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ char	*get_path(char *cmd, char **environ, char *var)
 	tmp = get_env(environ, var);
 	cmd_path = ft_split(tmp, ':');
 	free(tmp);
+	if (!*cmd)
+		return (NULL);
 	path_to_cmd = ft_strjoin("/", cmd);
 	i = 0;
 	while (cmd_path && path_to_cmd && cmd_path[i])
