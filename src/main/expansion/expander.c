@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 14:48:01 by padam             #+#    #+#             */
-/*   Updated: 2024/04/15 16:55:04 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/23 01:51:43 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char *expander(char *arg, t_exec *exec)
 
 	tmp = arg;
 	output = NULL;
-	while (*arg)
+	while (arg && *arg)
 	{
 		i = 0;
 		if (*arg == '\'')

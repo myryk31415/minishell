@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/15 16:57:38 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/23 01:34:02 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,13 @@ int	handle_both(int *redir, char **redirects, int *redirect_type, t_exec *exec)
 	i = 0;
 	redir[0] = 0;
 	redir[1] = 0;
-	expander_array(redirects, exec);
-	while (redirects[i] || redirect_type[i] == 3)
+	while (redirects[i] || redirect_type[i])
+	{
+		redirects[i] = expander(redirects[i], exec);
+		i++;
+	}
+	i = 0;
+	while (redirects[i] || redirect_type[i])
 	{
 		if (redirect_type[i] == 0 || redirect_type[i] == 1)
 		{

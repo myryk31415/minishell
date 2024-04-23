@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:47:36 by padam             #+#    #+#             */
-/*   Updated: 2024/04/15 16:54:00 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/23 01:53:32 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,55 @@ int	here_doc(char *limiter)
 	return (fd[0]);
 }
 
+char *extract_test(char *old_string, char *string)
+{
+	char *output;
+
+	output = ft_strjoin(old_string, string);
+	free(old_string);
+	free(string);
+	return (output);
+}
+
+char *expander_test(char *arg)
+{
+	char *output;
+	char *tmp;
+	int i;
+
+	tmp = arg;
+	output = NULL;
+	while (*arg)
+	{
+		i = 0;
+		if (*arg == '\'')
+		{
+			arg++;
+			while (arg[i] != '\'')
+				i++;
+			output = extract_test(output, ft_substr(arg, 0, i));
+			i++;
+		}
+		else if (*arg == '"')
+		{
+			arg++;
+			while (arg[i] != '"')
+				i++;
+			output = extract_test(output, ft_substr(arg, 0, i));
+			i++;
+		}
+		else
+		{
+			while (arg[i] && arg[i] != '\'' && arg[i] != '"')
+				i++;
+			output = extract_test(output, ft_substr(arg, 0, i));
+		}
+		arg += i;
+	}
+	free(tmp);
+	return (output);
+}
+
 int	handle_cmd(t_cmd *cmd)
 {
 	int	i;
@@ -48,6 +97,7 @@ int	handle_cmd(t_cmd *cmd)
 	{
 		if (cmd->redirect_type[i] >= 3)
 		{
+			cmd->redirects[i] = expander_test(cmd->redirects[i]);
 			cmd->redirect_type[i] = here_doc(cmd->redirects[i]);
 			if (cmd->redirect_type[i] == 4)
 				cmd->redirect_type[i] *= -1;
@@ -72,6 +122,7 @@ int	handle_redir(t_redir *redir)
 	{
 		if (cmd->redirect_type[i] >= 3)
 		{
+			cmd->redirects[i] = expander_test(cmd->redirects[i]);
 			cmd->redirect_type[i] = here_doc(cmd->redirects[i]);
 			if (cmd->redirect_type[i] == 4)
 				cmd->redirect_type[i] *= -1;
