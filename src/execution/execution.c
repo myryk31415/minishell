@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/23 16:23:47 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/23 16:26:35 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ void	run_tree(t_node *token, int **pipes, t_exec *exec, int id)
 	if (id && token->type_right == PIPE)
 	{
 		close_pipe(pipes[1]);
-		exec->exit_status = create_tree(pipes[0], (t_node *)token->right, *exec);
+		exec->exit_status = create_tree(pipes[0], \
+			(t_node *)token->right, *exec);
 		close_pipes(pipes);
 		return ;
 	}
