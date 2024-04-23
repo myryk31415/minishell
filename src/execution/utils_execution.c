@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_execution.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/23 14:03:44 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/23 14:34:47 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,12 @@ int	error_message(char *cmd_path)
 	file = 0;
 	exit_status = 0;
 	folder = NULL;
-	if (ft_strchr(cmd_path, '/') == NULL)
+	if (!ft_strncmp(cmd_path, ".", 2))
+	{
+		ft_putendl_fd("minishell: filename argument required", 2);
+		exit_status = 2;
+	}
+	else if (ft_strchr(cmd_path, '/') == NULL)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd_path, 2);
@@ -130,14 +135,33 @@ int	error_message(char *cmd_path)
 	return (exit_status);
 }
 
+char	*expand_tilde(char *cmd_arg, char **env)
+{
+	char	*home;
+	char	*tmp;
+
+	if (cmd_arg[0] == '~')
+	{
+		home = get_env(env, "HOME");
+		tmp = ft_strjoin(home, cmd_arg + 1);
+		free(home);
+		free(cmd_arg);
+		return (tmp);
+	}
+	return (cmd_arg);
+}
+
 void	execute(char **cmd_arg, t_exec *exec)
 {
 	char		*cmd_path;
 	int			exit_status;
 
-	if (ft_strchr(*cmd_arg, '/') || !ft_strncmp(*cmd_arg, "~", 2))
+	if (*cmd_arg == NULL)
+		exit(EXIT_SUCCESS);
+	if (ft_strchr(*cmd_arg, '/') || !ft_strncmp(*cmd_arg, "~", 2) \
+		|| !ft_strncmp(*cmd_arg, ".", 2) || !ft_strncmp(*cmd_arg, "..", 3))
 	{
-		//tilde expansion here wiiiuuuuiii
+		*cmd_arg = expand_tilde(*cmd_arg, *(exec->env));
 		node_tree_delete(exec->tree, exec->type);
 		if (!access(*cmd_arg, F_OK | X_OK))
 			execve(*cmd_arg, cmd_arg, *(exec->env));
