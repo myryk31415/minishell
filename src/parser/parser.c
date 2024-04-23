@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/04/14 22:03:54 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/23 20:52:53 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ char	*new_prompt(char **env)
 	char	*prompt_tmp;
 	char	*command;
 	char	*folder;
+	char	*line;
 
 	folder = get_current_folder();
 	prompt_tmp = get_env(env, "USER");
@@ -45,9 +46,17 @@ char	*new_prompt(char **env)
 	free(prompt);
 	prompt = ft_strjoin(prompt_tmp, "$ ");
 	free(prompt_tmp);
-	command = readline(prompt);
-	// ft_putstr_fd(prompt, 0);
-	// command = get_next_line(0);
+	if (isatty(fileno(stdin))) //debug
+		command = readline(prompt);
+	else
+	{
+		line = get_next_line(fileno(stdin));
+		if (!line)
+			return (NULL);
+		command = ft_strtrim(line, "\n");
+		free(line);
+	}
+	ft_putstr_fd(prompt, 0);
 	free(prompt);
 	if (command && *command && *command != '\n')
 		add_history(command);
@@ -69,9 +78,8 @@ t_node_type	parser(void **token_tree, t_exec *exec)
 		if (!command) //need to free
 		{
 			free_env(exec->env);
+			exit(exec->exit_status);
 			free(exec);
-			ft_printf("\n");
-			exit(1);
 		}
 	}
 	tokens = get_next_token(command, NULL);
