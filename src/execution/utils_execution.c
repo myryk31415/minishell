@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/23 16:50:58 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/23 17:08:56 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,13 +99,13 @@ int	error_message(char *cmd_path)
 	else
 	{
 		folder = opendir(cmd_path);
-		file = open(cmd_path, O_WRONLY);
+		file = open(cmd_path, O_RDWR);
 		if (file == -1)
 		{
 			ft_putstr_fd("minishell: ", 2);
 			perror(cmd_path);
 			exit_status = 126;
-			if (!folder && errno != EACCES)
+			if (!folder && errno != EACCES && access(cmd_path, X_OK))
 				exit_status = 127;
 		}
 		// else
