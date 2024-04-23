@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/23 17:16:22 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/23 17:23:48 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,11 @@ int	error_message(char *cmd_path)
 				exit_status = 127;
 		}
 		else if(access(cmd_path, X_OK))
+		{
+			ft_putstr_fd("minishell: ", 2);
+			perror(cmd_path);
 			exit_status = 126;
+		}
 		// elsex
 		// {
 		// 	ft_putstr_fd("minishell: ", 2);
