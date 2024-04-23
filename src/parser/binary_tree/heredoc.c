@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:47:36 by padam             #+#    #+#             */
-/*   Updated: 2024/04/23 01:53:32 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/23 18:26:07 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,10 @@ int	handle_cmd(t_cmd *cmd)
 		if (cmd->redirect_type[i] >= 3)
 		{
 			cmd->redirects[i] = expander_test(cmd->redirects[i]);
-			cmd->redirect_type[i] = here_doc(cmd->redirects[i]);
 			if (cmd->redirect_type[i] == 4)
-				cmd->redirect_type[i] *= -1;
+				cmd->redirect_type[i] = here_doc(cmd->redirects[i]);
+			else
+				cmd->redirect_type[i] = -here_doc(cmd->redirects[i]);
 			free(cmd->redirects[i]);
 			cmd->redirects[i] = NULL;
 			if (cmd->redirect_type[i] == -1)
@@ -123,9 +124,10 @@ int	handle_redir(t_redir *redir)
 		if (cmd->redirect_type[i] >= 3)
 		{
 			cmd->redirects[i] = expander_test(cmd->redirects[i]);
-			cmd->redirect_type[i] = here_doc(cmd->redirects[i]);
 			if (cmd->redirect_type[i] == 4)
-				cmd->redirect_type[i] *= -1;
+				cmd->redirect_type[i] = here_doc(cmd->redirects[i]);
+			else
+				cmd->redirect_type[i] = -here_doc(cmd->redirects[i]);
 			free(cmd->redirects[i]);
 			cmd->redirects[i] = NULL;
 			if (cmd->redirect_type[i] == -1)

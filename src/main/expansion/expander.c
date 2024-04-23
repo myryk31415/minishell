@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 14:48:01 by padam             #+#    #+#             */
-/*   Updated: 2024/04/23 01:51:43 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/23 18:31:45 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,6 @@ int	heredoc_expand(int heredoc, t_exec *exec)
 			free(tmp);
 	}
 	close(heredoc);
-	close(fd[0]);
+	close(fd[1]);
 	return (fd[0]);
 }

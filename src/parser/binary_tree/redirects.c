@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:34:22 by padam             #+#    #+#             */
-/*   Updated: 2024/04/22 15:00:34 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/23 18:52:03 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	get_redir(t_token **token_first, t_cmd *redirects, int value, int *count)
 	}
 	redirects->redirect_type[*count] = value;
 	if (value == 3)
-		redirects->redirects[*count] += (*token_first)->quote;
+		redirects->redirect_type[*count] += (*token_first)->quote;
 	redirects->redirects[*count] = (*token_first)->value;
 	(*token_first)->value = NULL;
 	token_delete(token_first);

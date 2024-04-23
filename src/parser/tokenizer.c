@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:40:50 by padam             #+#    #+#             */
-/*   Updated: 2024/04/12 00:23:58 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/23 18:05:21 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,10 @@ t_token	*handle_word(char **string, t_token *token_last)
 		if (quote && (*string)[i] == quote)
 			quote = 0;
 		else if ((*string)[i] == '\'' || (*string)[i] == '"')
+		{
+			token_last->quote = 1;
 			quote = (*string)[i];
+		}
 		token_type = get_token_type((*string) + i++);
 	}
 	if (token_type != T_WORD)
