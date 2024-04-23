@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_execution.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/15 16:42:29 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/23 14:03:44 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,9 @@ int	error_message(char *cmd_path)
 
 	// ft_putstr_fd("minishell: ", 2);
 	// ft_putstr_fd(cmd_path, 2);
+	file = 0;
+	exit_status = 0;
+	folder = NULL;
 	if (ft_strchr(cmd_path, '/') == NULL)
 	{
 		ft_putstr_fd("minishell: ", 2);
