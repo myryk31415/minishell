@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 00:09:23 by padam             #+#    #+#             */
-/*   Updated: 2024/04/23 23:37:30 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/24 16:15:08 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,7 @@ void	exit_shell(t_exec *exec, char **arg, unsigned int status)
 	unsigned int	exit_status;
 
 	exit_status = status;
-	if (arg && arg[1] && ft_isnumber(arg[1]))
-	{
-		exit_status = ft_u_atoi(arg[1]);
-	}
-	else if (arg && arg[1])
+	if (arg && arg[1] && !ft_isnumber(arg[1]))
 	{
 		exit_status = 2;
 		ft_putstr_fd("minishell: exit: \
@@ -66,6 +62,10 @@ numeric argument required\n", 2);
 		exit_status = EXIT_FAILURE;
 		ft_putstr_fd("minishell: exit: \
 too many arguments\n", 2);
+	}
+	else if (arg && arg[1] && ft_isnumber(arg[1]))
+	{
+		exit_status = ft_u_atoi(arg[1]);
 	}
 	else if (!status)
 		exit_status = exec->exit_status;
