@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/24 13:13:23 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/24 19:48:28 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,12 @@ int	handle_both(int *redir, char **redirects, int *redirect_type, t_exec *exec)
 	{
 		redirects[i] = expand_variables(redirects[i], exec);
 		redirects[i] = expander(redirects[i]);
+		// if (tmp && tmp[1])
+		// {
+		// 	//free ??
+		// 	ft_putstr_fd("minishell: ambiguous redirect\n", 2);
+		// 	return (-1);
+		// }
 		i++;
 	}
 	i = 0;

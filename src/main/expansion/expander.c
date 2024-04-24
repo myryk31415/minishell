@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 14:48:01 by padam             #+#    #+#             */
-/*   Updated: 2024/04/24 12:37:55 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/24 20:13:23 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,41 @@ char *extract(char *old_string, char *string)
 	free(old_string);
 	free(string);
 	return (output);
+}
+
+char	**word_split(char const *s, char *c, char quotes)
+{
+	static int	iteration = 0;
+	int			lettercount;
+	char		**split_words;
+
+	lettercount = 0;
+	while (ft_strchr(c, *s) && *s)
+		s++;
+	while ((!ft_strchr(c, s[lettercount]) || quotes) && s[lettercount])
+	{
+		if (s[lettercount] == quotes)
+			quotes = 0;
+		else if (!quotes && (s[lettercount] == '"' || s[lettercount] == '\''))
+			quotes = s[lettercount];
+		lettercount++;
+	}
+	if (lettercount > 0 && ++iteration)
+	{
+		split_words = word_split(s + lettercount, c, quotes);
+		if (iteration-- && !split_words)
+			return (NULL);
+		split_words[iteration] = ft_substr(s, 0, lettercount);
+		lettercount = 1;
+		if (!split_words[iteration])
+			while (split_words[iteration + lettercount])
+				free(split_words[iteration + lettercount++]);
+		if (!split_words[iteration])
+			return (free(split_words), NULL);
+	}
+	else
+		split_words = ft_calloc((iteration + 1), sizeof(char *));
+	return (split_words);
 }
 
 char *expander(char *arg)
@@ -74,6 +109,47 @@ char *expander(char *arg)
 	return (output);
 }
 
+char	*word_join(char **args)
+{
+	int		i;
+	int		l;
+	char	*output;
+
+	i = 0;
+	while (args && args[i])
+		l += ft_strlen(args[i++]) + 1;
+	output = ft_calloc(l + 1, sizeof(char));
+	if (!output) //free
+		return (NULL);
+	i = 0;
+	while (args && args[i])
+	{
+		ft_strlcat(output, args[i], l);
+		free(args[i]);
+		ft_strlcat(output, " ", l);
+		i++;
+	}
+	free(args);
+	return (output);
+}
+
+char **word_splitting(char **args)
+{
+	char	*tmp;
+	int		i;
+
+	i = 0;
+	tmp = word_join(args);
+	args = word_split(tmp, " \t\n", 0);
+	free(tmp);
+	while (args && args[i])
+	{
+		args[i] = expander(args[i]);
+		i++;
+	}
+	return (args);
+}
+
 char 	**expander_array(char **args, t_exec *exec)
 {
 	int		i;
@@ -86,9 +162,9 @@ char 	**expander_array(char **args, t_exec *exec)
 	while (args[j])
 	{
 		args[j] = expand_variables(args[j], exec);
-		args[j] = expander(args[j]);
 		j++;
 	}
+	args = word_splitting(args);
 	i = 0;
 	k = 0;
 	while (k < j)
