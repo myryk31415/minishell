@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/24 13:12:00 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/25 01:35:46 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@ char	*get_path(char *cmd, char **environ, char *var)
 	char 	*tmp;
 
 	tmp = get_env(environ, var);
+	if (!tmp)
+	{
+		cmd_path = ft_calloc(2, sizeof(char *));
+		cmd_path[1] = NULL;
+		cmd_path[0] = ft_strdup("/bin");
+	}
 	cmd_path = ft_split(tmp, ':');
 	free(tmp);
 	if (!*cmd)
@@ -152,7 +158,6 @@ void	execute(char **cmd_arg, t_exec *exec)
 			execve(*cmd_arg, cmd_arg, *(exec->env));
 		exit_status = error_message(*cmd_arg);
 		free_env(exec->env);
-		// free(exec);
 		exit(exit_status);
 	}
 	else
