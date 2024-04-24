@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 09:47:35 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/24 11:11:44 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/24 11:27:53 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*get_name(char *arg)
 		return (print_error(arg));
 	while (arg[i] && arg[i] != '=')
 	{
-		if (!ft_isalnum(arg[i]) && !ft_strchr("_+", arg[i]))
+		if (!ft_isalnum(arg[i]) && !ft_strchr("_", arg[i]))
 			return (print_error(arg));
 		i++;
 	}
@@ -121,7 +121,7 @@ int	export(char **arg, char ***env)
 	else if (!ft_strncmp("export", arg[0], 6) && !arg[1])
 		return (display_env(*env, 1), 0);
 	name = get_name(arg[i]);
-	if (!name || check_valid(arg, "minishell: export: "))
+	if (!name)
 		return (EXIT_FAILURE);
 	if (!*name)
 		return (free(name), 0);
