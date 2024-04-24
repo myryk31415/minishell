@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 09:47:35 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/24 11:01:37 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/24 11:11:44 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ int	export(char **arg, char ***env)
 	else if (!ft_strncmp("export", arg[0], 6) && !arg[1])
 		return (display_env(*env, 1), 0);
 	name = get_name(arg[i]);
-	if (!name | check_valid(arg, "minishell: export: "))
+	if (!name || check_valid(arg, "minishell: export: "))
 		return (EXIT_FAILURE);
 	if (!*name)
 		return (free(name), 0);
