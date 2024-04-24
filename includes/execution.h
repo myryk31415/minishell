@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:29 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/24 13:12:09 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/24 13:21:42 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	close_pipe(int *pipe);
 int		env_cmd(t_cmd *token, char **env);
 void	display_env(char **env, int export);
 int		unset(char **args, char ***env);
-int		pwd_export(char *arg, char ***env);
+int		pwd_export(char *arg, char ***env, int i);
 void	close_in_and_out_files(int input, int output, int *redir, int **pipes);
 void	free_env(char ***env);
 #endif

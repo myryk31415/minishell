@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 09:47:35 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/24 13:10:59 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/24 13:23:04 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,11 +118,14 @@ char	**allocate_new_env(char **env, char *arg)
 	return (env);
 }
 
-int	pwd_export(char *arg, char ***env)
+int	pwd_export(char *arg, char ***env, int pwd)
 {
 	char	*name;
 
-	name = ft_strdup("OLDPWD");
+	if (pwd == 1)
+		name = ft_strdup("PWD");
+	else
+		name = ft_strdup("OLDPWD");
 	if (arg)
 	{
 		if (check_if_assigned(name, env, arg) == -1)
