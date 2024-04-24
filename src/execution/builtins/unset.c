@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 12:18:20 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/24 11:01:14 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/24 11:13:33 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	unset(char **args, char ***env)
 {
 	int		i;
 
-	if (!args | !*args | check_valid(args, "minishell: unset: "))
+	if (!args || !*args || check_valid(args, "minishell: unset: "))
 		return (EXIT_FAILURE);
 	args++;
 	while (*args)

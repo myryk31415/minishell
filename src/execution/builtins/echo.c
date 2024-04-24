@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:57:00 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/24 11:08:30 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/24 11:14:01 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	echo(char **args)
 	int		i;
 	bool	flag;
 
-	if (!args | !*args)
+	if (!args || !*args)
 		return (EXIT_FAILURE);
 	if (!args[1])
 		return (ft_printf("\n"), 0);
