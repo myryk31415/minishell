@@ -3,14 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/04/24 09:13:03 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/25 01:32:25 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+int	check_quotes(char *command)
+{
+	char	quote;
+
+	while (*command)
+	{
+		if (*command == '"' || *command == '\'')
+		{
+			quote = *command;
+			command++;
+			while (*command && *command != quote)
+				command++;
+			if (!*command)
+			{
+				ft_putstr_fd("minishell: unclosed quote\n", 2);
+				return (-1);
+			}
+		}
+		command++;
+	}
+	return (0);
+}
 
 char	*get_current_folder(void)
 {
@@ -81,6 +104,11 @@ t_node_type	parser(void **token_tree, t_exec *exec)
 			exit(exec->exit_status);
 			free(exec);
 		}
+	}
+	if (check_quotes(command) == -1)
+	{
+		free(command);
+		return (ERROR);
 	}
 	tokens = get_next_token(command, NULL);
 	free(command);
