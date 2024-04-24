@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 09:47:35 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/24 13:10:59 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/24 16:05:40 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ int	check_if_assigned(char *name, char ***env, char *arg)
 {
 	int		j;
 	char	*tmp;
-	char	*tmp2;
 
 	j = 0;
 	if (ft_strchr(name, '+'))
@@ -82,9 +81,8 @@ int	check_if_assigned(char *name, char ***env, char *arg)
 			&& (env[0][j])[ft_strlen(name)] == '=')
 		{
 			tmp = env[0][j];
-			tmp2 = ft_strdup(arg);
-			env[0][j] = tmp2;
-			return (free(tmp2), free(tmp), 0);
+			env[0][j] = ft_strdup(arg);
+			return (free(tmp), 0);
 		}
 		j++;
 	}
@@ -118,11 +116,14 @@ char	**allocate_new_env(char **env, char *arg)
 	return (env);
 }
 
-int	pwd_export(char *arg, char ***env)
+int	pwd_export(char *arg, char ***env, int pwd)
 {
 	char	*name;
 
-	name = ft_strdup("OLDPWD");
+	if (pwd == 1)
+		name = ft_strdup("PWD");
+	else
+		name = ft_strdup("OLDPWD");
 	if (arg)
 	{
 		if (check_if_assigned(name, env, arg) == -1)

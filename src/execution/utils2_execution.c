@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 14:57:38 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/24 10:10:43 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/24 16:07:32 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,10 @@ void	oldpwd_save(char ***env, char *path_to_dir, char *arg)
 	char		*var;
 
 	var = getcwd(NULL, PATH_MAX);
-	pwd_export(ft_strjoin("OLDPWD=", var), env);
+	pwd_export(ft_strjoin("OLDPWD=", var), env, 0);
 	free(var);
 	chdir(path_to_dir);
+	pwd_export(ft_strjoin("PWD=", path_to_dir), env, 1);
 	if (arg && arg[0] == '-')
 		pwd();
 	free (path_to_dir);

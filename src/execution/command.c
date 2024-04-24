@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 23:38:37 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/23 18:28:40 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/24 16:23:13 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@
 
 int	in_and_out_handling(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 {
-	int input_output[2];
-	int input;
-	int output;
+	int	input_output[2];
+	int	input;
+	int	output;
 
 	input = 0;
 	output = 1;
