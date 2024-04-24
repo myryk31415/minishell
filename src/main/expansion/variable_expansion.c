@@ -6,13 +6,13 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:13:35 by padam             #+#    #+#             */
-/*   Updated: 2024/04/23 23:16:36 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/24 12:52:03 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-char	*get_variable(char **command, t_exec *exec)
+char	*get_variable(char **command, t_exec *exec, int quotes)
 {
 	char	*variable;
 	char	*tmp;
@@ -32,7 +32,7 @@ char	*get_variable(char **command, t_exec *exec)
 	}
 	else if (!**command || !is_variable(**command))
 	{
-		if (!**command || !is_quote(**command))
+		if (!**command || !is_quote(**command) || quotes)
 			variable = ft_strdup("$");
 	}
 	else
@@ -47,40 +47,43 @@ char	*get_variable(char **command, t_exec *exec)
 	return (variable);
 }
 
-char	*get_expansion(char *command, int len, t_exec *exec, int not_empty)
+char	*get_expansion(char *command, int len, t_exec *exec, int quotes)
 {
 	char	*tmp;
 	int		i;
 	char	*variable;
 
 	i = 0;
+	quotes = 0;
 	while (command[i] && command[i] != '$')
 	{
-		// if (command[i] == '\'' && quotes == -1)
-		// {
-		// 	i++;
-		// 	while (command[i] && command[i] != '\'')
-		// 		i++;
-		// }
+		if (command[i] == '"')
+			quotes = !quotes;
+		if (command[i] == '\'' && !quotes)
+		{
+			i++;
+			while (command[i] && command[i] != '\'')
+				i++;
+		}
 		if (command[i])
 			i++;
 	}
 	if (command[i] == '$')
 	{
 		tmp = &command[i + 1];
-		variable = get_variable(&tmp, exec);
-		if (variable || i)
-			not_empty = 1;
-		tmp = get_expansion(tmp, len + i + ft_strlen(variable), exec, not_empty);
+		variable = get_variable(&tmp, exec, quotes);
+		// if (variable || i)
+		// 	not_empty = 1;
+		tmp = get_expansion(tmp, len + i + ft_strlen(variable), exec, quotes);
 		ft_memcpy(tmp + len + i, variable, ft_strlen(variable));
 		free(variable);
 	}
 	else
 	{
-		if (i)
-			not_empty = 1;
-		if (!not_empty)
-			return (NULL);
+		// if (i)
+		// 	not_empty = 1;
+		// if (!not_empty)
+		// 	return (NULL);
 		tmp = ft_calloc(len + i + 1, sizeof(char));
 	}
 	ft_memcpy(tmp + len, command, i);

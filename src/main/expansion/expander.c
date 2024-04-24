@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 14:48:01 by padam             #+#    #+#             */
-/*   Updated: 2024/04/23 18:31:45 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/24 12:37:55 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char *extract(char *old_string, char *string)
 	return (output);
 }
 
-char *expander(char *arg, t_exec *exec)
+char *expander(char *arg)
 {
 	char *output;
 	char *tmp;
@@ -59,14 +59,14 @@ char *expander(char *arg, t_exec *exec)
 			arg++;
 			while (arg[i] != '"')
 				i++;
-			output = var_expand(output, ft_substr(arg, 0, i), 1, exec);
+			output = extract(output, ft_substr(arg, 0, i));
 			i++;
 		}
 		else
 		{
 			while (arg[i] && arg[i] != '\'' && arg[i] != '"')
 				i++;
-			output = var_expand(output, ft_substr(arg, 0, i), 0, exec);
+			output = extract(output, ft_substr(arg, 0, i));
 		}
 		arg += i;
 	}
@@ -85,7 +85,8 @@ char 	**expander_array(char **args, t_exec *exec)
 	new_args = NULL;
 	while (args[j])
 	{
-		args[j] = expander(args[j], exec);
+		args[j] = expand_variables(args[j], exec);
+		args[j] = expander(args[j]);
 		j++;
 	}
 	i = 0;

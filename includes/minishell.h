@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/04/23 17:58:28 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/24 12:39:08 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char		*get_env(char **environ, char *var);
 
 // variable_expansion
 char		*expand_variables(char *command, t_exec *exec);
-char		*expander(char *arg, t_exec *exec);
+char		*expander(char *arg);
 char		**expander_array(char **args, t_exec *exec);
 int			heredoc_expand(int heredoc, t_exec *exec);
 

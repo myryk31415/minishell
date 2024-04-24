@@ -4,6 +4,7 @@ minishell_grammar.txt
 .vscode
 vgcore.
 lol.*
+output
 
 # Prerequisites
 *.d
