@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 14:48:01 by padam             #+#    #+#             */
-/*   Updated: 2024/04/24 20:13:23 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/24 20:42:14 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ char	**word_split(char const *s, char *c, char quotes)
 	char		**split_words;
 
 	lettercount = 0;
-	while (ft_strchr(c, *s) && *s)
+	while (*s && ft_strchr(c, *s))
 		s++;
-	while ((!ft_strchr(c, s[lettercount]) || quotes) && s[lettercount])
+	while (s[lettercount] && (!ft_strchr(c, s[lettercount]) || quotes))
 	{
 		if (s[lettercount] == quotes)
 			quotes = 0;

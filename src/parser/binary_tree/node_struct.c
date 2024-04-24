@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:38:13 by padam             #+#    #+#             */
-/*   Updated: 2024/04/08 01:01:52 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/24 20:47:51 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,10 @@ t_node_type	get_cmd(t_token *token_first, void **head, t_cmd *redirects)
 	if (!redirects)
 		return (ERROR);
 	word_count = count_words(token_first);
-	if (word_count == -1)
+	if (word_count == -1 || (word_count == 0 && !redirects))
 	{
+		if (word_count == 0)
+			print_syntax_err(NULL);
 		cmd_free(redirects);
 		return (ERROR);
 	}
