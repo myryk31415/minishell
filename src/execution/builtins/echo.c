@@ -6,31 +6,31 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:57:00 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/23 23:47:15 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/24 11:08:30 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-static int	n_flag(char **flag)
+int	check_flags(char **args)
 {
 	int	i;
-	int	l;
+	int	j;
+	int	stop;
 
-	l = 1;
-	while (flag && flag[l])
+	stop = 0;
+	i = 1;
+	while (args[i] && args[i][0] == '-')
 	{
-		i = 0;
-		if (flag[l][i] != '-')
-			return (l);
-		else
-			i++;
-		while (flag[l][i])
-			if (flag[l][i++] != 'n')
-				return (l);
-		l++;
+		j = 1;
+		while (args[i][j] && !stop)
+			if (args[i][j++] != 'n')
+				stop = 1;
+		if (stop || !args[i][1])
+			break;
+		i++;
 	}
-	return (l);
+	return (i);
 }
 
 int	echo(char **args)
@@ -42,7 +42,7 @@ int	echo(char **args)
 		return (EXIT_FAILURE);
 	if (!args[1])
 		return (ft_printf("\n"), 0);
-	i = n_flag(args);
+	i = check_flags(args);
 	if (i >= 2)
 		flag = true;
 	else
@@ -72,22 +72,9 @@ int	pwd(void)
 
 int	env_cmd(t_cmd *token, char **env)
 {
-	// char	**tmp_env;
-	// char	**tmp_var;
 	(void)token;
-	// tmp_env = env;
-	// tmp_var = malloc(sizeof(char *) + 1);
-	// if (!tmp_var)
-	// 	return (-1);
-	// if (!token->args)
-	display_env(env);
-	// else
-	// {
-	// 	tmp_var[0] = token->args[1];
-	// 	tmp_var[1] = NULL;
-	// 	export(tmp_var, &tmp_env);
-	// 	command(token, NULL, 3, &tmp_env);
-	// }
-	// free(tmp_var);
+	if (token->args[1])
+		return (ft_putstr_fd("minishell: env: too many arguments\n", 2), 1);
+	display_env(env, 0);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 12:18:20 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/03/28 16:03:25 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/24 11:01:14 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,39 @@ char	**allocate_smaller_env(char **env, int i)
 	return (new_env);
 }
 
+int	check_valid(char **args, char *str)
+{
+	int		i;
+	int		j;
+	char	*tmp;
+	char	*out;
+
+	i = 0;
+	while (args[i])
+	{
+		j = -1;
+		while (args[i][++j])
+		{
+			if (args[i][j] && !ft_isalnum(args[i][j]) && args[i][j] != '_')
+			{
+				tmp = ft_strjoin("`", args[i]);
+				out = ft_strjoin(tmp, "'");
+				ft_putstr_fd(str, 2);
+				ft_putstr_fd(out, 2);
+				ft_putendl_fd(": not a valid identifier", 2);
+				return (free(tmp), 1);
+			}
+		}
+		i++;
+	}
+	return (0);
+}
+
 int	unset(char **args, char ***env)
 {
-	int	i;
+	int		i;
 
-	if (!args | !*args)
+	if (!args | !*args | check_valid(args, "minishell: unset: "))
 		return (EXIT_FAILURE);
 	args++;
 	while (*args)

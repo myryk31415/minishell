@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 09:47:35 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/08 17:53:43 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/24 11:01:37 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,9 +119,9 @@ int	export(char **arg, char ***env)
 	if (ft_strncmp("OLDPWD=", arg[0], 7) && arg[1])
 		arg++;
 	else if (!ft_strncmp("export", arg[0], 6) && !arg[1])
-		return (display_env(*env), 0);
+		return (display_env(*env, 1), 0);
 	name = get_name(arg[i]);
-	if (!name)
+	if (!name | check_valid(arg, "minishell: export: "))
 		return (EXIT_FAILURE);
 	if (!*name)
 		return (free(name), 0);

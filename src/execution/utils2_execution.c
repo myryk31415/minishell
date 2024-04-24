@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 14:57:38 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/11 15:23:31 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/24 10:10:43 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,71 @@ void	close_in_and_out_files(int input, int output, int *redir, int **pipes)
 		close(input);
 }
 
-void	display_env(char **env)
+char **ft_sort_alpha(char **env)
+{
+	int		i;
+	int		j;
+	char	*tmp;
+
+	i = 0;
+	while (env[i])
+	{
+		j = 0;
+		while (env[j])
+		{
+			if (ft_strncmp(env[i], env[j], ft_strlen(env[i])) < 0 && ft_strncmp(env[i], env[j], ft_strlen(env[j])))
+			{
+				tmp = env[i];
+				env[i] = env[j];
+				env[j] = tmp;
+			}
+			j++;
+		}
+		i++;
+	}
+	return (env);
+}
+
+char *get_export_env(char *str)
+{
+	int		i;
+	char	*tmp;
+	char	*out;
+	char	*tmp2;
+
+	i = 0;
+	while (str[i] && str[i] != '=')
+		i++;
+	i++;
+	tmp = ft_substr(str, 0, i);
+	if (!tmp)
+		return (NULL);
+	out = ft_strjoin(tmp, "\"");
+	free(tmp);
+	tmp = ft_substr(str, i, ft_strlen(str));
+	if (!tmp)
+		return (NULL);
+	tmp2 = ft_strjoin(out, tmp);
+	free(tmp);
+	free(out);
+	out = ft_strjoin(tmp2, "\"");
+	free(tmp2);
+	return (out);
+}
+
+void	display_env(char **env, int export)
 {
 	int	i;
 
 	i = 0;
-	while (env[i])
-		ft_printf("%s\n", env[i++]);
+	if (export)
+	{
+		env = ft_sort_alpha(env);
+		i = 0;
+		while (env[i])
+			ft_printf("declare -x %s\n", get_export_env(env[i++]));
+	}
+	else
+		while (env[i])
+			ft_printf("%s\n", env[i++]);
 }
