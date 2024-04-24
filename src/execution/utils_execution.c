@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_execution.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/24 11:06:13 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/24 13:12:00 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	is_builtin(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 		else if (!ft_strncmp(token->args[0], "pwd", 4))
 			return (pwd());
 		else if (!ft_strncmp(token->args[0], "export", 7))
-			return (export(token->args, exec->env));
+			return (export(token->args, exec->env, 0));
 		else if (!ft_strncmp(token->args[0], "exit", 5))
 			exit_shell(exec, token->args, 0);
 		else if (!ft_strncmp(token->args[0], "unset", 6))
