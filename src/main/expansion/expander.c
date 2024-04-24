@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 14:48:01 by padam             #+#    #+#             */
-/*   Updated: 2024/04/24 20:42:14 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/24 20:54:17 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ char	*word_join(char **args)
 	char	*output;
 
 	i = 0;
+	l = 0;
 	while (args && args[i])
 		l += ft_strlen(args[i++]) + 1;
 	output = ft_calloc(l + 1, sizeof(char));
