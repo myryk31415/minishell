@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_execution.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/23 17:31:55 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/23 23:32:59 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	error_message(char *cmd_path)
 	folder = NULL;
 	if (!ft_strncmp(cmd_path, ".", 2))
 	{
-		ft_putendl_fd("minishell: filename argument required", 2);
+		ft_putendl_fd("minishell: .: filename argument required", 2);
 		exit_status = 2;
 	}
 	else if (ft_strchr(cmd_path, '/') == NULL)

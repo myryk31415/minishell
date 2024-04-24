@@ -3,31 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:57:00 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/11 15:40:17 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/23 23:47:15 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-static int	n_flag(char *flag)
+static int	n_flag(char **flag)
 {
 	int	i;
+	int	l;
 
-	i = 0;
-	if (flag)
+	l = 1;
+	while (flag && flag[l])
 	{
-		if (flag[i] != '-')
-			return (1);
+		i = 0;
+		if (flag[l][i] != '-')
+			return (l);
 		else
 			i++;
-		while (flag[i])
-			if (flag[i++] != 'n')
-				return (1);
+		while (flag[l][i])
+			if (flag[l][i++] != 'n')
+				return (l);
+		l++;
 	}
-	return (2);
+	return (l);
 }
 
 int	echo(char **args)
@@ -39,8 +42,8 @@ int	echo(char **args)
 		return (EXIT_FAILURE);
 	if (!args[1])
 		return (ft_printf("\n"), 0);
-	i = n_flag(args[1]);
-	if (i == 2)
+	i = n_flag(args);
+	if (i >= 2)
 		flag = true;
 	else
 		flag = false;
