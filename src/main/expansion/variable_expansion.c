@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:13:35 by padam             #+#    #+#             */
-/*   Updated: 2024/04/24 12:52:03 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/24 12:57:39 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ char	*get_expansion(char *command, int len, t_exec *exec, int quotes)
 	char	*variable;
 
 	i = 0;
-	quotes = 0;
 	while (command[i] && command[i] != '$')
 	{
 		if (command[i] == '"')
