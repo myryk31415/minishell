@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/23 17:31:55 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/24 10:50:55 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,6 @@ int	error_message(char *cmd_path)
 	int	file;
 	int	exit_status;
 
-	// ft_putstr_fd("minishell: ", 2);
-	// ft_putstr_fd(cmd_path, 2);
 	file = 0;
 	exit_status = 0;
 	folder = NULL;
@@ -116,28 +114,7 @@ int	error_message(char *cmd_path)
 			perror(cmd_path);
 			exit_status = 126;
 		}
-		// elsex
-		// {
-		// 	ft_putstr_fd("minishell: ", 2);
-		// 	ft_putstr_fd(cmd_path, 2);
-		// 	ft_putendl_fd(": Permission denied", 2);
-		// 	exit_status = 127;
-		// }
 	}
-	// if (ft_strchr(cmd_path, '/') == NULL)
-	// 	ft_putendl_fd(": command not fominishell: 5und", 2);
-	// else if (file == -1 && folder == NULL)
-	// 	ft_putendl_fd(": No such file or directory", 2);
-	// else if (file == -1 && folder != NULL)
-	// 	ft_putendl_fd(": Is a directory", 2);
-	// else if (file != -1 && folder == NULL)
-	// 	ft_putendl_fd(": Permission denied", 2);
-	// if (ft_strchr(cmd_path, '/') == NULL || (file == -1 && folder == NULL))
-	// 	exit_status = 126;
-	// else
-	// 	exit_status = 127;
-	// if (folder)
-	// 	closedir(folder);
 	if (file)
 		close(file);
 	return (exit_status);

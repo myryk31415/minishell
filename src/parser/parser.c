@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/04/23 20:52:53 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/24 09:13:03 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	*new_prompt(char **env)
 		command = ft_strtrim(line, "\n");
 		free(line);
 	}
-	ft_putstr_fd(prompt, 0);
+	// ft_putstr_fd(prompt, 0);
 	free(prompt);
 	if (command && *command && *command != '\n')
 		add_history(command);
