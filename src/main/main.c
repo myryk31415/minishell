@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:16:36 by padam             #+#    #+#             */
-/*   Updated: 2024/04/25 16:24:30 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/25 20:24:13 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char	**fill_env(void)
 t_exec	*fill_struct(void)
 {
 	t_exec		*exec;
-	char		***env; //warum ist dies ein triple pointer?
+	char		***env;
 
 	exec = malloc(sizeof(t_exec));
 	if (!exec)
@@ -75,7 +75,7 @@ t_exec	*fill_struct(void)
 	env = malloc(sizeof(char **));
 	if (!env)
 		return (perror("Malloc"), NULL);
-	env[0] = fill_env();
+	*env = fill_env();
 	exec->env = env;
 	exec->exit_status = EXIT_SUCCESS;
 	return (exec);
