@@ -1,39 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_utils.c                                     :+:      :+:    :+:   */
+/*   tilde_expansion.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/20 17:48:38 by padam             #+#    #+#             */
-/*   Updated: 2024/04/25 15:40:33 by padam            ###   ########.fr       */
+/*   Created: 2024/04/25 15:40:25 by padam             #+#    #+#             */
+/*   Updated: 2024/04/25 15:55:47 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-int	is_quote(char c)
+int	is_tilde(char *c)
 {
-	return (c == '\'' || c == '\"');
+	if (!c[0] || c[0] != '~')
+		return (0);
+	if (!c[1] || c[1] == '/' || is_separator(c[1]))
+		return (1);
+	return (0);
 }
 
-int	is_separator(char c)
+char	*expand_tilde(char *cmd_arg, char **env)
 {
-	return (c == ' ' || c == '\t' || c == '\n');
-}
+	char	*home;
+	char	*tmp;
 
-int	is_redirect(t_token_type type)
-{
-	return (type == T_REDIR_IN || type == T_REDIR_OUT
-		|| type == T_REDIR_APPEND || type == T_REDIR_HEREDOC);
-}
-
-int	is_operator(t_token_type type)
-{
-	return (type == T_AND || type == T_OR);
-}
-
-int	is_variable(char c)
-{
-	return (ft_isalnum(c) || c == '_');
+	if (is_tilde(cmd_arg))
+	{
+		home = get_env(env, "HOME");
+		tmp = ft_strjoin(home, cmd_arg + 1);
+		free(home);
+		free(cmd_arg);
+		return (tmp);
+	}
+	return (cmd_arg);
 }

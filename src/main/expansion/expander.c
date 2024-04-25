@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 14:48:01 by padam             #+#    #+#             */
-/*   Updated: 2024/04/25 01:59:38 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/25 15:55:00 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,7 @@ char 	**expander_array(char **args, t_exec *exec)
 	// new_args = NULL;
 	while (args[j])
 	{
+		args[j] = expand_tilde(args[j], *(exec->env));
 		args[j] = expand_variables(args[j], exec);
 		j++;
 	}

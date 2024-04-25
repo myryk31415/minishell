@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/04/24 19:45:38 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/25 15:54:13 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ t_node_type	parser(void **token_tree, t_exec *exec);
 char		*get_env(char **environ, char *var);
 
 // variable_expansion
+char		*expand_tilde(char *arg, char **env);
 char		*expand_variables(char *command, t_exec *exec);
 char		*expander(char *arg);
 char		**expander_array(char **args, t_exec *exec);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_execution.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/25 11:10:14 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/25 15:47:52 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,22 +128,6 @@ int	error_message(char *cmd_path)
 	return (exit_status);
 }
 
-char	*expand_tilde(char *cmd_arg, char **env)
-{
-	char	*home;
-	char	*tmp;
-
-	if (cmd_arg[0] == '~')
-	{
-		home = get_env(env, "HOME");
-		tmp = ft_strjoin(home, cmd_arg + 1);
-		free(home);
-		free(cmd_arg);
-		return (tmp);
-	}
-	return (cmd_arg);
-}
-
 void	execute(char **cmd_arg, t_exec *exec)
 {
 	char		*cmd_path;
@@ -154,7 +138,6 @@ void	execute(char **cmd_arg, t_exec *exec)
 	if (ft_strchr(*cmd_arg, '/') || !ft_strncmp(*cmd_arg, "~", 2) \
 		|| !ft_strncmp(*cmd_arg, ".", 2) || !ft_strncmp(*cmd_arg, "..", 3))
 	{
-		*cmd_arg = expand_tilde(*cmd_arg, *(exec->env));
 		node_tree_delete(exec->tree, exec->type);
 		if (!access(*cmd_arg, F_OK | X_OK))
 			execve(*cmd_arg, cmd_arg, *(exec->env));

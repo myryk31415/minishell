@@ -6,7 +6,7 @@
 #    By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/04/11 23:26:13 by padam            ###   ########.fr        #
+#    Updated: 2024/04/25 15:45:58 by padam            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ OBJ_DIRS =	execution	execution/builtins	main	main/expansion \
 
 SRCS_MAIN =	main.c cleanup.c signals.c
 
-SRCS_EXP =	variable_expansion.c expander.c
+SRCS_EXP =	variable_expansion.c expander.c tilde_expansion.c
 
 SRCS_PARS =	parser_utils.c			parser.c			tokenizer.c	\
 			tokens_utils.c			debug.c				cleanup.c	\
@@ -41,12 +41,12 @@ SRCS_EXEC =	execution.c		input_output.c		utils_execution.c \
 
 SRCS_PIPE =		fork.c			pipe.c			utils.c
 
-SRC_NAME =	$(addprefix main/,				$(SRCS_MAIN))		\
-			$(addprefix main/expansion/,			$(SRCS_EXP))		\
-			$(addprefix execution/builtins/,$(SRCS_BUILT))	\
-			$(addprefix execution/,			$(SRCS_EXEC))	\
-			$(addprefix parser/,			$(SRCS_PARS))		\
-			$(addprefix parser/binary_tree/,$(SRCS_BNTR))		\
+SRC_NAME =	$(addprefix main/,						$(SRCS_MAIN))	\
+			$(addprefix main/expansion/,			$(SRCS_EXP))	\
+			$(addprefix execution/builtins/,		$(SRCS_BUILT))	\
+			$(addprefix execution/,					$(SRCS_EXEC))	\
+			$(addprefix parser/,					$(SRCS_PARS))	\
+			$(addprefix parser/binary_tree/,		$(SRCS_BNTR))	\
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 OBJS = $(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
