@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:13:35 by padam             #+#    #+#             */
-/*   Updated: 2024/04/25 12:08:29 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/25 12:29:42 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,6 @@ char	*get_expansion(char *command, int len, t_exec *exec, int quotes)
 			i++;
 			while (command[i] && command[i] != '\'')
 				i++;
-		}
-		if (command[i] == '~' && (!command[i + 1] || command[i + 1] == '/'))
-		{
-			variable = get_env(*(exec->env), "HOME");
-			tmp = ft_substr(command, 1, ft_strlen(command) - 1);
-			free(command);
-			command = ft_strjoin(variable, tmp);
-			free(variable);
-			free(tmp);
 		}
 		if (command[i])
 			i++;
