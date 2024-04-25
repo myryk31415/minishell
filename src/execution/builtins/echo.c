@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:57:00 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/25 10:19:37 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/25 20:50:10 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,10 @@ int	env_cmd(t_cmd *token, char **env)
 {
 	(void)token;
 	if (token->args[1])
+	{
+		ft_putstr_fd("minishell: env: too many arguments\n", 2);
 		return (1);
+	}
 	display_env(env, 0);
 	return (0);
 }
