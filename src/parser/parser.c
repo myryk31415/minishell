@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/04/25 10:23:16 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/25 11:12:50 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	check_quotes(char *command)
 				command++;
 			if (!*command)
 			{
-				ft_putstr_fd("minishell: unclosed quote\n", 2);
+				// ft_putstr_fd("minishell: unclosed quote\n", 2);
 				return (-1);
 			}
 		}
@@ -92,7 +92,10 @@ t_node_type	parser(void **token_tree, t_exec *exec)
 	char		*command;
 	t_token		*tokens;
 	t_node_type	type_first;
+	char		*tmp;
 
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, signal_handler);
 	command = NULL;
 	while (!command || !*command || *command == '\n')
 	{
@@ -105,10 +108,14 @@ t_node_type	parser(void **token_tree, t_exec *exec)
 			free(exec);
 		}
 	}
-	if (check_quotes(command) == -1)
+	while (check_quotes(command) == -1)
 	{
+		tmp = ft_strjoin(command, "\n");
 		free(command);
-		return (ERROR);
+		command = ft_strjoin(tmp, readline(">"));
+		free(tmp);
+		if (check_quotes(command) != -1)
+			add_history(command);
 	}
 	tokens = get_next_token(command, NULL);
 	free(command);

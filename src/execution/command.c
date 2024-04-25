@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 23:38:37 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/24 16:23:13 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/25 11:02:24 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,10 +160,6 @@ void	command(t_cmd *token, int **pipes, int redirect, t_exec *exec)
 	{
 		if (token->redirects && *(token->redirects))
 			handle_both(redir, token->redirects, token->redirect_type, exec);
-		// if (token->redirect_in && *(token->redirect_in))
-		// 	redir[0] = input_handling(token->redirect_in, token->heredoc, exec);
-		// if (token->redirect_out && *(token->redirect_out))
-		// 	redir[1] = output_handling(token->redirect_out, token->append, exec);
 		return ;
 	}
 	else
