@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 12:18:20 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/24 16:16:33 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/25 02:59:29 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,10 @@ int	check_valid(char **args, char *str)
 
 int	print_option(char *str)
 {
-	ft_putstr_fd("minishell: unset: ", 1);
-	ft_putchar_fd(str[0], 1);
-	ft_putchar_fd(str[1], 1);
-	ft_putstr_fd(": invalid option\n", 1);
+	ft_putstr_fd("minishell: unset: ", 2);
+	ft_putchar_fd(str[0], 2);
+	ft_putchar_fd(str[1], 2);
+	ft_putstr_fd(": invalid option\n", 2);
 	ft_putstr_fd("unset: usage: unset [name ...]\n", 1);
 	return (2);
 }

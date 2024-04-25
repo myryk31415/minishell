@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 09:47:35 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/24 16:05:40 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/25 02:57:34 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,10 +139,10 @@ int	pwd_export(char *arg, char ***env, int pwd)
 
 int	print_option_export(char *str)
 {
-	ft_putstr_fd("minishell: export: ", 1);
-	ft_putchar_fd(str[0], 1);
-	ft_putchar_fd(str[1], 1);
-	ft_putstr_fd(": invalid option\n", 1);
+	ft_putstr_fd("minishell: export: ", 2);
+	ft_putchar_fd(str[0], 2);
+	ft_putchar_fd(str[1], 2);
+	ft_putstr_fd(": invalid option\n", 2);
 	ft_putstr_fd("export: usage: export [name[=value] ...]\n", 1);
 	return (2);
 }
