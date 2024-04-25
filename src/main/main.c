@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:16:36 by padam             #+#    #+#             */
-/*   Updated: 2024/04/25 12:57:19 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/25 15:39:03 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int	main(void)
 	{
 		token_tree = NULL;
 		type = parser(&token_tree, exec);
-		if (type == ERROR)
+		if (!isatty(STDIN_FILENO) && type == ERROR)
 			exit_shell(exec, NULL, exec->exit_status);
 		// system("leaks minishell");
 		exec->tree = token_tree;
