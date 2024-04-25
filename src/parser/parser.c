@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/04/25 11:58:31 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/25 12:48:57 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*get_current_folder(void)
 	return (folder);
 }
 
-char	*new_prompt(char **env)
+char	*new_prompt(char **env, t_exec *exec)
 {
 	char	*prompt;
 	char	*prompt_tmp;
@@ -73,6 +73,8 @@ char	*new_prompt(char **env)
 		command = readline(prompt);
 	else
 	{
+		if (exec->exit_status)
+			exit(exec->exit_status);
 		line = get_next_line(fileno(stdin));
 		if (!line)
 			return (NULL);
@@ -100,7 +102,7 @@ t_node_type	parser(void **token_tree, t_exec *exec)
 	while (!command || !*command || *command == '\n')
 	{
 		free(command);
-		command = new_prompt(*exec->env);
+		command = new_prompt(*exec->env, exec);
 		if (!command) //need to free
 		{
 			free_env(exec->env);

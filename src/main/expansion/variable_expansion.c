@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variable_expansion.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:13:35 by padam             #+#    #+#             */
-/*   Updated: 2024/04/25 12:29:42 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/25 12:33:27 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,20 +71,12 @@ char	*get_expansion(char *command, int len, t_exec *exec, int quotes)
 	{
 		tmp = &command[i + 1];
 		variable = get_variable(&tmp, exec, quotes);
-		// if (variable || i)
-		// 	not_empty = 1;
 		tmp = get_expansion(tmp, len + i + ft_strlen(variable), exec, quotes);
 		ft_memcpy(tmp + len + i, variable, ft_strlen(variable));
 		free(variable);
 	}
 	else
-	{
-		// if (i)
-		// 	not_empty = 1;
-		// if (!not_empty)
-		// 	return (NULL);
 		tmp = ft_calloc(len + i + 1, sizeof(char));
-	}
 	ft_memcpy(tmp + len, command, i);
 	return (tmp);
 }
