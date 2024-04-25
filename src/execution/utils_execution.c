@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/25 01:59:55 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/25 10:29:02 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,8 @@ int	error_message(char *cmd_path)
 	if (!ft_strncmp(cmd_path, ".", 2))
 	{
 		ft_putendl_fd("minishell: .: filename argument required", 2);
-		exit_status = 2;
+		ft_putendl_fd(".: usage: . filename [arguments]", 2);
+		exit_status = 127;
 	}
 	else if (ft_strchr(cmd_path, '/') == NULL)
 	{

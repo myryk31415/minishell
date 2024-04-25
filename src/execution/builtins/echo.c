@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:57:00 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/25 02:14:05 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/25 10:19:37 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,19 +40,20 @@ int	echo(char **args)
 
 	if (!args || !*args)
 		return (EXIT_FAILURE);
-	if (!args[1])
-		return (ft_printf("\n"), 0);
+	// while (*args && !*args[0])
+	// 	if (> 1)
+	// 		ft_putstr_fd(" ", 1);
 	i = check_flags(args);
 	if (i >= 2)
 		flag = true;
 	else
 		flag = false;
 	if (args[i])
-		if (args[i][0] && ft_printf("%s", args[i++]) == -1)
+		if (ft_printf("%s", args[i++]) == -1)
 			return (EXIT_FAILURE);
 	while (args[i])
 	{
-		if (args[i][0] && ft_printf(" %s", args[i]) == -1)
+		if (ft_printf(" %s", args[i]) == -1)
 			return (EXIT_FAILURE);
 		i++;
 	}

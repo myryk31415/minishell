@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 09:47:35 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/25 02:57:34 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/25 09:56:05 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,13 +157,13 @@ int	export(char **arg, char ***env, int i)
 		return (display_env(*env, 1), 0);
 	if (arg[0][0] == '-')
 		return (print_option_export(arg[0]));
-	name = get_name(arg[i]);
-	if (!name)
-		return (EXIT_FAILURE);
-	if (!*name)
-		return (free(name), 0);
 	while (arg[i])
 	{
+		name = get_name(arg[i]);
+		if (!name)
+			return (EXIT_FAILURE);
+		if (!*name)
+			return (free(name), 0);
 		if (check_if_assigned(name, env, arg[i]) == -1)
 		{
 			*env = allocate_new_env(*env, arg[i]);
