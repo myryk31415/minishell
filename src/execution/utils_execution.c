@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/25 01:35:46 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/25 01:59:55 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ char	*get_path(char *cmd, char **environ, char *var)
 		cmd_path[1] = NULL;
 		cmd_path[0] = ft_strdup("/bin");
 	}
-	cmd_path = ft_split(tmp, ':');
+	else
+		cmd_path = ft_split(tmp, ':');
 	free(tmp);
 	if (!*cmd)
 		return (NULL);
