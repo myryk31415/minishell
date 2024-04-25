@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/04/25 12:48:57 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/25 12:54:20 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*get_current_folder(void)
 	return (folder);
 }
 
-char	*new_prompt(char **env, t_exec *exec)
+char	*new_prompt(char **env)
 {
 	char	*prompt;
 	char	*prompt_tmp;
@@ -69,13 +69,11 @@ char	*new_prompt(char **env, t_exec *exec)
 	free(prompt);
 	prompt = ft_strjoin(prompt_tmp, "$ ");
 	free(prompt_tmp);
-	if (isatty(fileno(stdin))) //debug
+	if (isatty(STDIN_FILENO)) //debug
 		command = readline(prompt);
 	else
 	{
-		if (exec->exit_status)
-			exit(exec->exit_status);
-		line = get_next_line(fileno(stdin));
+		line = get_next_line(STDIN_FILENO);
 		if (!line)
 			return (NULL);
 		command = ft_strtrim(line, "\n");
@@ -102,7 +100,7 @@ t_node_type	parser(void **token_tree, t_exec *exec)
 	while (!command || !*command || *command == '\n')
 	{
 		free(command);
-		command = new_prompt(*exec->env, exec);
+		command = new_prompt(*exec->env);
 		if (!command) //need to free
 		{
 			free_env(exec->env);
