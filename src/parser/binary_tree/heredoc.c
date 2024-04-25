@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:47:36 by padam             #+#    #+#             */
-/*   Updated: 2024/04/25 02:13:23 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/25 03:31:29 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,12 @@ int	here_doc(char *limiter)
 		else
 		{
 			line = get_next_line(fileno(stdin));
-			str = ft_strtrim(line, " \n");
+			str = ft_strtrim(line, "\n");
 			free(line);
 		}
 		if (str && *str)
 		{
-			if (!ft_strncmp(str, limiter, ft_strlen(limiter))
-				&& !ft_strncmp(str, limiter, ft_strlen(str) - 1))
+			if (!ft_strncmp(str, limiter, ft_strlen(limiter) + 1))
 			{
 				free(str);
 				break ;
