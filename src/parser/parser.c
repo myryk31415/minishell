@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/04/25 11:12:50 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/25 11:58:31 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ t_node_type	parser(void **token_tree, t_exec *exec)
 	{
 		tmp = ft_strjoin(command, "\n");
 		free(command);
-		command = ft_strjoin(tmp, readline(">"));
+		command = ft_strjoin(tmp, readline("> "));
 		free(tmp);
 		if (check_quotes(command) != -1)
 			add_history(command);
