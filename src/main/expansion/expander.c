@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 14:48:01 by padam             #+#    #+#             */
-/*   Updated: 2024/04/25 01:39:11 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/25 01:59:38 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,39 +154,39 @@ char **word_splitting(char **args)
 
 char 	**expander_array(char **args, t_exec *exec)
 {
-	int		i;
 	int		j;
-	int		k;
-	char 	**new_args;
+	// int		i;
+	// int		k;
+	// char 	**new_args;
 
 	j = 0;
-	new_args = NULL;
+	// new_args = NULL;
 	while (args[j])
 	{
 		args[j] = expand_variables(args[j], exec);
 		j++;
 	}
 	args = word_splitting(args);
-	i = 0;
-	k = 0;
-	while (k < j)
-		if (!args[k++])
-			i++;
-	if (i)
-	{
-		new_args = ft_calloc(j - i + 1, sizeof(char *));
-		k = 0;
-		i = 0;
-		while (k <= j)
-		{
-			if (!args[k])
-				k++;
-			else
-				new_args[i++] = ft_strdup(args[k++]);
-		}
-		free_str_array(args);
-		return (new_args);
-	}
+	// i = 0;
+	// k = 0;
+	// while (k < j)
+	// 	if (!args[k++])
+	// 		i++;
+	// if (i)
+	// {
+	// 	new_args = ft_calloc(j - i + 1, sizeof(char *));
+	// 	k = 0;
+	// 	i = 0;
+	// 	while (k <= j)
+	// 	{
+	// 		if (!args[k])
+	// 			k++;
+	// 		else
+	// 			new_args[i++] = ft_strdup(args[k++]);
+	// 	}
+	// 	free_str_array(args);
+	// 	return (new_args);
+	// }
 	return (args);
 }
 
