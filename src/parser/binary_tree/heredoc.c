@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:47:36 by padam             #+#    #+#             */
-/*   Updated: 2024/04/23 20:53:30 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/25 02:13:23 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	here_doc(char *limiter)
 {
 	char	*str;
 	int		fd[2];
+	char	*line;
 
 	if (pipe(fd) == -1)
 		return(perror("minishell: Pipe:"), -1);
@@ -24,7 +25,11 @@ int	here_doc(char *limiter)
 		if (isatty(fileno(stdin))) //debug
 			str = readline(">");
 		else
-			str = get_next_line(fileno(stdin));
+		{
+			line = get_next_line(fileno(stdin));
+			str = ft_strtrim(line, " \n");
+			free(line);
+		}
 		if (str && *str)
 		{
 			if (!ft_strncmp(str, limiter, ft_strlen(limiter))
