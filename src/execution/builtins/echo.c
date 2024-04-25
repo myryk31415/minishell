@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:57:00 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/25 01:47:57 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/25 02:14:05 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,12 @@ int	echo(char **args)
 	if (args[i])
 		if (args[i][0] && ft_printf("%s", args[i++]) == -1)
 			return (EXIT_FAILURE);
-	i -= 1;
-	while (args[++i])
+	while (args[i])
+	{
 		if (args[i][0] && ft_printf(" %s", args[i]) == -1)
 			return (EXIT_FAILURE);
+		i++;
+	}
 	if (flag == false)
 		ft_printf("\n");
 	return (0);
@@ -75,7 +77,7 @@ int	env_cmd(t_cmd *token, char **env)
 {
 	(void)token;
 	if (token->args[1])
-		return (ft_putstr_fd("minishell: env: too many arguments\n", 2), 1);
+		return (1);
 	display_env(env, 0);
 	return (0);
 }
