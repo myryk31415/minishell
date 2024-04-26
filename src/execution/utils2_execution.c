@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 14:57:38 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/24 16:07:32 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/26 13:22:29 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,36 @@ void	oldpwd_save(char ***env, char *path_to_dir, char *arg)
 	free (path_to_dir);
 }
 
-void	close_in_and_out_files(int input, int output, int *redir, int **pipes)
+void	close_in_out_file_nofork(int input, int output, int *redir, int **pipes)
 {
-	close_pipes(pipes);
+	if (pipes && pipes[1])
+	{
+		close(pipes[1][0]);
+		close(pipes[1][1]);
+	}
+	if (pipes && pipes[0])
+	{
+		close(pipes[0][0]);
+		close(pipes[0][1]);
+	}
+	if (output != 1 && (!redir || (redir && !redir[1])))
+		close(output);
+	if (input)
+		close(input);
+}
+
+void	close_in_out_files_fork(int input, int output, int *redir, int **pipes)
+{
+	if (pipes && pipes[1])
+	{
+		close(pipes[1][0]);
+		close(pipes[1][1]);
+	}
+	if (pipes && pipes[0])
+	{
+		close(pipes[0][0]);
+		// close(pipes[0][1]);
+	}
 	if (output != 1 && (!redir || (redir && !redir[1])))
 		close(output);
 	if (input)

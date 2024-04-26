@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 23:38:37 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/26 12:00:05 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/26 13:22:38 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@
 // 	return (EXIT_SUCCESS);
 // }
 
-int	in_and_out_handling(t_cmd *token, int **pipes, int *redir, t_exec *exec)
+int	in_and_out_hdl_no_fork(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 {
 	int	input_output[2];
 	int	input;
@@ -63,7 +63,7 @@ int	in_and_out_handling(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 
 	input = 0;
 	output = 1;
-	handle_both(input_output, token->redirects, token->redirect_type, exec);
+	handle_both(input_output, token, exec);
 	if (input_output[0])
 		input = input_output[0];
 	else if (redir && redir[0])
@@ -85,7 +85,41 @@ int	in_and_out_handling(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 	if (output == -1)
 		return (EXIT_FAILURE);
 	dup2(output, STDOUT_FILENO);
-	close_in_and_out_files(input, output, redir, pipes);
+	close_in_out_file_nofork(input, output, redir, pipes);
+	return (EXIT_SUCCESS);
+}
+
+int	in_and_out_hdl_fork(t_cmd *token, int **pipes, int *redir, t_exec *exec)
+{
+	int	input_output[2];
+	int	input;
+	int	output;
+
+	input = 0;
+	output = 1;
+	handle_both(input_output, token, exec);
+	if (input_output[0])
+		input = input_output[0];
+	else if (redir && redir[0])
+	{
+		input = redir[0];
+		redir[0] = 0;
+	}
+	else if (pipes && pipes[1])
+		input = pipes[1][0];
+	if (input == -1)
+		return (EXIT_FAILURE);
+	dup2(input, STDIN_FILENO);
+	if (input_output[1])
+		output = input_output[1];
+	else if (redir && redir[1])
+		output = redir[1];
+	else if (pipes && pipes[0])
+		output = pipes[0][1];
+	if (output == -1)
+		return (EXIT_FAILURE);
+	dup2(output, STDOUT_FILENO);
+	close_in_out_files_fork(input, output, redir, pipes);
 	return (EXIT_SUCCESS);
 }
 
@@ -122,7 +156,7 @@ void	command_fork(t_cmd *token, t_exec *exec, int **pipes, int *redir)
 			perror("Fork");
 		if (!id)
 		{
-			if (in_and_out_handling(token, pipes, redir, exec) == 1)
+			if (in_and_out_hdl_fork(token, pipes, redir, exec) == 1)
 				exit_shell(exec, NULL, EXIT_FAILURE, 1);
 			tmp = token->args;
 			token->args = NULL;
@@ -148,7 +182,7 @@ void	command_no_fork(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 	if (exec->exit_status == -1)
 	{
 		exec->exit_status = 0;
-		if (in_and_out_handling(token, pipes, redir, exec) == 1)
+		if (in_and_out_hdl_no_fork(token, pipes, redir, exec) == 1)
 			exit_shell(exec, NULL, EXIT_FAILURE, 1);
 		tmp = token->args;
 		token->args = NULL;
@@ -170,7 +204,7 @@ void	command(t_cmd *token, int **pipes, int redirect, t_exec *exec)
 	if (redirect == 1)
 	{
 		if (token->redirects && *(token->redirects))
-			handle_both(redir, token->redirects, token->redirect_type, exec);
+			handle_both(redir, token, exec);
 		return ;
 	}
 	else

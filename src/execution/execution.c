@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/26 11:20:38 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/26 13:22:46 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int	create_tree(int *pre_fd, t_node *token, t_exec exec, int **redir_pipes)
 		else if (token->type_left == REDIR)
 			redirect((t_redir *)token->left, pipes, 1, exec);
 	}
+	// close(pipes[0][1]);
 	run_tree(token, pipes, &exec, redir_pipes);
 	waitpid(pid, NULL, 0);
 	free(pipes);
@@ -64,6 +65,7 @@ void	run_tree(t_node *token, int **pipes, t_exec *exec, int **redir_pipes)
 		{
 			close_pipe(pipes[1]);
 			pipes[1] = pipes[0];
+			close(pipes[1][1]);
 			if (redir_pipes && redir_pipes[0])
 				pipes[0] = redir_pipes[0];
 			else

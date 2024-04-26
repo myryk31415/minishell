@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:29 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/25 21:32:10 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/26 13:22:55 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	execute(char **cmd_arg, t_exec *exec);
 void	close_pipes(int **pipes);
 void	free_str_array(char **arr);
 int		redirect(t_redir *token, int **pipes, int status, t_exec exec);
-int		handle_both(int *redir, char **redirects, int *redirect_type, t_exec *exec);
+int		handle_both(int *redir, t_cmd *token, t_exec *exec);
 // int		output_handling(char **output, int *append, t_exec *exec);
 // int		input_handling(char **input, int *heredoc, t_exec *exec);
 void	command(t_cmd *token, int **pipes, int redirect, t_exec *exec);
@@ -44,13 +44,15 @@ int		create_tree(int *pre_fd, t_node *token, t_exec exec, int **redir_pipes);
 void	execution(void *tree, t_node_type type, t_exec *exec);
 int		is_builtin(t_cmd *token, int **pipes, int *redir, t_exec *exec);
 int		check_valid(char **args, char *str);
-int		in_and_out_handling(t_cmd *token, int **pipes, int *redir, t_exec *exec);
+int		in_and_out_hdl_fork(t_cmd *token, int **pipes, int *redir, t_exec *exec);
+int		in_and_out_hdl_no_fork(t_cmd *token, int **pipes, int *redir, t_exec *exec);
 int		export(char **arg, char ***env, int i);
 void	close_pipe(int *pipe);
 int		env_cmd(t_cmd *token, char **env);
 void	display_env(char **env, int export);
 int		unset(char **args, char ***env);
 int		pwd_export(char *arg, char ***env, int i);
-void	close_in_and_out_files(int input, int output, int *redir, int **pipes);
+void	close_in_out_file_nofork(int input, int output, int *redir, int **pipes);
+void	close_in_out_files_fork(int input, int output, int *redir, int **pipes);
 void	free_env(char ***env);
 #endif

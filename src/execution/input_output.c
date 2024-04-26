@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/26 12:00:12 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/26 12:52:46 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,17 +49,17 @@ int	output_permission(char *output, int append)
 	return (file);
 }
 
-int	handle_both(int *redir, char **redirects, int *redirect_type, t_exec *exec)
+int	handle_both(int *redir, t_cmd *tk, t_exec *exec)
 {
 	int		i;
 
 	i = 0;
 	redir[0] = 0;
 	redir[1] = 0;
-	while (redirects[i] || redirect_type[i])
+	while (tk->redirects[i] || tk->redirect_type[i])
 	{
-		redirects[i] = expand_variables(redirects[i], exec);
-		redirects[i] = expander(redirects[i]);
+		tk->redirects[i] = expand_variables(tk->redirects[i], exec);
+		tk->redirects[i] = expander(tk->redirects[i]);
 		// if (tmp && tmp[1])
 		// {
 		// 	//free ??
@@ -69,24 +69,24 @@ int	handle_both(int *redir, char **redirects, int *redirect_type, t_exec *exec)
 		i++;
 	}
 	i = 0;
-	while (redirects[i] || redirect_type[i])
+	while (tk->redirects[i] || tk->redirect_type[i])
 	{
-		if (redirect_type[i] == 0 || redirect_type[i] == 1)
+		if (tk->redirect_type[i] == 0 || tk->redirect_type[i] == 1)
 		{
 			if (redir[1])
 				close(redir[1]);
-			redir[1] = output_permission(redirects[i], redirect_type[i]);
+			redir[1] = output_permission(tk->redirects[i], tk->redirect_type[i]);
 		}
 		else
 		{
 			if (redir[0])
 				close(redir[0]);
-			if (redirect_type[i] == 2)
-				redir[0] = input_permission(redirects[i]);
-			else if (redirect_type[i] > 0)
-				redir[0] = redirect_type[i];
+			if (tk->redirect_type[i] == 2)
+				redir[0] = input_permission(tk->redirects[i]);
+			else if (tk->redirect_type[i] > 0)
+				redir[0] = tk->redirect_type[i];
 			else
-				redir[0] = heredoc_expand(-redirect_type[i], exec);
+				redir[0] = heredoc_expand(tk->redirect_type[i], exec);
 		}
 		if (redir[0] == -1 || redir[1] == -1)
 			return (-1);
