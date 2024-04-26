@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 23:26:49 by padam             #+#    #+#             */
-/*   Updated: 2024/03/27 16:29:11 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/25 23:02:12 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,20 @@ extern int	g_signal;
 
 void	signal_handler(int signal)
 {
+	g_signal = 1;
 	if (signal == SIGINT)
 	{
-		ft_putstr_fd("\n", 2);
+		write(STDIN_FILENO, "\n", 1);
 		rl_on_new_line();
-		// rl_replace_line("");
+		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 	if (signal == SIGQUIT)
 	{
+		write(STDIN_FILENO, "\n", 1);
 		ft_putstr_fd("Quit: 3\n", 2);
 		rl_on_new_line();
-		// rl_replace_line("");
+		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 

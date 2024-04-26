@@ -6,11 +6,13 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:47:36 by padam             #+#    #+#             */
-/*   Updated: 2024/04/25 03:31:29 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/26 00:16:59 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+extern int	g_signal;
 
 int	here_doc(char *limiter)
 {
@@ -23,7 +25,10 @@ int	here_doc(char *limiter)
 	while (1)
 	{
 		if (isatty(fileno(stdin))) //debug
+		{
+			rl_on_new_line();
 			str = readline(">");
+		}
 		else
 		{
 			line = get_next_line(fileno(stdin));
@@ -111,7 +116,7 @@ int	handle_cmd(t_cmd *cmd)
 				cmd->redirect_type[i] = -here_doc(cmd->redirects[i]);
 			free(cmd->redirects[i]);
 			cmd->redirects[i] = NULL;
-			if (cmd->redirect_type[i] == -1)
+			if (cmd->redirect_type[i] == -1 || g_signal)
 				return (-1);
 		}
 		i++;
