@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/04/26 13:00:27 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/26 16:46:23 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,40 +50,40 @@ char	*get_current_folder(void)
 
 char	*new_prompt(char **env)
 {
-	// char	*prompt;
-	// char	*prompt_tmp;
-	// char	*folder;
+	char	*prompt;
+	char	*prompt_tmp;
+	char	*folder;
 	char	*command;
 	char	*line;
 
 	(void)env;
-	// if (isatty(STDIN_FILENO)) //debug
-	// {
-	// 	folder = get_current_folder();
-	// 	prompt_tmp = get_env(env, "USER");
-	// 	prompt = ft_strjoin(prompt_tmp, "@minishell:");
-	// 	free(prompt_tmp);
-	// 	prompt_tmp = ft_strjoin(prompt, CYAN);
-	// 	free(prompt);
-	// 	prompt = ft_strjoin(prompt_tmp, folder);
-	// 	free(folder);
-	// 	free(prompt_tmp);
-	// 	prompt_tmp = ft_strjoin(prompt, RESET);
-	// 	free(prompt);
-	// 	prompt = ft_strjoin(prompt_tmp, "$ ");
-	// 	free(prompt_tmp);
-	// 	rl_on_new_line();
-	// 	command = readline(prompt);
-	// 	free(prompt);
-	// }
-	// else
-	// {
+	if (isatty(STDIN_FILENO)) //debug
+	{
+		folder = get_current_folder();
+		prompt_tmp = get_env(env, "USER");
+		prompt = ft_strjoin(prompt_tmp, "@minishell:");
+		free(prompt_tmp);
+		prompt_tmp = ft_strjoin(prompt, CYAN);
+		free(prompt);
+		prompt = ft_strjoin(prompt_tmp, folder);
+		free(folder);
+		free(prompt_tmp);
+		prompt_tmp = ft_strjoin(prompt, RESET);
+		free(prompt);
+		prompt = ft_strjoin(prompt_tmp, "$ ");
+		free(prompt_tmp);
+		rl_on_new_line();
+		command = readline(prompt);
+		free(prompt);
+	}
+	else
+	{
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
 			return (NULL);
 		command = ft_strtrim(line, "\n");
 		free(line);
-	// }
+	}
 	if (command && *command && *command != '\n')
 		add_history(command);
 	return (command);

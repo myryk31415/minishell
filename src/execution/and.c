@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 10:39:18 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/26 14:00:42 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/26 16:51:29 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,15 @@ void	and_left(t_node *token, int status, int **pipes, t_exec *exec)
 		exec->exit_status = create_tree(0, (t_node *)token->left, *exec, NULL);
 	else if (token->type_right == ERROR)
 		exec->exit_status = 2;
-	if (status == 1)
-	{
-		if (pipes)
-		{
-			close_pipe(pipes[1]);
-			pipes[1] = NULL;
-		}
-	}
+	(void)status;
+	// if (status == 1)
+	// {
+	// 	if (pipes)
+	// 	{
+	// 		close_pipe(pipes[1]);
+	// 		pipes[1] = NULL;
+	// 	}
+	// }
 }
 
 void	and_execute(t_node *token, int status, int **pipes, t_exec *exec)
@@ -68,14 +69,15 @@ void	or_left(t_node *token, int status, int **pipes, t_exec *exec)
 		exec->exit_status = create_tree(0, (t_node *)token->left, *exec, NULL);
 	else if (token->type_right == ERROR)
 		exec->exit_status = 2;
-	if (status == 1)
-	{
-		if (pipes)
-		{
-			close_pipe(pipes[1]);
-			pipes[1] = NULL;
-		}
-	}
+	(void)status;
+	// if (status == 1)
+	// {
+	// 	if (pipes)
+	// 	{
+	// 		close_pipe(pipes[1]);
+			// pipes[1] = NULL;
+	// 	}
+	// }
 }
 
 void	or_execute(t_node *token, int status, int **pipes, t_exec *exec)
