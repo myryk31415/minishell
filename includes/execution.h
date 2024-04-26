@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:29 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/26 21:46:11 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/26 23:18:42 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <sys/wait.h>
 # include <errno.h>
 
-void	execute(char **cmd_arg, t_exec *exec);
+void	execute(char **cmd_arg, t_exec *exec, int **pipes);
 void	close_pipes(int **pipes);
 void	free_str_array(char **arr);
 int		redirect(t_redir *token, int **pipes, int status, t_exec exec);

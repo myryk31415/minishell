@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_execution.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/26 23:09:09 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/26 23:17:57 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ int	error_message(char *cmd_path)
 	return (exit_status);
 }
 
-void	execute(char **cmd_arg, t_exec *exec)
+void	execute(char **cmd_arg, t_exec *exec, int **pipes)
 {
 	char		*cmd_path;
 	int			exit_status;
@@ -183,6 +183,7 @@ void	execute(char **cmd_arg, t_exec *exec)
 		if (!cmd_path)
 			cmd_path = *cmd_arg;
 		node_tree_delete(exec->tree, exec->type);
+		free(pipes);
 		if (ft_strchr(cmd_path, '/') && **cmd_arg != '.')
 			execve(cmd_path, cmd_arg, *(exec->env));
 		exit_status = error_message(cmd_path);
