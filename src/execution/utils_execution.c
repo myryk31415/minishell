@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/25 20:14:48 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/26 13:23:36 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	is_builtin(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 		"unset", 6) || !ft_strncmp(token->args[0], "exit", 5) || \
 		!ft_strncmp(token->args[0], "env", 4)))
 	{
-		if (in_and_out_handling(token, pipes, redir, exec) == 1)
+		if (in_and_out_hdl_fork(token, pipes, redir, exec) == 1)
 			return (EXIT_FAILURE);
 		if (!ft_strncmp(token->args[0], "cd", 3))
 			return (cd(token->args, exec->env));
@@ -91,7 +91,7 @@ int	is_builtin_no_fork(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 		"unset", 6) || !ft_strncmp(token->args[0], "exit", 5) || \
 		!ft_strncmp(token->args[0], "env", 4)))
 	{
-		if (in_and_out_handling(token, pipes, redir, exec) == 1)
+		if (in_and_out_hdl_no_fork(token, pipes, redir, exec) == 1)
 			return (EXIT_FAILURE);
 		if (!ft_strncmp(token->args[0], "cd", 3))
 			return (cd(token->args, exec->env));
