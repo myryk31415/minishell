@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:34:22 by padam             #+#    #+#             */
-/*   Updated: 2024/04/23 18:52:03 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/26 14:52:49 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,12 @@ int	redirects_count(t_token *tokens)
 
 int	get_redir(t_token **token_first, t_cmd *redirects, int value, int *count)
 {
-	token_delete(token_first);
-	if (!(*token_first) || (*token_first)->type != T_WORD)
+	if (!(*token_first)->next || (*token_first)->next->type != T_WORD)
 	{
 		print_syntax_err(*token_first);
 		return (-1);
 	}
+	token_delete(token_first);
 	if (!(*token_first)->value)
 	{
 		ft_printf("minishell: ambiguous redirect\n");
@@ -126,7 +126,7 @@ int	redirects_get(t_token **token_first, t_cmd **redirects)
 	output = redirects_fill(token_first, *redirects);
 	if (output == -1)
 	{
-		free(*redirects);
+		cmd_free(*redirects);
 		*redirects = NULL;
 		return (-1);
 	}

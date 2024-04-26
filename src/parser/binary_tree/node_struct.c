@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:38:13 by padam             #+#    #+#             */
-/*   Updated: 2024/04/24 20:47:51 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/26 17:14:28 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,19 +61,19 @@ t_node_type	check_parens(t_token *token_first, void **head)
 		node = new_redir_node();
 		if (!node)
 			return(err_pars("malloc", redirects, &token_first));
+		node->redirects = redirects;
+		*head = node;
 		token_last = skip_parens(token_first, 1);
 		if (!token_last)
 		{
 			token_delete_all(&token_first);
-			free(node);
-			cmd_free(redirects);
+			node_tree_delete(node, REDIR);
 			return (ERROR);
 		}
 		if (token_last->next)
 		{
 			print_syntax_err(token_last->next);
-			free(node);
-			cmd_free(redirects);
+			node_tree_delete(node, REDIR);
 			return (ERROR);
 		}
 		token_last = token_last->prev;
@@ -86,15 +86,12 @@ t_node_type	check_parens(t_token *token_first, void **head)
 			cmd_free(redirects);
 			return (ERROR);
 		}
-		node->redirects = redirects;
 		node->type = split_by_operator(token_last, &node->next);
 		if (node->type == ERROR)
 		{
-			cmd_free(redirects);
-			free(node);
+			node_tree_delete(node, REDIR);
 			return (ERROR);
 		}
-		*head = node;
 		return (REDIR);
 	}
 	return (get_cmd(token_first, head, redirects));
@@ -113,6 +110,7 @@ t_node_type	split_by_pipe(t_token *token_first, void **head)
 		node = new_node();
 		if (!node)
 			return(err_pars("malloc", NULL, &token_first));
+		*head = node;
 		if (!token_last->next || !token_last->prev)
 		{
 			print_syntax_err(token_last);
@@ -131,10 +129,9 @@ t_node_type	split_by_pipe(t_token *token_first, void **head)
 		node->type_right = split_by_pipe(token_last, &node->right);
 		if (node->type_right == ERROR)
 		{
-			free(node);
+			node_tree_delete(*head, PIPE);
 			return (ERROR);
 		}
-		*head = node;
 		return (PIPE);
 	}
 	return (check_parens(token_first, head));
@@ -154,6 +151,7 @@ t_node_type	split_by_operator(t_token *token_last, void **head)
 		node = new_node();
 		if (!node)
 			return(err_pars("malloc", NULL, &token_first));
+		*head = node;
 		if (token_first->type == T_AND)
 			return_value = AND;
 		else
@@ -167,18 +165,12 @@ t_node_type	split_by_operator(t_token *token_last, void **head)
 		token_delete(&token_first);
 		node->type_left = split_by_operator(token_split(token_first, -1),
 				&node->left);
-		if (node->type_left == ERROR)
-		{
-			free(node);
-			return (ERROR);
-		}
 		node->type_right = split_by_pipe(token_first, &node->right);
-		if (node->type_left == ERROR)
+		if (node->type_right == ERROR || node->type_left == ERROR)
 		{
-			free(node);
+			node_tree_delete(*head, return_value);
 			return (ERROR);
 		}
-		*head = node;
 		return (return_value);
 	}
 	return (split_by_pipe(token_first, head));
