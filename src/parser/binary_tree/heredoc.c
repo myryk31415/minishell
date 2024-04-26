@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:47:36 by padam             #+#    #+#             */
-/*   Updated: 2024/04/26 14:31:28 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/26 20:01:43 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int	handle_cmd(t_cmd *cmd)
 				cmd->redirect_type[i] = -here_doc(cmd->redirects[i]);
 			free(cmd->redirects[i]);
 			cmd->redirects[i] = NULL;
-			if (cmd->redirect_type[i] == -1 || g_signal)
+			if (cmd->redirect_type[i] == -1)
 				return (-1);
 		}
 		i++;

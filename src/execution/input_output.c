@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_output.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/26 12:52:46 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/26 20:20:28 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	handle_both(int *redir, t_cmd *tk, t_exec *exec)
 			else if (tk->redirect_type[i] > 0)
 				redir[0] = tk->redirect_type[i];
 			else
-				redir[0] = heredoc_expand(tk->redirect_type[i], exec);
+				redir[0] = heredoc_expand(-tk->redirect_type[i], exec);
 		}
 		if (redir[0] == -1 || redir[1] == -1)
 			return (-1);
