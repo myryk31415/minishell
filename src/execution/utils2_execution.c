@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 14:57:38 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/26 22:58:02 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/27 00:19:51 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	close_in_out_file_nofork(int input, int output, int *redir, int **pipes)
 		close(pipes[0][0]);
 		close(pipes[0][1]);
 	}
+	free(pipes);
 	if (output != 1 && (!redir || (redir && !redir[1])))
 		close(output);
 	if (input)
@@ -82,4 +83,5 @@ void	close_in_out_files_fork(int **pipes)
 	{
 		close(pipes[0][0]);
 	}
+	free(pipes);
 }
