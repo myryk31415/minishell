@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 14:57:38 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/26 13:22:29 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/26 16:52:42 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	close_in_out_files_fork(int input, int output, int *redir, int **pipes)
 {
 	if (pipes && pipes[1])
 	{
-		close(pipes[1][0]);
+		// close(pipes[1][0]);
 		close(pipes[1][1]);
 	}
 	if (pipes && pipes[0])
@@ -79,10 +79,13 @@ void	close_in_out_files_fork(int input, int output, int *redir, int **pipes)
 		close(pipes[0][0]);
 		// close(pipes[0][1]);
 	}
-	if (output != 1 && (!redir || (redir && !redir[1])))
-		close(output);
-	if (input)
-		close(input);
+	(void)redir;
+	(void)output;
+	(void)input;
+	// if (output != 1 && (!redir || (redir && !redir[1])))
+	// 	close(output);
+	// if (input)
+	// 	close(input);
 }
 
 char **ft_sort_alpha(char **env)

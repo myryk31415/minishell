@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 23:38:37 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/26 13:22:38 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/26 16:56:44 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ void	command_fork(t_cmd *token, t_exec *exec, int **pipes, int *redir)
 		}
 		else
 		{
-			close_pipes(pipes);
+			// close_pipes(pipes);
 			waitpid(id, &status, 0);
 			if (WIFEXITED(status))
 				exec->exit_status = WEXITSTATUS(status);
