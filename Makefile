@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+         #
+#    By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/04/25 15:45:58 by padam            ###   ########.fr        #
+#    Updated: 2024/04/26 21:42:12 by antonweizma      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,8 @@ SRCS_BNTR =	node_struct.c			node_utils.c		pipeline.c	\
 SRCS_BUILT =	cd.c		echo.c	export.c	unset.c		exit.c
 
 SRCS_EXEC =	execution.c		input_output.c		utils_execution.c \
-			utils2_execution.c 		and.c command.c
+			utils2_execution.c and.c command.c utils3_execution.c \
+			input_output_2.c
 
 SRCS_PIPE =		fork.c			pipe.c			utils.c
 
