@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:16:36 by padam             #+#    #+#             */
-/*   Updated: 2024/04/25 20:24:13 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/26 11:23:06 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	main(void)
 	g_signal = 0;
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, signal_handler);
-	// set_signal_action();
+
 	exec = fill_struct();
 	if (!exec)
 		return (-1);
@@ -101,12 +101,10 @@ int	main(void)
 		exec->type = type;
 		exec->tree = token_tree;
 		if (!isatty(STDIN_FILENO) && type == ERROR)
-			exit_shell(exec, NULL, exec->exit_status);
-		// system("leaks minishell");
+			exit_shell(exec, NULL, exec->exit_status, 1);
 		execution(token_tree, type, exec);
 		// ft_printf("%i\n", exec->exit_status);
 		node_tree_delete(token_tree, type);
-		// system("leaks minishell");
 	}
 	free_env(exec->env);
 	return (0);

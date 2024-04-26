@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 00:09:23 by padam             #+#    #+#             */
-/*   Updated: 2024/04/25 16:15:40 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/26 10:42:49 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ unsigned int	ft_u_atoi(const char *str)
 }
 
 
-void	exit_shell(t_exec *exec, char **arg, unsigned int status)
+void	exit_shell(t_exec *exec, char **arg, unsigned int status, int redir)
 {
 	unsigned int	exit_status;
 
@@ -67,12 +67,11 @@ too many arguments\n", 2);
 	{
 		exit_status = ft_u_atoi(arg[1]);
 	}
-	else if (!status)
-		exit_status = exec->exit_status;
+	// else if (!status)
+	// 	exit_status = exec->exit_status;
 	free_env(exec->env);
-	// rl_clear_history();
 	node_tree_delete(exec->tree, exec->type);
-	if (arg)
+	if (arg && !redir)
 		free(exec);
 	exit(exit_status);
 }

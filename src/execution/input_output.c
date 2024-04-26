@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_output.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/24 20:18:27 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/26 11:20:34 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,21 +138,39 @@ int	handle_both(int *redir, char **redirects, int *redirect_type, t_exec *exec)
 // 	return (file);
 // }
 
-void	redirect_nodes(t_redir *token, int **pipes, t_exec exec)
+void	redirect_nodes(t_redir *token, int **pipes, t_exec *exec)
 {
-	command(token->redirects, pipes, 1, &exec);
+	command(token->redirects, pipes, 1, exec);
 	if (token->type == CMD)
-		command((t_cmd *)token->next, pipes, 0, &exec);
+		command((t_cmd *)token->next, pipes, 0, exec);
 	else if (token->type == OR)
-		or_execute((t_node *)token->next, 1, pipes, &exec);
+		or_execute((t_node *)token->next, 1, pipes, exec);
 	else if (token->type == AND)
-		and_execute((t_node *)token->next, 1, pipes, &exec);
+		and_execute((t_node *)token->next, 1, pipes, exec);
 	else if (token->type == PIPE)
-		create_tree(0, (t_node *)token->next, exec);
+		exec->exit_status = create_tree(0, (t_node *)token->next, *exec, pipes);
 	else if (token->type == REDIR)
-		redirect((t_redir *)token->next, pipes, 1, exec);
+		redirect((t_redir *)token->next, pipes, 1, *exec);
+	// ft_putstr_fd("CMD CLOSE: exit status:  ", 2);
+	// ft_putnbr_fd(exec->exit_status, 2);
+	// ft_putstr_fd("\n", 2);
 }
 
+void	test_exit_cmd(t_cmd *token, t_exec *exec)
+{
+	ft_putstr_fd(token->args[0], 2);
+	ft_putstr_fd(token->args[1], 2);
+	ft_putstr_fd("\n EXITSTATUS: ", 2);
+	ft_putnbr_fd(exec->exit_status, 2);
+	ft_putstr_fd("\n", 2);
+}
+
+void	test_exit_pipe(t_exec *exec)
+{
+	ft_putstr_fd("PIPE: exit status: ", 2);
+	ft_putnbr_fd(exec->exit_status, 2);
+	ft_putstr_fd("\n", 2);
+}
 int	redirect(t_redir *token, int **pipes, int status, t_exec exec)
 {
 	int	pid;
@@ -161,22 +179,28 @@ int	redirect(t_redir *token, int **pipes, int status, t_exec exec)
 	pipe_exit = 0;
 	if (status == 1)
 		pipe_exit = 1;
-	pid = fork(	);
+	pid = fork();
 	if (pid == -1)
 		perror("Fork");
 	if (!pid)
 	{
-		redirect_nodes(token, pipes, exec);
-		exit(EXIT_FAILURE);
+		redirect_nodes(token, pipes, &exec);
+		exit(exec.exit_status);
 	}
 	else
 	{
 		close_pipes(pipes);
 		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			exec.exit_status = WEXITSTATUS(status);
+		// if (token->type == CMD)
+		// 	test_exit_cmd((t_cmd *)token->next, &exec);
+		// else if (token->type == PIPE)
+		// 	test_exit_pipe(&exec);
 		if (pipe_exit)
-			exit_shell(&exec, NULL, (unsigned int) status);
+			exit_shell(&exec, NULL, exec.exit_status, 1);
 	}
-	return (status);
+	return (exec.exit_status);
 }
 
 void	error_msg(char *cmd, char *file)
