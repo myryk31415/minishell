@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/26 13:23:36 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/26 21:53:19 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*get_path(char *cmd, char **environ, char *var)
 	char	*path_to_cmd;
 	char	*trial_path;
 	int		i;
-	char 	*tmp;
+	char	*tmp;
 
 	tmp = get_env(environ, var);
 	if (!tmp)
