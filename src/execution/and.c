@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 10:39:18 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/26 11:12:55 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/26 11:38:36 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	and_left(t_node *token, int status, int **pipes, t_exec *exec)
 {
-	if (status == 1)
+	if (status == 1 && pipes)
 	{
 		pipes[0] = NULL;
 		if (token->type_left == CMD)
@@ -33,6 +33,8 @@ void	and_left(t_node *token, int status, int **pipes, t_exec *exec)
 		and_execute((t_node *)token->left, 0, pipes, exec);
 	else if (token->type_left == PIPE)
 		exec->exit_status = create_tree(0, (t_node *)token->left, *exec, NULL);
+	else if (token->type_right == ERROR)
+		exec->exit_status = 2;
 }
 
 void	and_execute(t_node *token, int status, int **pipes, t_exec *exec)
@@ -56,6 +58,8 @@ void	and_execute(t_node *token, int status, int **pipes, t_exec *exec)
 		exec->exit_status = create_tree(0, (t_node *)token->right, *exec, NULL);
 	else if (!exec->exit_status && token->type_right == REDIR)
 		exec->exit_status = redirect((t_redir *)token->right, pipes, 0, *exec);
+	else if (!exec->exit_status && token->type_right == ERROR)
+		exec->exit_status = 2;
 }
 
 void	or_left(t_node *token, int status, int **pipes, t_exec *exec)
