@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/26 13:22:46 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/26 22:37:55 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,9 @@ void	execution(void *tree, t_node_type type, t_exec *exec)
 	if (type == CMD)
 		command((t_cmd *)tree, NULL, 2, exec);
 	else if (type == AND)
-		and_execute((t_node *)tree, 0, NULL, exec);
+		and_execute((t_node *)tree, NULL, exec);
 	else if (type == OR)
-		or_execute((t_node *)tree, 0, NULL, exec);
+		or_execute((t_node *)tree, NULL, exec);
 	else if (type == PIPE)
 		exec->exit_status = create_tree(0, (t_node *)tree, *exec, NULL);
 	else if (type == REDIR)

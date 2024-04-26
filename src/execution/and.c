@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 10:39:18 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/26 21:44:15 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/26 22:37:48 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ void	and_left(t_node *token, int **pipes, t_exec *exec)
 		exec->exit_status = redirect((t_redir *)token->left, \
 		pipes, 0, *exec);
 	if (token->type_left == OR)
-		or_execute((t_node *)token->left, 1, pipes, exec);
+		or_execute((t_node *)token->left, pipes, exec);
 	else if (token->type_left == AND)
-		and_execute((t_node *)token->left, 1, pipes, exec);
+		and_execute((t_node *)token->left, pipes, exec);
 	else if (token->type_left == PIPE)
 		exec->exit_status = create_tree(0, (t_node *)token->left, *exec, NULL);
 	else if (token->type_right == ERROR)
@@ -51,9 +51,9 @@ void	or_left(t_node *token, int **pipes, t_exec *exec)
 		exec->exit_status = redirect((t_redir *)token->left, \
 		pipes, 0, *exec);
 	if (token->type_left == OR)
-		or_execute((t_node *)token->left, 1, pipes, exec);
+		or_execute((t_node *)token->left, pipes, exec);
 	else if (token->type_left == AND)
-		and_execute((t_node *)token->left, 1, pipes, exec);
+		and_execute((t_node *)token->left, pipes, exec);
 	else if (token->type_left == PIPE)
 		exec->exit_status = create_tree(0, (t_node *)token->left, *exec, NULL);
 	else if (token->type_right == ERROR)
