@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 10:14:07 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/24 16:08:54 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/26 22:55:08 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*cd_copy_path(char *path, char *arg, int i, int j)
 		j = 1;
 		while (arg[i + j] && arg[i + j] != '/')
 			j++;
-		tmp = ft_calloc(sizeof(char), j);
+		tmp = ft_calloc(sizeof(char), j + 1);
 		ft_strlcpy(tmp, arg + i, j + 1);
 		if (!ft_strncmp(tmp, "..", 2))
 			path = get_up_dir(path);
