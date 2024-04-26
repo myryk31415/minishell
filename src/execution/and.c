@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   and.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 10:39:18 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/26 11:12:55 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/26 12:03:51 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ void	and_left(t_node *token, int status, int **pipes, t_exec *exec)
 {
 	if (status == 1)
 	{
-		pipes[0] = NULL;
+		if (pipes)
+			pipes[0] = NULL;
 		if (token->type_left == CMD)
 			command((t_cmd *)token->left, pipes, 2, exec);
 		else if (token->type_left == REDIR)
@@ -62,7 +63,8 @@ void	or_left(t_node *token, int status, int **pipes, t_exec *exec)
 {
 	if (status == 1)
 	{
-		pipes[0] = NULL;
+		if (pipes)
+			pipes[0] = NULL;
 		if (token->type_left == CMD)
 			command((t_cmd *)token->left, pipes, 2, exec);
 		else if (token->type_left == REDIR)
