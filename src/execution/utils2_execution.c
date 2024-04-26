@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2_execution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 14:57:38 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/26 21:01:03 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/26 22:58:02 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,17 @@ void	close_pipe(int *pipe)
 void	oldpwd_save(char ***env, char *path_to_dir, char *arg)
 {
 	char		*var;
+	char		*tmp;
 
 	var = getcwd(NULL, PATH_MAX);
-	pwd_export(ft_strjoin("OLDPWD=", var), env, 0);
+	tmp = ft_strjoin("OLDPWD=", var);
+	pwd_export(tmp, env, 0);
+	free(tmp);
 	free(var);
 	chdir(path_to_dir);
-	pwd_export(ft_strjoin("PWD=", path_to_dir), env, 1);
+	tmp = ft_strjoin("PWD=", path_to_dir);
+	pwd_export(tmp, env, 1);
+	free(tmp);
 	if (arg && arg[0] == '-')
 		pwd();
 	free (path_to_dir);

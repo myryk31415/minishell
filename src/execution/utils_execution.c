@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_execution.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/26 21:53:19 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/26 23:09:09 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,7 @@ void	execute(char **cmd_arg, t_exec *exec)
 			execve(*cmd_arg, cmd_arg, *(exec->env));
 		exit_status = error_message(*cmd_arg);
 		free_env(exec->env);
+		free(exec);
 		exit(exit_status);
 	}
 	else
@@ -186,7 +187,7 @@ void	execute(char **cmd_arg, t_exec *exec)
 			execve(cmd_path, cmd_arg, *(exec->env));
 		exit_status = error_message(cmd_path);
 		free_env(exec->env);
-		// free(exec);
+		free(exec);
 		exit(exit_status);
 	}
 }
