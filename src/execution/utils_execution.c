@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_execution.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/25 15:47:52 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/25 20:14:48 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,36 @@ int	is_builtin(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 		else if (!ft_strncmp(token->args[0], "export", 7))
 			return (export(token->args, exec->env, 0));
 		else if (!ft_strncmp(token->args[0], "exit", 5))
-			exit_shell(exec, token->args, 0);
+			exit_shell(exec, token->args, 0, 0);
+		else if (!ft_strncmp(token->args[0], "unset", 6))
+			return (unset(token->args, exec->env));
+		else if (!ft_strncmp(token->args[0], "env", 4))
+			return (env_cmd(token, *(exec->env)));
+	}
+	return (-1);
+}
+
+int	is_builtin_no_fork(t_cmd *token, int **pipes, int *redir, t_exec *exec)
+{
+	token->args = expander_array(token->args, exec);
+	if (*(token->args) && (!ft_strncmp(token->args[0], "cd", 3) || !ft_strncmp\
+	(token->args[0],"echo", 5) || !ft_strncmp(token->args[0], "pwd", 4) || \
+		!ft_strncmp(token->args[0], "export", 7) || !ft_strncmp(token->args[0], \
+		"unset", 6) || !ft_strncmp(token->args[0], "exit", 5) || \
+		!ft_strncmp(token->args[0], "env", 4)))
+	{
+		if (in_and_out_handling(token, pipes, redir, exec) == 1)
+			return (EXIT_FAILURE);
+		if (!ft_strncmp(token->args[0], "cd", 3))
+			return (cd(token->args, exec->env));
+		else if (!ft_strncmp(token->args[0], "echo", 5))
+			return (echo(token->args));
+		else if (!ft_strncmp(token->args[0], "pwd", 4))
+			return (pwd());
+		else if (!ft_strncmp(token->args[0], "export", 7))
+			return (export(token->args, exec->env, 0));
+		else if (!ft_strncmp(token->args[0], "exit", 5))
+			exit_shell(exec, token->args, 0, 1);
 		else if (!ft_strncmp(token->args[0], "unset", 6))
 			return (unset(token->args, exec->env));
 		else if (!ft_strncmp(token->args[0], "env", 4))
@@ -148,7 +177,7 @@ void	execute(char **cmd_arg, t_exec *exec)
 	else
 	{
 		if (!*cmd_arg)
-			exit_shell(exec, NULL, EXIT_SUCCESS);
+			exit_shell(exec, NULL, EXIT_SUCCESS, 1);
 		cmd_path = get_path(*cmd_arg, *(exec->env), "PATH");
 		if (!cmd_path)
 			cmd_path = *cmd_arg;

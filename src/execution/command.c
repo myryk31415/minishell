@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 23:38:37 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/25 11:02:24 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/26 11:01:36 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	in_and_out_handling(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 	return (EXIT_SUCCESS);
 }
 
-void	builtin(t_cmd *token, int **pipes, int *redir, t_exec *exec)
+int	builtin(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 {
 	int		old_stdin;
 	int		old_stdout;
@@ -99,6 +99,12 @@ void	builtin(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 	exec->exit_status = is_builtin(token, pipes, redir, exec);
 	dup2(old_stdin, STDIN_FILENO);
 	dup2(old_stdout, STDOUT_FILENO);
+	if (exec->exit_status == -1)
+	{
+		exec->exit_status = 0;
+		return (-1);
+	}
+	return (exec->exit_status);
 }
 
 void	command_fork(t_cmd *token, t_exec *exec, int **pipes, int *redir)
@@ -109,8 +115,7 @@ void	command_fork(t_cmd *token, t_exec *exec, int **pipes, int *redir)
 
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, signal_handler);
-	builtin(token, pipes, redir, exec);
-	if (exec->exit_status == -1)
+	if (builtin(token, pipes, redir, exec) == -1)
 	{
 		id = fork();
 		if (id == -1)
@@ -118,7 +123,7 @@ void	command_fork(t_cmd *token, t_exec *exec, int **pipes, int *redir)
 		if (!id)
 		{
 			if (in_and_out_handling(token, pipes, redir, exec) == 1)
-				exit_shell(exec, NULL, EXIT_FAILURE);
+				exit_shell(exec, NULL, EXIT_FAILURE, 1);
 			tmp = token->args;
 			token->args = NULL;
 			execute(tmp, exec);
@@ -139,17 +144,23 @@ void	command_no_fork(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, signal_handler);
-	exec->exit_status = is_builtin(token, pipes, redir, exec);
+	exec->exit_status = is_builtin_no_fork(token, pipes, redir, exec);
 	if (exec->exit_status == -1)
 	{
+		exec->exit_status = 0;
 		if (in_and_out_handling(token, pipes, redir, exec) == 1)
-			exit_shell(exec, NULL, EXIT_FAILURE);
+			exit_shell(exec, NULL, EXIT_FAILURE, 1);
 		tmp = token->args;
 		token->args = NULL;
 		execute(tmp, exec);
 	}
 	close_pipes(pipes);
-	exit_shell(exec, NULL, exec->exit_status);
+	// ft_putstr_fd(token->args[0], 2);
+	// ft_putstr_fd(token->args[1], 2);
+	// ft_putstr_fd("\n EXITSTATUS: ", 2);
+	// ft_putnbr_fd(exec->exit_status, 2);
+	// ft_putstr_fd("\n", 2);
+	exit_shell(exec, NULL, exec->exit_status, 1);
 }
 
 void	command(t_cmd *token, int **pipes, int redirect, t_exec *exec)
