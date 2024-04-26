@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/04/25 15:54:13 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/26 14:30:59 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # include <signal.h>
 # include <sys/types.h>
 # include <dirent.h>
+
+# define DEBUG 1
 
 typedef struct s_cmd
 {

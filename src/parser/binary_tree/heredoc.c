@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:47:36 by padam             #+#    #+#             */
-/*   Updated: 2024/04/26 13:25:22 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/26 14:31:28 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	here_doc(char *limiter)
 		return(perror("minishell: Pipe:"), -1);
 	while (1)
 	{
-		if (isatty(fileno(stdin))) //debug
+		if (isatty(fileno(stdin)) && !DEBUG) //debug
 		{
 			rl_on_new_line();
 			str = readline(">");
