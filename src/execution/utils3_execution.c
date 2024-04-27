@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils3_execution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 21:00:56 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/26 21:10:53 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/27 13:51:03 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ char	*get_export_env(char *str)
 
 void	display_env(char **env, int export)
 {
-	int	i;
+	int		i;
+	char	*tmp;
 
 	i = 0;
 	if (export)
@@ -75,7 +76,12 @@ void	display_env(char **env, int export)
 		env = ft_sort_alpha(env);
 		i = 0;
 		while (env[i])
-			ft_printf("declare -x %s\n", get_export_env(env[i++]));
+		{
+			tmp = get_export_env(env[i]);
+			ft_printf("declare -x %s\n", tmp);
+			free(tmp);
+			i++;
+		}
 	}
 	else
 		while (env[i])

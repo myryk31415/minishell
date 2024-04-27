@@ -3,14 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 17:10:56 by padam             #+#    #+#             */
-/*   Updated: 2024/04/25 16:15:16 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/27 14:01:07 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	free_redir(char **arr, int *type)
+{
+	int	i;
+
+	i = 0;
+	if (!arr)
+		return ;
+	while (arr[i] || type[i])
+		free(arr[i++]);
+	free(arr);
+	free(type);
+}
 
 void	free_str_array(char **arr)
 {
@@ -29,8 +42,7 @@ void	cmd_free(t_cmd *cmd)
 	if (!cmd)
 		return ;
 	free_str_array(cmd->args);
-	free_str_array(cmd->redirects);
-	free(cmd->redirect_type);
+	free_redir(cmd->redirects, cmd->redirect_type);
 	free(cmd);
 }
 
