@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_output.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/26 22:38:02 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/27 13:16:23 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ void	redirect_nodes(t_redir *token, int **pipes, t_exec *exec)
 	else if (token->type == AND)
 		and_execute((t_node *)token->next, pipes, exec);
 	else if (token->type == PIPE)
-		exec->exit_status = create_tree(0, (t_node *)token->next, *exec, pipes);
+		exec->exit_status = create_tree(0, (t_node *)token->next, exec, pipes);
 	else if (token->type == REDIR)
 		redirect((t_redir *)token->next, pipes, 1, *exec);
 	// ft_putstr_fd("CMD CLOSE: exit status:  ", 2);
