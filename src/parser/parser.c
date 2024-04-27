@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/04/27 17:32:55 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/27 18:07:56 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ t_node_type	parser(void **token_tree, t_exec *exec)
 	if (check_quotes(command) == -2)
 	{
 		ft_putstr_fd("minishell: unclosed parenthesis\n", 2);
+		exec->exit_status = 2;
 		free(command);
 		return (ERROR);
 	}

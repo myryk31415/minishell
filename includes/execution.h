@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:29 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/27 14:29:35 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/27 19:39:31 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int		pwd(void);
 int		echo(char **args);
 int		cd(char	**arg, char ***env);
 int		is_builtin_no_fork(t_cmd *token, int **pipes, int *redir, t_exec *exec);
-void	exit_shell(t_exec *exec, char **arg, unsigned int status, int redir);
+void	exit_shell(t_exec *exec, char **arg, unsigned int status);
 void	oldpwd_save(char ***env, char *path_to_dir, char *arg);
 void	and_execute(t_node *token, int **pipes, t_exec *exec);
 void	command_fork(t_cmd *token, t_exec *exec, int **pipes, int *redir);

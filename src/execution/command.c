@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 23:38:37 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/27 14:43:20 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/27 19:44:11 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	command_fork(t_cmd *token, t_exec *exec, int **pipes, int *redir)
 		if (!id)
 		{
 			if (in_and_out_hdl_fork(token, pipes, redir, exec) == 1)
-				exit_shell(exec, NULL, EXIT_FAILURE, 1);
+				exit_shell(exec, NULL, EXIT_FAILURE);
 			tmp = token->args;
 			token->args = NULL;
 			execute(tmp, exec, 0);
@@ -51,13 +51,13 @@ void	command_no_fork(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 	{
 		exec->exit_status = 0;
 		if (in_and_out_hdl_no_fork(token, pipes, redir, exec) == 1)
-			exit_shell(exec, NULL, EXIT_FAILURE, 1);
+			exit_shell(exec, NULL, EXIT_FAILURE);
 		tmp = token->args;
 		token->args = NULL;
 		execute(tmp, exec, 1);
 	}
 	// close_pipes(pipes);
-	exit_shell(exec, NULL, exec->exit_status, 1);
+	exit_shell(exec, NULL, exec->exit_status);
 }
 
 void	command(t_cmd *token, int **pipes, int redirect, t_exec *exec)

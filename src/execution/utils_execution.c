@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_execution.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/27 14:24:26 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/27 19:44:11 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	is_builtin(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 		else if (!ft_strncmp(token->args[0], "export", 7))
 			return (export(token->args, exec->env, 0));
 		else if (!ft_strncmp(token->args[0], "exit", 5))
-			exit_shell(exec, token->args, 0, 0);
+			exit_shell(exec, token->args, 0);
 		else if (!ft_strncmp(token->args[0], "unset", 6))
 			return (unset(token->args, exec->env));
 		else if (!ft_strncmp(token->args[0], "env", 4))
@@ -100,7 +100,7 @@ int	is_builtin_no_fork(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 		else if (!ft_strncmp(token->args[0], "export", 7))
 			return (export(token->args, exec->env, 0));
 		else if (!ft_strncmp(token->args[0], "exit", 5))
-			exit_shell(exec, token->args, 0, 1);
+			exit_shell(exec, token->args, 0);
 		else if (!ft_strncmp(token->args[0], "unset", 6))
 			return (unset(token->args, exec->env));
 		else if (!ft_strncmp(token->args[0], "env", 4))
@@ -177,7 +177,7 @@ void	execute(char **cmd_arg, t_exec *exec, int no_exec)
 	else
 	{
 		if (!*cmd_arg)
-			exit_shell(exec, NULL, EXIT_SUCCESS, 1);
+			exit_shell(exec, NULL, EXIT_SUCCESS);
 		cmd_path = get_path(*cmd_arg, *(exec->env), "PATH");
 		if (!cmd_path)
 			cmd_path = *cmd_arg;

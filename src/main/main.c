@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:16:36 by padam             #+#    #+#             */
-/*   Updated: 2024/04/27 14:48:39 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/27 19:44:11 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int	main(void)
 		exec->type = type;
 		exec->tree = token_tree;
 		if (!isatty(STDIN_FILENO) && type == ERROR)
-			exit_shell(exec, NULL, exec->exit_status, 1);
+			exit_shell(exec, NULL, exec->exit_status);
 		execution(token_tree, type, exec);
 		// ft_printf("%i\n", exec->exit_status);
 		node_tree_delete(token_tree, type);
