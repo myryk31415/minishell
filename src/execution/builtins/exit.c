@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 00:09:23 by padam             #+#    #+#             */
-/*   Updated: 2024/04/27 19:39:17 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/27 21:02:47 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,9 @@ too many arguments\n", 2);
 	{
 		exit_status = ft_u_atoi(arg[1]);
 	}
-	// else if (!status)
-	// 	exit_status = exec->exit_status;
 	free_env(exec->env);
 	node_tree_delete(exec->tree, exec->type);
-	free(exec);
+	if (!exec->sub_process)
+		free(exec);
 	exit(exit_status);
 }
