@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 14:57:38 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/27 00:19:51 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/27 21:29:29 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,4 @@ void	close_in_out_files_fork(int **pipes)
 	{
 		close(pipes[0][0]);
 	}
-	free(pipes);
 }
