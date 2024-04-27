@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_output.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/27 19:44:39 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/27 21:13:32 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,7 @@ int	redirect(t_redir *token, int **pipes, int status, t_exec *exec)
 	if (!pid)
 	{
 		redirect_nodes(token, pipes, exec);
+		free(pipes);
 		exit_shell(exec, NULL, exec->exit_status);
 	}
 	else
@@ -179,7 +180,10 @@ int	redirect(t_redir *token, int **pipes, int status, t_exec *exec)
 		if (WIFEXITED(status))
 			exec->exit_status = WEXITSTATUS(status);
 		if (pipe_exit)
+		{
+			free(pipes);
 			exit_shell(exec, NULL, exec->exit_status);
+		}
 	}
 	return (exec->exit_status);
 }
