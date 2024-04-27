@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/04/26 19:47:20 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/27 17:32:55 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,15 @@
 int	check_quotes(char *command)
 {
 	char	quote;
+	int		paren;
 
-	while (*command)
+	paren = 0;
+	while (*command && paren >= 0)
 	{
+		if (*command == '(')
+			paren++;
+		if (*command == ')')
+			paren--;
 		if (*command == '"' || *command == '\'')
 		{
 			quote = *command;
@@ -25,14 +31,13 @@ int	check_quotes(char *command)
 			while (*command && *command != quote)
 				command++;
 			if (!*command)
-			{
-				// ft_putstr_fd("minishell: unclosed quote\n", 2);
 				return (-1);
-			}
 		}
+		if (paren < 0)
+			return (-2);
 		command++;
 	}
-	return (0);
+	return (-2 * (paren > 0));
 }
 
 char	*get_current_folder(void)
@@ -119,6 +124,12 @@ t_node_type	parser(void **token_tree, t_exec *exec)
 		free(tmp);
 		if (check_quotes(command) != -1)
 			add_history(command);
+	}
+	if (check_quotes(command) == -2)
+	{
+		ft_putstr_fd("minishell: unclosed parenthesis\n", 2);
+		free(command);
+		return (ERROR);
 	}
 	tokens = get_next_token(command, NULL);
 	free(command);
