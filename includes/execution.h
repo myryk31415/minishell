@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:29 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/27 13:13:50 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/27 14:29:35 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@
 # include <sys/wait.h>
 # include <errno.h>
 
-void	execute(char **cmd_arg, t_exec *exec);
+void	execute(char **cmd_arg, t_exec *exec, int no_exec);
 void	close_pipes(int **pipes);
 void	free_str_array(char **arr);
-int		redirect(t_redir *token, int **pipes, int status, t_exec exec);
+int		redirect(t_redir *token, int **pipes, int status, t_exec *exec);
 int		handle_both(int *redir, t_cmd *token, t_exec *exec);
 void	command(t_cmd *token, int **pipes, int redirect, t_exec *exec);
 void	error_msg(char *cmd, char *file);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_execution.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/27 11:49:20 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/27 14:24:26 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ int	error_message(char *cmd_path)
 	return (exit_status);
 }
 
-void	execute(char **cmd_arg, t_exec *exec)
+void	execute(char **cmd_arg, t_exec *exec, int no_exec)
 {
 	char		*cmd_path;
 	int			exit_status;
@@ -170,7 +170,8 @@ void	execute(char **cmd_arg, t_exec *exec)
 			execve(*cmd_arg, cmd_arg, *(exec->env));
 		exit_status = error_message(*cmd_arg);
 		free_env(exec->env);
-		free(exec);
+		if (!no_exec)
+			free(exec);
 		exit(exit_status);
 	}
 	else
@@ -186,7 +187,8 @@ void	execute(char **cmd_arg, t_exec *exec)
 		exit_status = error_message(cmd_path);
 		free_env(exec->env);
 		free_str_array(cmd_arg);
-		free(exec);
+		if (!no_exec)
+			free(exec);
 		exit(exit_status);
 	}
 }
