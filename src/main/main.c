@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:16:36 by padam             #+#    #+#             */
-/*   Updated: 2024/04/27 11:52:51 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/27 14:48:39 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ t_exec	*fill_struct(void)
 	*env = fill_env();
 	exec->env = env;
 	exec->exit_status = EXIT_SUCCESS;
+	exec->sub_process = 0;
 	return (exec);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_output.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/27 13:16:23 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/27 14:44:14 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,28 +150,13 @@ void	redirect_nodes(t_redir *token, int **pipes, t_exec *exec)
 	else if (token->type == PIPE)
 		exec->exit_status = create_tree(0, (t_node *)token->next, exec, pipes);
 	else if (token->type == REDIR)
-		redirect((t_redir *)token->next, pipes, 1, *exec);
+		redirect((t_redir *)token->next, pipes, 1, exec);
 	// ft_putstr_fd("CMD CLOSE: exit status:  ", 2);
 	// ft_putnbr_fd(exec->exit_status, 2);
 	// ft_putstr_fd("\n", 2);
 }
 
-void	test_exit_cmd(t_cmd *token, t_exec *exec)
-{
-	ft_putstr_fd(token->args[0], 2);
-	ft_putstr_fd(token->args[1], 2);
-	ft_putstr_fd("\n EXITSTATUS: ", 2);
-	ft_putnbr_fd(exec->exit_status, 2);
-	ft_putstr_fd("\n", 2);
-}
-
-void	test_exit_pipe(t_exec *exec)
-{
-	ft_putstr_fd("PIPE: exit status: ", 2);
-	ft_putnbr_fd(exec->exit_status, 2);
-	ft_putstr_fd("\n", 2);
-}
-int	redirect(t_redir *token, int **pipes, int status, t_exec exec)
+int	redirect(t_redir *token, int **pipes, int status, t_exec *exec)
 {
 	int	pid;
 	int	pipe_exit;
@@ -184,23 +169,19 @@ int	redirect(t_redir *token, int **pipes, int status, t_exec exec)
 		perror("Fork");
 	if (!pid)
 	{
-		redirect_nodes(token, pipes, &exec);
-		exit(exec.exit_status);
+		redirect_nodes(token, pipes, exec);
+		exit(exec->exit_status);
 	}
 	else
 	{
 		close_pipes(pipes);
 		waitpid(pid, &status, 0);
 		if (WIFEXITED(status))
-			exec.exit_status = WEXITSTATUS(status);
-		// if (token->type == CMD)
-		// 	test_exit_cmd((t_cmd *)token->next, &exec);
-		// else if (token->type == PIPE)
-		// 	test_exit_pipe(&exec);
+			exec->exit_status = WEXITSTATUS(status);
 		if (pipe_exit)
-			exit_shell(&exec, NULL, exec.exit_status, 1);
+			exit_shell(exec, NULL, exec->exit_status, 1);
 	}
-	return (exec.exit_status);
+	return (exec->exit_status);
 }
 
 void	error_msg(char *cmd, char *file)
