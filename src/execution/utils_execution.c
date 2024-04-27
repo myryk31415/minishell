@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/27 00:15:45 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/27 11:49:20 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,8 @@ char	*get_path(char *cmd, char **environ, char *var)
 		free(trial_path);
 		i++;
 	}
-	if (!cmd_path)
-		free_str_array(cmd_path);
-	if (!path_to_cmd)
-		free(cmd_path);
+	free_str_array(cmd_path);
+	free(path_to_cmd);
 	return (NULL);
 }
 
@@ -187,6 +185,7 @@ void	execute(char **cmd_arg, t_exec *exec)
 			execve(cmd_path, cmd_arg, *(exec->env));
 		exit_status = error_message(cmd_path);
 		free_env(exec->env);
+		free_str_array(cmd_arg);
 		free(exec);
 		exit(exit_status);
 	}

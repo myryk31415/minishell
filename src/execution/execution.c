@@ -3,21 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/26 22:37:55 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/27 13:09:42 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-int	create_tree(int *pre_fd, t_node *token, t_exec exec, int **redir_pipes)
+int	create_tree(int *pre_fd, t_node *token, t_exec *tmp, int **redir_pipes)
 {
 	int	fd[2];
 	int	**pipes;
 	int	pid;
+	t_exec	exec;
 
+	exec = *tmp;
 	pipes = malloc(sizeof(int *) * 2);
 	if (!pipes)
 		perror("Malloc");
@@ -36,6 +38,7 @@ int	create_tree(int *pre_fd, t_node *token, t_exec exec, int **redir_pipes)
 	}
 	if (!pid)
 	{
+		free(tmp);
 		if (redir_pipes)
 			close_pipe(redir_pipes[0]);
 		if (token->type_left == CMD)
@@ -44,9 +47,8 @@ int	create_tree(int *pre_fd, t_node *token, t_exec exec, int **redir_pipes)
 			redirect((t_redir *)token->left, pipes, 1, exec);
 	}
 	// close(pipes[0][1]);
-	run_tree(token, pipes, &exec, redir_pipes);
+	run_tree(token, pipes, tmp, redir_pipes);
 	waitpid(pid, NULL, 0);
-	free(pipes);
 	return (exec.exit_status);
 }
 
@@ -54,7 +56,10 @@ void	run_tree(t_node *token, int **pipes, t_exec *exec, int **redir_pipes)
 {
 	int	status;
 	int	id;
+	int	*tmp;
+	t_exec exec_tmp;
 
+	exec_tmp = *exec;
 	id = 1;
 	if (token->type_right != PIPE)
 	{
@@ -63,6 +68,7 @@ void	run_tree(t_node *token, int **pipes, t_exec *exec, int **redir_pipes)
 			perror("Fork");
 		if (!id)
 		{
+			free(exec);
 			close_pipe(pipes[1]);
 			pipes[1] = pipes[0];
 			close(pipes[1][1]);
@@ -71,20 +77,23 @@ void	run_tree(t_node *token, int **pipes, t_exec *exec, int **redir_pipes)
 			else
 				pipes[0] = NULL;
 			if (token->type_right == CMD)
-				command((t_cmd *)token->right, pipes, 0, exec);
+				command((t_cmd *)token->right, pipes, 0, &exec_tmp);
 			else if (token->type_right == REDIR)
-				redirect((t_redir *)token->right, pipes, 1, *exec);
+				redirect((t_redir *)token->right, pipes, 1, exec_tmp);
 		}
 	}
 	if (id && token->type_right == PIPE)
 	{
 		close_pipe(pipes[1]);
-		exec->exit_status = create_tree(pipes[0], \
-			(t_node *)token->right, *exec, redir_pipes);
+		tmp = pipes[0];
+		free(pipes);
+		exec->exit_status = create_tree(tmp, \
+			(t_node *)token->right, exec, redir_pipes);
 		return ;
 	}
 	close_pipes(pipes);
 	close_pipes(redir_pipes);
+	free(pipes);
 	waitpid(id, &status, 0);
 	if (token->type_right != PIPE && WIFEXITED(status))
 		exec->exit_status = WEXITSTATUS(status);
@@ -102,7 +111,7 @@ void	execution(void *tree, t_node_type type, t_exec *exec)
 	else if (type == OR)
 		or_execute((t_node *)tree, NULL, exec);
 	else if (type == PIPE)
-		exec->exit_status = create_tree(0, (t_node *)tree, *exec, NULL);
+		exec->exit_status = create_tree(0, (t_node *)tree, exec, NULL);
 	else if (type == REDIR)
 		exec->exit_status = redirect((t_redir *)tree, NULL, 0, *exec);
 	if (exec->exit_status == 256)

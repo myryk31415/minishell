@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_output_2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 23:38:37 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/26 21:43:10 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/27 12:13:03 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,15 @@ int	in_and_out_hdl_no_fork(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 	int	input;
 	int	output;
 
+	output = 1;
 	handle_both(input_output, token, exec);
 	input = redir_input(pipes, redir, input_output);
 	if (input == -1)
-		return (EXIT_FAILURE);
+		return (close_in_out_file_nofork(input, output, redir, pipes), EXIT_FAILURE);
 	dup2(input, STDIN_FILENO);
 	output = redir_output(pipes, redir, input_output);
 	if (output == -1)
-		return (EXIT_FAILURE);
+		return (close_in_out_file_nofork(input, output, redir, pipes), EXIT_FAILURE);
 	dup2(output, STDOUT_FILENO);
 	close_in_out_file_nofork(input, output, redir, pipes);
 	return (EXIT_SUCCESS);

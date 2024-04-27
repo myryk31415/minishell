@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 23:38:37 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/26 23:18:56 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/27 13:04:39 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	command_fork(t_cmd *token, t_exec *exec, int **pipes, int *redir)
 				exit_shell(exec, NULL, EXIT_FAILURE, 1);
 			tmp = token->args;
 			token->args = NULL;
-			execute(tmp, exec, pipes);
+			execute(tmp, exec);
 		}
 		else
 			exec->exit_status = new_waitpid(status, id);
@@ -53,9 +53,9 @@ void	command_no_fork(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 			exit_shell(exec, NULL, EXIT_FAILURE, 1);
 		tmp = token->args;
 		token->args = NULL;
-		execute(tmp, exec, pipes);
+		execute(tmp, exec);
 	}
-	close_pipes(pipes);
+	// close_pipes(pipes);
 	exit_shell(exec, NULL, exec->exit_status, 1);
 }
 
