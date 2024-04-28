@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/28 13:31:04 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/28 16:31:32 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,10 @@ int	create_tree(int *pre_fd, t_node *token, t_exec *tmp, int **redir_pipes)
 
 void	run_tree(t_node *token, int **pipes, t_exec *exec, int **redir_pipes)
 {
-	int	status;
-	int	id;
-	int	*tmp;
-	t_exec exec_tmp;
+	int		status;
+	int		id;
+	int		*tmp;
+	t_exec	exec_tmp;
 
 	exec_tmp = *exec;
 	id = 1;
