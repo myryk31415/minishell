@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/28 16:44:36 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/28 16:47:06 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,7 @@ void	execute(char **cmd_arg, t_exec *exec, int no_exec)
 			execve(*cmd_arg, cmd_arg, *(exec->env));
 		exit_status = error_message(*cmd_arg);
 		free_env(exec->env);
-		if (!no_exec && !exec->sub_process)
+		if (!no_exec)
 			free(exec);
 		exit(exit_status);
 	}
