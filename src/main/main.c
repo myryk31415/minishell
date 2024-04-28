@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:16:36 by padam             #+#    #+#             */
-/*   Updated: 2024/04/27 19:44:11 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/28 13:16:45 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ t_exec	*fill_struct(void)
 	exec->env = env;
 	exec->exit_status = EXIT_SUCCESS;
 	exec->sub_process = 0;
+	exec->tree = NULL;
+	exec->type = 0;
 	return (exec);
 }
 
@@ -106,6 +108,7 @@ int	main(void)
 		execution(token_tree, type, exec);
 		// ft_printf("%i\n", exec->exit_status);
 		node_tree_delete(token_tree, type);
+		exec->tree = NULL;
 	}
 	return (0);
 }

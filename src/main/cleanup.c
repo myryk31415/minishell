@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 17:10:56 by padam             #+#    #+#             */
-/*   Updated: 2024/04/27 14:01:07 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/28 13:10:08 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void	cmd_free(t_cmd *cmd)
 
 void	node_tree_delete(void *node, t_node_type type)
 {
+	if (!node)
+		return ;
 	if (type == CMD)
 		cmd_free((t_cmd *)node);
 	else if (type == REDIR)

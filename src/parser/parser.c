@@ -6,11 +6,12 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/04/27 18:07:56 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/28 13:09:15 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+#include "execution.h"
 
 int	check_quotes(char *command)
 {
@@ -89,7 +90,7 @@ char	*new_prompt(char **env)
 		command = ft_strtrim(line, "\n");
 		free(line);
 	}
-	if (command && *command && *command != '\n' && !DEBUG) //debug
+	if (command && *command && *command != '\n' && !isatty(STDIN_FILENO) && !DEBUG) //debug
 		add_history(command);
 	return (command);
 }
@@ -110,11 +111,7 @@ t_node_type	parser(void **token_tree, t_exec *exec)
 		free(command);
 		command = new_prompt(*exec->env);
 		if (!command) //need to free
-		{
-			free_env(exec->env);
-			exit(exec->exit_status);
-			free(exec);
-		}
+			exit_shell(exec, NULL, exec->exit_status);
 	}
 	while (check_quotes(command) == -1)
 	{
