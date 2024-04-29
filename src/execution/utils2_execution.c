@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2_execution.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 14:57:38 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/27 21:29:29 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/29 12:32:25 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,11 @@ void	close_in_out_file_nofork(int input, int output, int *redir, int **pipes)
 		close(pipes[0][0]);
 		close(pipes[0][1]);
 	}
-	free(pipes);
 	if (output != 1 && (!redir || (redir && !redir[1])))
 		close(output);
 	if (input)
 		close(input);
+	free(pipes);
 }
 
 void	close_in_out_files_fork(int **pipes)

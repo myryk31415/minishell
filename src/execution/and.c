@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 10:39:18 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/27 14:32:49 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/29 12:38:17 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	and_left(t_node *token, int **pipes, t_exec *exec)
 	else if (token->type_left == AND)
 		and_execute((t_node *)token->left, pipes, exec);
 	else if (token->type_left == PIPE)
-		exec->exit_status = create_tree(0, (t_node *)token->left, exec, NULL);
+		exec->exit_status = create_tree(0, (t_node *)token->left, exec, pipes);
 	else if (token->type_right == ERROR)
 		exec->exit_status = 2;
 }
@@ -55,7 +55,7 @@ void	or_left(t_node *token, int **pipes, t_exec *exec)
 	else if (token->type_left == AND)
 		and_execute((t_node *)token->left, pipes, exec);
 	else if (token->type_left == PIPE)
-		exec->exit_status = create_tree(0, (t_node *)token->left, exec, NULL);
+		exec->exit_status = create_tree(0, (t_node *)token->left, exec, pipes);
 	else if (token->type_right == ERROR)
 		exec->exit_status = 2;
 }
