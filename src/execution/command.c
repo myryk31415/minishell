@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 23:38:37 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/28 16:46:57 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/29 12:02:06 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	command_fork(t_cmd *token, t_exec *exec, int **pipes, int *redir)
 				exit_shell(exec, NULL, EXIT_FAILURE);
 			tmp = token->args;
 			token->args = NULL;
+			free(pipes);
 			execute(tmp, exec, exec->sub_process);
 		}
 		else
