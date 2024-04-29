@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/29 12:29:58 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/29 12:41:27 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,10 +102,8 @@ void	run_tree(t_node *token, int **pipes, t_exec *exec, int **redir_pipes)
 		return ;
 	}
 	close_pipes(pipes);
-	close_pipes(redir_pipes);
 	waitpid(id, &status, 0);
 	free(pipes);
-	// free(redir_pipes);
 	if (token->type_right != PIPE && WIFEXITED(status))
 		exec->exit_status = WEXITSTATUS(status);
 	// ft_putstr_fd("REDIR: exit status: ", 2);
