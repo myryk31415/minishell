@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:27:41 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 15:42:05 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/30 18:29:59 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	check_quotes(char *command)
 
 char	*check_unclosed(char *command, t_exec *exec)
 {
-	char *tmp;
+	char	*tmp;
 
 	while (check_quotes(command) == -1)
 	{

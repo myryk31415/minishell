@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variable_expansion.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:13:35 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 17:12:47 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 18:15:05 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

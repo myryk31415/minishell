@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 18:03:01 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/30 18:29:29 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ char	*new_prompt(t_exec *exec)
 	char	*command;
 	char	*line;
 
-	if (isatty(STDIN_FILENO) && !DEBUG) //debug
+	if (isatty(STDIN_FILENO) && !DEBUG)
 	{
 		prompt = craft_prompt(exec);
 		rl_on_new_line();
@@ -85,11 +85,11 @@ char	*new_prompt(t_exec *exec)
 		command = ft_strtrim(line, "\n");
 		free(line);
 	}
-	if (command && *command && *command != '\n' && isatty(STDIN_FILENO) && !DEBUG) //debug
+	if (command && *command && *command != '\n' && \
+		isatty(STDIN_FILENO) && !DEBUG)
 		add_history(command);
 	return (command);
 }
-
 
 t_node_type	parser(void **token_tree, t_exec *exec)
 {
@@ -104,7 +104,7 @@ t_node_type	parser(void **token_tree, t_exec *exec)
 	{
 		free(command);
 		command = new_prompt(exec);
-		if (!command) //need to free
+		if (!command)
 			exit_shell(exec, NULL, exec->exit_status);
 	}
 	command = check_unclosed(command, exec);

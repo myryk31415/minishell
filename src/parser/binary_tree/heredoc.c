@@ -6,13 +6,11 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:47:36 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 16:36:52 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/30 18:42:15 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
-extern int	g_signal;
 
 char	*get_line(void)
 {
@@ -35,7 +33,7 @@ int	here_doc(char *limiter)
 	char	*line;
 
 	if (pipe(fd) == -1)
-		return(perror("minishell: Pipe:"), -1);
+		return (perror("minishell: Pipe:"), -1);
 	while (1)
 	{
 		line = get_line();
@@ -114,7 +112,7 @@ int	climb_tree(void *ptr, t_node_type type)
 	if (type == CMD)
 		return (handle_cmd(ptr));
 	else if (type == REDIR)
-		return(handle_redir(ptr));
+		return (handle_redir(ptr));
 	else if (type == PIPE || type == AND || type == OR)
 	{
 		node = (t_node *)ptr;

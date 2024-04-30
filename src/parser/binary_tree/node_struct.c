@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:38:13 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 18:03:11 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/30 18:31:00 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ t_node_type	get_cmd(t_token *token_first, void **head, t_cmd *redirects)
 			print_syntax_err(NULL);
 		return (cmd_free(redirects), ERROR);
 	}
-	redirects->args =  ft_calloc(word_count + 1, sizeof(char *));
+	redirects->args = ft_calloc(word_count + 1, sizeof(char *));
 	if (!redirects->args)
-		return(err_pars("malloc", redirects, &token_first));
+		return (err_pars("malloc", redirects, &token_first));
 	while (token_first)
 	{
 		if (token_first->value)
@@ -76,7 +76,7 @@ t_node_type	check_parens(t_token *token_first, void **head)
 	{
 		node = new_redir_node();
 		if (!node)
-			return(err_pars("malloc", redirects, &token_first));
+			return (err_pars("malloc", redirects, &token_first));
 		node->redirects = redirects;
 		node->type = REDIR;
 		*head = node;
@@ -103,7 +103,7 @@ t_node_type	split_by_pipe(t_token *token_first, void **head)
 	{
 		node = new_node();
 		if (!node)
-			return(err_pars("malloc", NULL, &token_first));
+			return (err_pars("malloc", NULL, &token_first));
 		*head = node;
 		if (!token_last->next || !token_last->prev)
 			return (print_syntax_err(token_last), free(node), ERROR);
@@ -133,7 +133,7 @@ t_node_type	split_by_operator(t_token *token_last, void **head)
 	{
 		node = new_node();
 		if (!node)
-			return(err_pars("malloc", NULL, &token_first));
+			return (err_pars("malloc", NULL, &token_first));
 		*head = node;
 		if (token_first->type == T_AND)
 			return_value = AND;
@@ -153,12 +153,3 @@ t_node_type	split_by_operator(t_token *token_last, void **head)
 	}
 	return (split_by_pipe(token_first, head));
 }
-
-// t_node_type	tokens_to_tree(t_token *token_last, void **node_tree)
-// {
-// 	//call split_by_operator directly
-// 	t_node_type	node_type;
-
-// 	node_type = split_by_operator(token_last, node_tree);
-// 	return (node_type);
-// }
