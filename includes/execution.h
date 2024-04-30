@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:29 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/30 16:36:31 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 16:43:55 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,24 @@ void	or_execute(t_node *token, int **pipes, t_exec *exec);
 
 // Command Nodes
 void	command(t_cmd *token, int **pipes, int redirect, t_exec *exec);
+int		new_waitpid(int id);
 
-// Utils
-void	execute(char **cmd_arg, t_exec *exec, int no_exec);
+// Utils Error
 void	error_msg(char *cmd, char *file);
 int		error_message(char *cmd_path);
+void	*print_error(char *arg);
+
+// Utils Exexcute
+void	execute(char **cmd_arg, t_exec *exec, int no_exec);
 char	*get_path(char *cmd, char **environ, char *var);
+
+// Utils Builtins
 void	oldpwd_save(char ***env, char *path_to_dir, char *arg);
 int		check_valid(char **args, char *str);
 void	display_env(char **env, int export);
 int		pwd_export(char *arg, char ***env, int i);
-int		new_waitpid(int id);
+int		check_if_assigned(char *name, char ***env, char *arg);
+char	**allocate_new_env(char **env, char *arg);
+int		print_option_export(char *str);
+int		pwd_export(char *arg, char ***env, int pwd);
 #endif

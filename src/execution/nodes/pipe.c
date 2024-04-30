@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/30 16:29:07 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 16:38:53 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	pipe_left(t_exec *tmp, t_node *token, int **pipes, int **redir_pipes)
 	else if (token->type_left == REDIR)
 		redirect((t_redir *)token->left, pipes, 1, &exec);
 }
-
 
 void	pipe_right(t_exec *exec, int **pipes, int **redir_pipes, t_node *token)
 {

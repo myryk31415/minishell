@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   echo_env_pwd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 16:57:00 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/30 15:58:19 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 16:40:51 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,26 @@ int	env_cmd(t_cmd *token, char **env)
 		return (1);
 	}
 	display_env(env, 0);
+	return (0);
+}
+
+int	pwd_export(char *arg, char ***env, int pwd)
+{
+	char	*name;
+
+	if (pwd == 1)
+		name = ft_strdup("PWD");
+	else
+		name = ft_strdup("OLDPWD");
+	if (arg)
+	{
+		if (check_if_assigned(name, env, arg) == -1)
+		{
+			*env = allocate_new_env(*env, arg);
+			if (*env == NULL)
+				return (free(name), EXIT_FAILURE);
+		}
+	}
+	free(name);
 	return (0);
 }
