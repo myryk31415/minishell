@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 16:17:16 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 17:16:08 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ char		*expand_variables(char *command, t_exec *exec);
 char		*expander(char *arg);
 char		**expander_array(char **args, t_exec *exec);
 int			heredoc_expand(int heredoc, t_exec *exec);
+char		**word_splitting(char **args);
 
 //signal
 void		parser_handler(int signal);

@@ -6,12 +6,11 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 16:23:50 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/30 16:24:28 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 16:38:46 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
-
 
 int	is_builtin(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 {

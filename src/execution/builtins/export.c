@@ -6,19 +6,11 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 09:47:35 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/30 15:58:37 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 16:40:47 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
-
-void	*print_error(char *arg)
-{
-	ft_putstr_fd("minishell: export: `", 2);
-	ft_putstr_fd(arg, 2);
-	ft_putstr_fd("': not a valid identifier\n", 2);
-	return (NULL);
-}
 
 char	*get_name(char *arg)
 {
@@ -115,37 +107,6 @@ char	**allocate_new_env(char **env, char *arg)
 	env = new_env;
 	free_str_array(tmp);
 	return (env);
-}
-
-int	pwd_export(char *arg, char ***env, int pwd)
-{
-	char	*name;
-
-	if (pwd == 1)
-		name = ft_strdup("PWD");
-	else
-		name = ft_strdup("OLDPWD");
-	if (arg)
-	{
-		if (check_if_assigned(name, env, arg) == -1)
-		{
-			*env = allocate_new_env(*env, arg);
-			if (*env == NULL)
-				return (free(name), EXIT_FAILURE);
-		}
-	}
-	free(name);
-	return (0);
-}
-
-int	print_option_export(char *str)
-{
-	ft_putstr_fd("minishell: export: ", 2);
-	ft_putchar_fd(str[0], 2);
-	ft_putchar_fd(str[1], 2);
-	ft_putstr_fd(": invalid option\n", 2);
-	ft_putstr_fd("export: usage: export [name[=value] ...]\n", 1);
-	return (2);
 }
 
 int	export(char **arg, char ***env, int i)

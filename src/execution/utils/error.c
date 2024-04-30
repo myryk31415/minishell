@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 16:26:27 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/30 16:36:15 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 16:39:54 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,22 @@ int	error_message(char *cmd_path)
 	else
 		exit_status = error_message_permission(cmd_path, exit_status);
 	return (exit_status);
+}
+
+void	*print_error(char *arg)
+{
+	ft_putstr_fd("minishell: export: `", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd("': not a valid identifier\n", 2);
+	return (NULL);
+}
+
+int	print_option_export(char *str)
+{
+	ft_putstr_fd("minishell: export: ", 2);
+	ft_putchar_fd(str[0], 2);
+	ft_putchar_fd(str[1], 2);
+	ft_putstr_fd(": invalid option\n", 2);
+	ft_putstr_fd("export: usage: export [name[=value] ...]\n", 1);
+	return (2);
 }
