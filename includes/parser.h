@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:14:04 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 18:14:52 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/30 18:46:26 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,51 +51,51 @@ typedef struct s_token
 	struct s_token	*prev;
 }	t_token;
 
-char	*check_unclosed(char *command, t_exec *exec);
+char			*check_unclosed(char *command, t_exec *exec);
 
 ///BIN_TREE
 // node_struct
-t_node_type	split_by_operator(t_token *token_last, void **head);
-t_node_type	tokens_to_tree(t_token *tokens, void **head);
+t_node_type		split_by_operator(t_token *token_last, void **head);
+t_node_type		tokens_to_tree(t_token *tokens, void **head);
 
 // node_utils
-t_node		*new_node(void);
-t_redir		*new_redir_node(void);
+t_node			*new_node(void);
+t_redir			*new_redir_node(void);
 
 // pipeline
-int			count_words(t_token *tokens);
-t_token		*get_pipe(t_token *tokens);
-t_token		*get_operator(t_token *tokens);
+int				count_words(t_token *tokens);
+t_token			*get_pipe(t_token *tokens);
+t_token			*get_operator(t_token *tokens);
 
 // redirects
-int			redirects_get(t_token **token_first, t_cmd **redirects);
-int			climb_tree(void *ptr, t_node_type type);
+int				redirects_get(t_token **token_first, t_cmd **redirects);
+int				climb_tree(void *ptr, t_node_type type);
 
 ///REST
 //cleanup
-t_node_type	err_pars(char *message, t_cmd *redirects, t_token **tokens);
-void		print_syntax_err(t_token *token);
+t_node_type		err_pars(char *message, t_cmd *redirects, t_token **tokens);
+void			print_syntax_err(t_token *token);
 
 // debug
-void		debug_print_token_array(t_token *token_first);
-void		get_next_debug(void *ptr, t_node_type type, int i);
+void			debug_print_token_array(t_token *token_first);
+void			get_next_debug(void *ptr, t_node_type type, int i);
 
 // is_checks
-int			is_quote(char c);
-int			is_separator(char c);
-int			is_redirect(t_token_type type);
-int			is_operator(t_token_type type);
-int			is_variable(char c);
+int				is_quote(char c);
+int				is_separator(char c);
+int				is_redirect(t_token_type type);
+int				is_operator(t_token_type type);
+int				is_variable(char c);
 
 // tokenizer
 t_token_type	get_token_type(char *string);
-t_token		*get_next_token(char *string, t_token *token_last);
+t_token			*get_next_token(char *string, t_token *token_last);
 
 // tokens utils
-void		token_delete(t_token **tokens);
-void		token_delete_all(t_token **tokens);
-t_token		*token_add(t_token *tokens, t_token_type token_type);
-t_token		*token_split(t_token *tokens, int direction);
-t_token		*skip_parens(t_token *tokens, int direction);
+void			token_delete(t_token **tokens);
+void			token_delete_all(t_token **tokens);
+t_token			*token_add(t_token *tokens, t_token_type token_type);
+t_token			*token_split(t_token *tokens, int direction);
+t_token			*skip_parens(t_token *tokens, int direction);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:29 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/30 16:43:55 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 18:45:30 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include <sys/wait.h>
 # include <errno.h>
 
-
 // Builtins
 int		pwd(void);
 int		echo(char **args);
@@ -31,7 +30,6 @@ int		unset(char **args, char ***env);
 int		is_builtin_no_fork(t_cmd *token, int **pipes, int *redir, t_exec *exec);
 int		is_builtin(t_cmd *token, int **pipes, int *redir, t_exec *exec);
 int		builtin(t_cmd *token, int **pipes, int *redir, t_exec *exec);
-
 
 // Pipe Node
 int		create_tree(int *pre_fd, t_node *token, t_exec *tmp, int **redir_pipes);

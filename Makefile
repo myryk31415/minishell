@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+         #
+#    By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/04/30 18:10:16 by padam            ###   ########.fr        #
+#    Updated: 2024/04/30 18:44:35 by antonweizma      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ SRCS_MAIN =	main.c cleanup.c signals.c
 SRCS_EXP =	variable_expansion.c expander.c tilde_expansion.c word_split.c
 
 SRCS_PARS =	is_checks.c			parser.c			tokenizer.c		\
-			tokens_utils.c		debug.c				check_unclosed.c
+			tokens_utils.c		check_unclosed.c
 
 SRCS_BNTR =	node_struct.c			node_utils.c		pipeline.c	\
 			redirects.c				heredoc.c			cleanup.c

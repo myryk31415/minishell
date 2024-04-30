@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 17:16:08 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 18:45:48 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ char		**word_splitting(char **args);
 //signal
 void		parser_handler(int signal);
 void		execution_handler(int signal);
-void		ft_restore_terminal(int	i);
+void		ft_restore_terminal(int i);
 void		ft_configure_terminal(void);
 
 //cleanup
