@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 00:09:23 by padam             #+#    #+#             */
-/*   Updated: 2024/04/27 21:02:47 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 02:55:06 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,6 @@ too many arguments\n", 2);
 	node_tree_delete(exec->tree, exec->type);
 	if (!exec->sub_process)
 		free(exec);
+	// ft_putstr_fd("exit", 2);
 	exit(exit_status);
 }
