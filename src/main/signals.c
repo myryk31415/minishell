@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 23:26:49 by padam             #+#    #+#             */
-/*   Updated: 2024/04/26 11:24:24 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 02:08:03 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,17 @@ void	signal_handler(int signal)
 	if (signal == SIGINT)
 	{
 		write(STDIN_FILENO, "\n", 1);
-		rl_on_new_line();
+		// rl_on_new_line();
 		// rl_replace_line("", 0);
-		rl_redisplay();
+		// rl_redisplay();
 	}
 	if (signal == SIGQUIT)
 	{
 		write(STDIN_FILENO, "\n", 1);
 		ft_putstr_fd("Quit: 3\n", 2);
-		rl_on_new_line();
+		// rl_on_new_line();
 		// rl_replace_line("", 0);
-		rl_redisplay();
+		// rl_redisplay();
 	}
 
 }

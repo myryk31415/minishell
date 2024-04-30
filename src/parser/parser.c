@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/04/28 13:09:15 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/30 02:09:36 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,42 +56,42 @@ char	*get_current_folder(void)
 
 char	*new_prompt(char **env)
 {
-	char	*prompt;
-	char	*prompt_tmp;
-	char	*folder;
+	// char	*prompt;
+	// char	*prompt_tmp;
+	// char	*folder;
 	char	*command;
 	char	*line;
 
 	(void)env;
-	if (isatty(STDIN_FILENO) && !DEBUG) //debug
-	{
-		folder = get_current_folder();
-		prompt_tmp = get_env(env, "USER");
-		prompt = ft_strjoin(prompt_tmp, "@minishell:");
-		free(prompt_tmp);
-		prompt_tmp = ft_strjoin(prompt, CYAN);
-		free(prompt);
-		prompt = ft_strjoin(prompt_tmp, folder);
-		free(folder);
-		free(prompt_tmp);
-		prompt_tmp = ft_strjoin(prompt, RESET);
-		free(prompt);
-		prompt = ft_strjoin(prompt_tmp, "$ ");
-		free(prompt_tmp);
-		rl_on_new_line();
-		command = readline(prompt);
-		free(prompt);
-	}
-	else
-	{
+	// if (isatty(STDIN_FILENO) && !DEBUG) //debug
+	// {
+	// 	folder = get_current_folder();
+	// 	prompt_tmp = get_env(env, "USER");
+	// 	prompt = ft_strjoin(prompt_tmp, "@minishell:");
+	// 	free(prompt_tmp);
+	// 	prompt_tmp = ft_strjoin(prompt, CYAN);
+	// 	free(prompt);
+	// 	prompt = ft_strjoin(prompt_tmp, folder);
+	// 	free(folder);
+	// 	free(prompt_tmp);
+	// 	prompt_tmp = ft_strjoin(prompt, RESET);
+	// 	free(prompt);
+	// 	prompt = ft_strjoin(prompt_tmp, "$ ");
+	// 	free(prompt_tmp);
+	// 	rl_on_new_line();
+	// 	command = readline(prompt);
+	// 	free(prompt);
+	// }
+	// else
+	// {
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
 			return (NULL);
 		command = ft_strtrim(line, "\n");
 		free(line);
-	}
-	if (command && *command && *command != '\n' && !isatty(STDIN_FILENO) && !DEBUG) //debug
-		add_history(command);
+	// }
+	// if (command && *command && *command != '\n' && !isatty(STDIN_FILENO) && !DEBUG) //debug
+	// 	add_history(command);
 	return (command);
 }
 
@@ -117,10 +117,10 @@ t_node_type	parser(void **token_tree, t_exec *exec)
 	{
 		tmp = ft_strjoin(command, "\n");
 		free(command);
-		command = ft_strjoin(tmp, readline("> "));
+		// command = ft_strjoin(tmp, readline("> "));
 		free(tmp);
-		if (check_quotes(command) != -1)
-			add_history(command);
+		// if (check_quotes(command) != -1)
+		// 	add_history(command);
 	}
 	if (check_quotes(command) == -2)
 	{
