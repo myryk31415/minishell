@@ -6,7 +6,7 @@
 #    By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/04/30 15:12:57 by padam            ###   ########.fr        #
+#    Updated: 2024/04/30 15:41:52 by padam            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,8 +28,9 @@ SRCS_MAIN =	main.c cleanup.c signals.c
 
 SRCS_EXP =	variable_expansion.c expander.c tilde_expansion.c
 
-SRCS_PARS =	is_checks.c			parser.c			tokenizer.c	\
+SRCS_PARS =	is_checks.c			parser.c			tokenizer.c		\
 			tokens_utils.c			debug.c				cleanup.c	\
+			check_unclosed.c
 
 SRCS_BNTR =	node_struct.c			node_utils.c		pipeline.c	\
 			redirects.c				heredoc.c

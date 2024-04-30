@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:27:41 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 15:30:15 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/30 15:42:05 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,5 @@ char	*check_unclosed(char *command, t_exec *exec)
 		free(command);
 		return (NULL);
 	}
+	return (command);
 }

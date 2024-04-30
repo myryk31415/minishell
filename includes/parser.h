@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:14:04 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 14:54:44 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/30 15:41:16 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ typedef struct s_token
 	struct s_token	*prev;
 }	t_token;
 
+char	*check_unclosed(char *command, t_exec *exec);
+
 ///BIN_TREE
 // node_struct
 t_node_type	tokens_to_tree(t_token *tokens, void **head);
@@ -77,7 +79,7 @@ void		print_syntax_err(t_token *token);
 void		debug_print_token_array(t_token *token_first);
 void		get_next_debug(void *ptr, t_node_type type, int i);
 
-// parser_utils
+// is_checks
 int			is_quote(char c);
 int			is_separator(char c);
 int			is_redirect(t_token_type type);
