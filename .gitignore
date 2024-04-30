@@ -5,6 +5,7 @@ minishell_grammar.txt
 vgcore.*
 lol.*
 output
+teeest
 
 # Prerequisites
 *.d

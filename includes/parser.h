@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:14:04 by padam             #+#    #+#             */
-/*   Updated: 2024/04/14 22:03:47 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/30 14:54:44 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,16 @@
 # include "minishell.h"
 
 // colors
-# define RESET "\033[0m"
-# define RED "\033[1;31m"
-# define GREEN "\033[1;32m"
-# define YELLOW "\033[1;33m"
-# define BLUE "\033[1;34m"
-# define MAGENTA "\033[1;35m"
-# define CYAN "\033[1;36m"
+# define RED_INCIDATOR "\002\001\e[1m\e[31m●\e[0m\002"
+# define MAGENTA_INCIDATOR "\002\001\e[1m\e[35m●\e[0m\002"
+# define RESET "\e[0m\002"
+# define RED "\002\001\e[1m\e[31m"
+# define GREEN "\002\001\e[1m\e[32m"
+# define YELLOW "\002\001\e[1m\e[33m"
+# define BLUE "\002\001\e[1m\e[34m"
+# define MAGENTA "\002\001\e[1m\e[35m"
+# define CYAN "\002\001\e[1m\e[36m"
+//# background="\033[48;5;93m"
 
 typedef enum e_token_type
 {

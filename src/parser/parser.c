@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 12:13:27 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/30 13:33:33 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,28 @@ char	*get_current_folder(void)
 	return (folder);
 }
 
+char	*color_string(char *str, char *color)
+{
+	char	*out;
+	int		len;
+
+	len = (ft_strlen(color) + ft_strlen(RESET)) * ft_strlen(str) \
+			+ ft_strlen(str) + 1;
+	out = ft_calloc(len, 1);
+	if (!out)
+		return (NULL);
+	*out = '\0';
+	while (*str)
+	{
+		ft_strlcat(out, color, len);
+		out[ft_strlen(out)] = *str;
+		out[ft_strlen(out) + 1] = '\0';
+		ft_strlcat(out, RESET, len);
+		str++;
+	}
+	return (out);
+}
+
 char	*new_prompt(char **env, t_exec *exec)
 {
 	char	*prompt;
@@ -71,18 +93,20 @@ char	*new_prompt(char **env, t_exec *exec)
 		// 	ft_putstr_fd("\e[34m●\e[0m", 2);
 		folder = get_current_folder();
 		prompt = get_env(env, "USER");
-		prompt_tmp = ft_strjoin("\e[34m●\e[0m", prompt);
+		if (exec->exit_status)
+			prompt_tmp = ft_strjoin(RED_INCIDATOR, prompt);
+		else
+			prompt_tmp = ft_strjoin(MAGENTA_INCIDATOR, prompt);
 		free(prompt);
 		prompt = ft_strjoin(prompt_tmp, "@minishell:");
 		free(prompt_tmp);
-		// prompt_tmp = ft_strjoin(prompt, RED);
-		prompt_tmp = ft_strjoin_free(prompt, folder);
-		// prompt_tmp = ft_strjoin(prompt, RESET);
+		prompt_tmp = ft_strjoin_free(prompt, color_string(folder, CYAN));
 		prompt = ft_strjoin(prompt_tmp, "$ ");
 		free(prompt_tmp);
 		rl_on_new_line();
 		command = readline(prompt);
 		free(prompt);
+		free(folder);
 	}
 	else
 	{
