@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/30 16:27:00 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 22:22:05 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ char	*get_path(char *cmd, char **environ, char *var)
 	char	*trial_path;
 	char	*tmp;
 
+	if (!*cmd)
+		return (NULL);
 	trial_path = NULL;
 	tmp = get_env(environ, var);
 	if (!tmp)
@@ -43,8 +45,6 @@ char	*get_path(char *cmd, char **environ, char *var)
 	else
 		cmd_path = ft_split(tmp, ':');
 	free(tmp);
-	if (!*cmd)
-		return (NULL);
 	path_to_cmd = ft_strjoin("/", cmd);
 	trial_path = try_path(trial_path, cmd_path, path_to_cmd, 0);
 	free_str_array(cmd_path);

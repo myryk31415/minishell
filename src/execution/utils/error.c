@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 16:26:27 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/30 16:39:54 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 22:30:30 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int	error_message_permission(char *cmd_path, int exit_status)
 	}
 	if (file)
 		close(file);
+	if (folder)
+		closedir(folder);
 	return (exit_status);
 }
 
