@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 14:48:01 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 16:32:11 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/30 17:11:26 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*var_expand(char *old_string, char *string, int quotes, t_exec *exec)
 {
-	char *output;
+	char	*output;
 
 	string = expand_variables(string, exec);
 	if (!string && !old_string && !quotes)
@@ -23,6 +23,19 @@ char	*var_expand(char *old_string, char *string, int quotes, t_exec *exec)
 	free(old_string);
 	free(string);
 	return (output);
+}
+
+int	split_quotes(int lettercount, char *c, char const *s, char *quotes)
+{
+	while (s[lettercount] && (!ft_strchr(c, s[lettercount]) || *quotes))
+	{
+		if (s[lettercount] == *quotes)
+			*quotes = 0;
+		else if (!*quotes && (s[lettercount] == '"' || s[lettercount] == '\''))
+			*quotes = s[lettercount];
+		lettercount++;
+	}
+	return (lettercount);
 }
 
 char	**word_split(char const *s, char *c, char quotes)
@@ -34,14 +47,7 @@ char	**word_split(char const *s, char *c, char quotes)
 	lettercount = 0;
 	while (*s && ft_strchr(c, *s))
 		s++;
-	while (s[lettercount] && (!ft_strchr(c, s[lettercount]) || quotes))
-	{
-		if (s[lettercount] == quotes)
-			quotes = 0;
-		else if (!quotes && (s[lettercount] == '"' || s[lettercount] == '\''))
-			quotes = s[lettercount];
-		lettercount++;
-	}
+	lettercount = split_quotes(lettercount, c, s, &quotes);
 	if (lettercount > 0 && ++iteration)
 	{
 		split_words = word_split(s + lettercount, c, quotes);
@@ -99,7 +105,7 @@ char	*word_join(char **args)
 	while (args && args[i])
 		l += ft_strlen(args[i++]) + 1;
 	output = ft_calloc(l + 1, sizeof(char));
-	if (!output) //free
+	if (!output)
 		return (NULL);
 	i = 0;
 	while (args && args[i])
@@ -113,7 +119,7 @@ char	*word_join(char **args)
 	return (output);
 }
 
-char **word_splitting(char **args)
+char	**word_splitting(char **args)
 {
 	char	*tmp;
 	int		i;
@@ -130,15 +136,11 @@ char **word_splitting(char **args)
 	return (args);
 }
 
-char 	**expander_array(char **args, t_exec *exec)
+char	**expander_array(char **args, t_exec *exec)
 {
 	int		j;
-	// int		i;
-	// int		k;
-	// char 	**new_args;
 
 	j = 0;
-	// new_args = NULL;
 	while (args[j])
 	{
 		args[j] = expand_tilde(args[j], *(exec->env));
@@ -146,36 +148,16 @@ char 	**expander_array(char **args, t_exec *exec)
 		j++;
 	}
 	args = word_splitting(args);
-	// i = 0;
-	// k = 0;
-	// while (k < j)
-	// 	if (!args[k++])
-	// 		i++;
-	// if (i)
-	// {
-	// 	new_args = ft_calloc(j - i + 1, sizeof(char *));
-	// 	k = 0;
-	// 	i = 0;
-	// 	while (k <= j)
-	// 	{
-	// 		if (!args[k])
-	// 			k++;
-	// 		else
-	// 			new_args[i++] = ft_strdup(args[k++]);
-	// 	}
-	// 	free_str_array(args);
-	// 	return (new_args);
-	// }
 	return (args);
 }
 
 int	heredoc_expand(int heredoc, t_exec *exec)
 {
-	char *tmp;
+	char	*tmp;
 	int		fd[2];
 
 	if (pipe(fd) == -1)
-		return(perror("minishell: Pipe:"), -1);
+		return (perror("minishell: Pipe:"), -1);
 	while (1)
 	{
 		tmp = get_next_line(heredoc);
@@ -183,7 +165,7 @@ int	heredoc_expand(int heredoc, t_exec *exec)
 			break ;
 		tmp = expand_variables(tmp, exec);
 		write(fd[1], tmp, ft_strlen(tmp));
-			free(tmp);
+		free(tmp);
 	}
 	close(heredoc);
 	close(fd[1]);
