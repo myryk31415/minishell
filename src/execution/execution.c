@@ -6,20 +6,37 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/30 11:28:59 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 15:54:26 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+
+void	pipe_left(t_exec *tmp, t_node *token, int **pipes, int **redir_pipes)
+{
+	t_exec	exec;
+
+	exec = *tmp;
+	if (!tmp->sub_process)
+	{
+		free(tmp);
+		exec.sub_process = 1;
+	}
+	if (redir_pipes)
+		close_pipe(redir_pipes[0]);
+	free(redir_pipes);
+	if (token->type_left == CMD)
+		command((t_cmd *)token->left, pipes, 0, &exec);
+	else if (token->type_left == REDIR)
+		redirect((t_redir *)token->left, pipes, 1, &exec);
+}
 
 int	create_tree(int *pre_fd, t_node *token, t_exec *tmp, int **redir_pipes)
 {
 	int	fd[2];
 	int	**pipes;
 	int	pid;
-	t_exec	exec;
 
-	exec = *tmp;
 	pipes = malloc(sizeof(int *) * 2);
 	if (!pipes)
 		perror("Malloc");
@@ -37,21 +54,7 @@ int	create_tree(int *pre_fd, t_node *token, t_exec *tmp, int **redir_pipes)
 		redir_pipes[1] = NULL;
 	}
 	if (!pid)
-	{
-		if (!tmp->sub_process)
-		{
-			free(tmp);
-			exec.sub_process = 1;
-		}
-		if (redir_pipes)
-			close_pipe(redir_pipes[0]);
-		free(redir_pipes);
-		if (token->type_left == CMD)
-			command((t_cmd *)token->left, pipes, 0, &exec);
-		else if (token->type_left == REDIR)
-			redirect((t_redir *)token->left, pipes, 1, &exec);
-	}
-	// close(pipes[0][1]);
+		pipe_left(tmp, token, pipes, redir_pipes);
 	run_tree(token, pipes, tmp, redir_pipes);
 	waitpid(pid, NULL, 0);
 	return (tmp->exit_status);
@@ -103,9 +106,6 @@ void	run_tree(t_node *token, int **pipes, t_exec *exec, int **redir_pipes)
 	close_pipes(pipes);
 	exec->exit_status = new_waitpid(id);
 	free(pipes);
-	// ft_putstr_fd("REDIR: exit status: ", 2);
-	// ft_putnbr_fd(exec->exit_status, 2);
-	// ft_putstr_fd("\n", 2);
 }
 
 void	execution(void *tree, t_node_type type, t_exec *exec)
@@ -124,8 +124,5 @@ void	execution(void *tree, t_node_type type, t_exec *exec)
 		exec->exit_status = redirect((t_redir *)tree, NULL, 0, exec);
 	if (exec->exit_status == 256)
 		exec->exit_status = 1;
-	// 	ft_putstr_fd("REDIR: exit status: ", 2);
-	// ft_putnbr_fd(exec->exit_status, 2);
-	// ft_putstr_fd("\n", 2);
 	return ;
 }
