@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/30 03:46:45 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 15:06:38 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int	is_builtin_no_fork(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 		if (in_and_out_hdl_no_fork(token, pipes, redir, exec) == 1)
 			return (EXIT_FAILURE);
 		if (!ft_strncmp(token->args[0], "cd", 3))
-			return (cd(token->args, exec->env));
+			return (cd((token->args + 1), exec->env));
 		else if (!ft_strncmp(token->args[0], "echo", 5))
 			return (echo(token->args));
 		else if (!ft_strncmp(token->args[0], "pwd", 4))
