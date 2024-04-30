@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/30 16:27:00 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 22:42:49 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,10 @@ void	execute(char **cmd_arg, t_exec *exec, int no_exec)
 
 	cmd_path = NULL;
 	if (*cmd_arg == NULL)
+	{
+		free_str_array(cmd_arg);
 		exit_shell(exec, NULL, EXIT_SUCCESS);
+	}
 	if (ft_strchr(*cmd_arg, '/') || !ft_strncmp(*cmd_arg, "~", 2) \
 		|| !ft_strncmp(*cmd_arg, ".", 2) || !ft_strncmp(*cmd_arg, "..", 3))
 	{
