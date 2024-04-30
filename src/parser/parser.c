@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 02:34:28 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 02:46:35 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ char	*new_prompt(char **env)
 	char	*line;
 
 	(void)env;
-	// if (isatty(STDIN_FILENO) && !DEBUG) //debug
-	// {
+	if (isatty(STDIN_FILENO) && !DEBUG) //debug
+	{
 		folder = get_current_folder();
 		prompt_tmp = get_env(env, "USER");
 		prompt = ft_strjoin(prompt_tmp, "@minishell:");
@@ -78,21 +78,21 @@ char	*new_prompt(char **env)
 		free(prompt);
 		prompt = ft_strjoin(prompt_tmp, "$ ");
 		free(prompt_tmp);
-		// rl_on_new_line();
-		// command = readline(prompt);
-		ft_putstr_fd(prompt, 1);
+		rl_on_new_line();
+		command = readline(prompt);
+		// ft_putstr_fd(prompt, 1);
 		free(prompt);
-	// }
-	// else
-	// {
+	}
+	else
+	{
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
 			return (NULL);
 		command = ft_strtrim(line, "\n");
 		free(line);
-	// }
-	// if (command && *command && *command != '\n' && !isatty(STDIN_FILENO) && !DEBUG) //debug
-	// 	add_history(command);
+	}
+	if (command && *command && *command != '\n' && !isatty(STDIN_FILENO) && !DEBUG) //debug
+		add_history(command);
 	return (command);
 }
 
@@ -118,10 +118,10 @@ t_node_type	parser(void **token_tree, t_exec *exec)
 	{
 		tmp = ft_strjoin(command, "\n");
 		free(command);
-		// command = ft_strjoin(tmp, readline("> "));
+		command = ft_strjoin(tmp, readline("> "));
 		free(tmp);
-		// if (check_quotes(command) != -1)
-		// 	add_history(command);
+		if (check_quotes(command) != -1)
+			add_history(command);
 	}
 	if (check_quotes(command) == -2)
 	{
