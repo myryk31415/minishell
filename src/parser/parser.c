@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/04/28 13:09:15 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/30 02:15:17 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ int	check_quotes(char *command)
 			while (*command && *command != quote)
 				command++;
 			if (!*command)
-				return (-1);
+				return (-1 - !isatty(STDIN_FILENO));
 		}
 		if (paren < 0)
 			return (-2);
 		command++;
 	}
-	return (-2 * (paren > 0));
+	return ((-1 - !isatty(STDIN_FILENO)) * (paren > 0));
 }
 
 char	*get_current_folder(void)
@@ -69,13 +69,9 @@ char	*new_prompt(char **env)
 		prompt_tmp = get_env(env, "USER");
 		prompt = ft_strjoin(prompt_tmp, "@minishell:");
 		free(prompt_tmp);
-		prompt_tmp = ft_strjoin(prompt, CYAN);
-		free(prompt);
-		prompt = ft_strjoin(prompt_tmp, folder);
-		free(folder);
-		free(prompt_tmp);
-		prompt_tmp = ft_strjoin(prompt, RESET);
-		free(prompt);
+		// prompt_tmp = ft_strjoin(prompt, RED);
+		prompt_tmp = ft_strjoin_free(prompt, folder);
+		// prompt_tmp = ft_strjoin(prompt, RESET);
 		prompt = ft_strjoin(prompt_tmp, "$ ");
 		free(prompt_tmp);
 		rl_on_new_line();
@@ -90,7 +86,7 @@ char	*new_prompt(char **env)
 		command = ft_strtrim(line, "\n");
 		free(line);
 	}
-	if (command && *command && *command != '\n' && !isatty(STDIN_FILENO) && !DEBUG) //debug
+	if (command && *command && *command != '\n' && isatty(STDIN_FILENO) && !DEBUG) //debug
 		add_history(command);
 	return (command);
 }
@@ -117,8 +113,7 @@ t_node_type	parser(void **token_tree, t_exec *exec)
 	{
 		tmp = ft_strjoin(command, "\n");
 		free(command);
-		command = ft_strjoin(tmp, readline("> "));
-		free(tmp);
+		command = ft_strjoin_free(tmp, readline("> "));
 		if (check_quotes(command) != -1)
 			add_history(command);
 	}

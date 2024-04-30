@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:47:36 by padam             #+#    #+#             */
-/*   Updated: 2024/04/26 20:01:43 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/30 02:07:57 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	here_doc(char *limiter)
 		}
 		else
 		{
-			line = get_next_line(fileno(stdin));
+			line = get_next_line(STDIN_FILENO);
 			str = ft_strtrim(line, "\n");
 			free(line);
 		}

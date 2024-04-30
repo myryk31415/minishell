@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 00:09:23 by padam             #+#    #+#             */
-/*   Updated: 2024/04/27 21:02:47 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 02:01:08 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,6 @@ too many arguments\n", 2);
 	node_tree_delete(exec->tree, exec->type);
 	if (!exec->sub_process)
 		free(exec);
+	rl_clear_history();
 	exit(exit_status);
 }
