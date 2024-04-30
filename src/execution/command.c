@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 23:38:37 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/30 11:28:43 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 15:17:04 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	command_no_fork(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 {
 	char		**tmp;
 
-	// ft_putstr_fd(token->args[1], 2
 	exec->exit_status = is_builtin_no_fork(token, pipes, redir, exec);
 	if (exec->exit_status == -1)
 	{
@@ -51,7 +50,6 @@ void	command_no_fork(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 		token->args = NULL;
 		execute(tmp, exec, exec->sub_process);
 	}
-	// close_pipes(pipes);
 	exit_shell(exec, NULL, exec->exit_status);
 }
 
