@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 10:35:17 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 11:27:57 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,8 @@ t_node_type	parser(void **token_tree, t_exec *exec)
 	t_node_type	type_first;
 	char		*tmp;
 
-	signal(SIGINT, signal_handler);
-	signal(SIGQUIT, signal_handler);
+	signal(SIGINT, parser_handler);
+	signal(SIGQUIT, parser_handler);
 	command = NULL;
 	while (!command || !*command || *command == '\n')
 	{

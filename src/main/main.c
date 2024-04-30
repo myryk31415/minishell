@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:16:36 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 10:28:17 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 11:27:48 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,16 +91,17 @@ int	main(void)
 	t_exec		*exec;
 
 	g_signal = 0;
-	signal(SIGINT, signal_handler);
-	signal(SIGQUIT, signal_handler);
-
 	exec = fill_struct();
 	if (!exec)
 		return (-1);
+
 	while (1)
 	{
 		token_tree = NULL;
+		ft_restore_terminal(0);
+		ft_configure_terminal();
 		type = parser(&token_tree, exec);
+		ft_restore_terminal(1);
 		exec->type = type;
 		exec->tree = token_tree;
 		if (!isatty(STDIN_FILENO) && type == ERROR)
