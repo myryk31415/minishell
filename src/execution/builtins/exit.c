@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 00:09:23 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 11:32:41 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 12:30:15 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	exit_shell(t_exec *exec, char **arg, int status)
 	exit_status = status;
 	if (status == -1)
 		exit_status=exec->exit_status;
-	ft_putstr_fd("exit", 2);
+	ft_putstr_fd("exit\n", 2);
 	if (arg && arg[1] && !ft_isnumber(arg[1]))
 	{
 		exit_status = 2;
