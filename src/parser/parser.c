@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 03:10:36 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/30 11:27:57 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*get_current_folder(void)
 	return (folder);
 }
 
-char	*new_prompt(char **env)
+char	*new_prompt(char **env, t_exec *exec)
 {
 	char	*prompt;
 	char	*prompt_tmp;
@@ -63,6 +63,10 @@ char	*new_prompt(char **env)
 	char	*line;
 
 	(void)env;
+	if (exec->exit_status)
+		ft_putstr_fd("\e[31m●\e[0m ", 2);
+	else
+		ft_putstr_fd("\e[34m●\e[0m ", 2);
 	if (isatty(STDIN_FILENO) && !DEBUG) //debug
 	{
 		folder = get_current_folder();
@@ -100,13 +104,13 @@ t_node_type	parser(void **token_tree, t_exec *exec)
 	t_node_type	type_first;
 	char		*tmp;
 
-	signal(SIGINT, signal_handler);
-	signal(SIGQUIT, signal_handler);
+	signal(SIGINT, parser_handler);
+	signal(SIGQUIT, parser_handler);
 	command = NULL;
 	while (!command || !*command || *command == '\n')
 	{
 		free(command);
-		command = new_prompt(*exec->env);
+		command = new_prompt(*exec->env, exec);
 		if (!command) //need to free
 			exit_shell(exec, NULL, exec->exit_status);
 	}

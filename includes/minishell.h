@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 02:45:23 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 11:29:34 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 # include <signal.h>
 # include <sys/types.h>
 # include <dirent.h>
-
-# define DEBUG 0
+# include <termios.h>
+# define DEBUG 1
 
 typedef struct s_cmd
 {
@@ -78,9 +78,11 @@ char		**expander_array(char **args, t_exec *exec);
 int			heredoc_expand(int heredoc, t_exec *exec);
 
 //signal
+void		parser_handler(int signal);
 void		set_signal_action(void);
-void		signal_handler(int signal);
-
+void		execution_handler(int signal);
+void		ft_restore_terminal(int	i);
+void		ft_configure_terminal(void);
 //cleanup
 void		free_str_array(char **arr);
 void		cmd_free(t_cmd *cmd);

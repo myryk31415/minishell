@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 00:09:23 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 03:10:20 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/30 11:32:41 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,14 @@ unsigned int	ft_u_atoi(const char *str)
 }
 
 
-void	exit_shell(t_exec *exec, char **arg, unsigned int status)
+int	exit_shell(t_exec *exec, char **arg, int status)
 {
-	unsigned int	exit_status;
+	int	exit_status;
 
 	exit_status = status;
+	if (status == -1)
+		exit_status=exec->exit_status;
+	ft_putstr_fd("exit", 2);
 	if (arg && arg[1] && !ft_isnumber(arg[1]))
 	{
 		exit_status = 2;
@@ -58,11 +61,8 @@ void	exit_shell(t_exec *exec, char **arg, unsigned int status)
 numeric argument required\n", 2);
 	}
 	else if (arg && arg[1] && arg[2])
-	{
-		exit_status = EXIT_FAILURE;
-		ft_putstr_fd("minishell: exit: \
-too many arguments\n", 2);
-	}
+		return(ft_putstr_fd("minishell: exit: \
+too many arguments\n", 2), 127);
 	else if (arg && arg[1] && ft_isnumber(arg[1]))
 	{
 		exit_status = ft_u_atoi(arg[1]);
@@ -71,7 +71,6 @@ too many arguments\n", 2);
 	node_tree_delete(exec->tree, exec->type);
 	if (!exec->sub_process)
 		free(exec);
-	rl_clear_history();
-	// ft_putstr_fd("exit", 2);
+	// rl_clear_history();
 	exit(exit_status);
 }
