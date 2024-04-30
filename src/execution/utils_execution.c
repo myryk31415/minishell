@@ -6,20 +6,33 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/30 15:09:56 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 15:41:28 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+
+char	*try_path(char *trial_path, char **cmd_path, char *path_to_cmd, int i)
+{
+	while (cmd_path && path_to_cmd && cmd_path[i])
+	{
+		trial_path = ft_strjoin(cmd_path[i], path_to_cmd);
+		if (access(trial_path, F_OK | X_OK) == 0)
+			return (trial_path);
+		free(trial_path);
+		i++;
+	}
+	return (NULL);
+}
 
 char	*get_path(char *cmd, char **environ, char *var)
 {
 	char	**cmd_path;
 	char	*path_to_cmd;
 	char	*trial_path;
-	int		i;
 	char	*tmp;
 
+	trial_path = NULL;
 	tmp = get_env(environ, var);
 	if (!tmp)
 	{
@@ -33,22 +46,10 @@ char	*get_path(char *cmd, char **environ, char *var)
 	if (!*cmd)
 		return (NULL);
 	path_to_cmd = ft_strjoin("/", cmd);
-	i = 0;
-	while (cmd_path && path_to_cmd && cmd_path[i])
-	{
-		trial_path = ft_strjoin(cmd_path[i], path_to_cmd);
-		if (access(trial_path, F_OK | X_OK) == 0)
-		{
-			free(path_to_cmd);
-			free_str_array(cmd_path);
-			return (trial_path);
-		}
-		free(trial_path);
-		i++;
-	}
+	trial_path = try_path(trial_path, cmd_path, path_to_cmd, 0);
 	free_str_array(cmd_path);
 	free(path_to_cmd);
-	return (NULL);
+	return (trial_path);
 }
 
 int	is_builtin(t_cmd *token, int **pipes, int *redir, t_exec *exec)
