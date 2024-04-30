@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 23:26:49 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 11:42:27 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 12:28:36 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,22 @@ void	execution_handler(int signal)
 	if (signal == SIGINT)
 	{
 		write(STDIN_FILENO, "\n", 1);
-		if (!DEBUG)
-		{
-		rl_redisplay();
-		rl_on_new_line();
-		// rl_replace_line("", 0);
-		}
+		// if (!DEBUG)
+		// {
+		// 	rl_on_new_line();
+		// 	rl_replace_line("", 0);
+		// 	rl_redisplay();
+		// }
 	}
 	if (signal == SIGQUIT)
 	{
 		ft_putstr_fd("Quit: 3\n", 2);
-		if (!DEBUG)
-		{
-		rl_redisplay();
-		rl_on_new_line();
-		// rl_replace_line("", 0);
-		}
+		// if (!DEBUG)
+		// {
+		// 	rl_on_new_line();
+		// 	rl_replace_line("", 0);
+		// 	rl_redisplay();
+		// }
 	}
 
 }
@@ -47,9 +47,9 @@ void	parser_handler(int signal)
 		write(STDIN_FILENO, "^C\n", 3);
 		if (!DEBUG)
 		{
-			rl_redisplay();
 			rl_on_new_line();
-		// rl_replace_line("", 0);
+			rl_redisplay();
+			rl_replace_line("", 0);
 		}
 	}
 	if (signal == SIGQUIT)

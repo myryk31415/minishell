@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 11:27:57 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 12:13:27 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,17 @@ char	*new_prompt(char **env, t_exec *exec)
 	char	*command;
 	char	*line;
 
-	(void)env;
-	if (exec->exit_status)
-		ft_putstr_fd("\e[31m●\e[0m ", 2);
-	else
-		ft_putstr_fd("\e[34m●\e[0m ", 2);
+	(void)exec;
 	if (isatty(STDIN_FILENO) && !DEBUG) //debug
 	{
+		// if (exec->exit_status)
+		// 	ft_putstr_fd("\e[31m●\e[0m", 2);
+		// else
+		// 	ft_putstr_fd("\e[34m●\e[0m", 2);
 		folder = get_current_folder();
-		prompt_tmp = get_env(env, "USER");
+		prompt = get_env(env, "USER");
+		prompt_tmp = ft_strjoin("\e[34m●\e[0m", prompt);
+		free(prompt);
 		prompt = ft_strjoin(prompt_tmp, "@minishell:");
 		free(prompt_tmp);
 		// prompt_tmp = ft_strjoin(prompt, RED);
@@ -80,7 +82,6 @@ char	*new_prompt(char **env, t_exec *exec)
 		free(prompt_tmp);
 		rl_on_new_line();
 		command = readline(prompt);
-		// ft_putstr_fd(prompt, 1);
 		free(prompt);
 	}
 	else

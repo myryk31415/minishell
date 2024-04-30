@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:47:36 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 03:48:42 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/30 12:05:08 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ int	here_doc(char *limiter)
 		if (isatty(fileno(stdin)) && !DEBUG) //debug
 		{
 			signal(SIGINT, ft_heredoc_handler);
-			str = readline(ft_substr(">");
-			signal(SIGINT, signal_handler);
+			str = readline(">");
+			signal(SIGINT, parser_handler);
 			ft_putstr_fd("AFSAFAFAF\n", 1);
 		}
 		else
