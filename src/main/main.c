@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:16:36 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 03:35:32 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 10:28:17 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int	main(void)
 		if (!isatty(STDIN_FILENO) && type == ERROR)
 			exit_shell(exec, NULL, exec->exit_status);
 		execution(token_tree, type, exec);
-		ft_printf("exit_statsu: %i\n", exec->exit_status);
+		// ft_printf("exit_statsu: %i\n", exec->exit_status);
 		node_tree_delete(token_tree, type);
 		exec->tree = NULL;
 	}

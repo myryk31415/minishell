@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 02:45:23 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 10:35:34 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <sys/types.h>
 # include <dirent.h>
 
-# define DEBUG 0
+# define DEBUG 1
 
 typedef struct s_cmd
 {
