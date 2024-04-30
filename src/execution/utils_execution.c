@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/30 15:48:56 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 16:07:44 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,11 @@ char	*get_path(char *cmd, char **environ, char *var)
 int	is_builtin(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 {
 	token->args = expander_array(token->args, exec);
-	if (*(token->args) && (!ft_strncmp(token->args[0], "cd", 3) || !ft_strncmp\
-	(token->args[0],"echo", 5) || !ft_strncmp(token->args[0], "pwd", 4) || \
-		!ft_strncmp(token->args[0], "export", 7) || !ft_strncmp(token->args[0], \
-		"unset", 6) || !ft_strncmp(token->args[0], "exit", 5) || \
-		!ft_strncmp(token->args[0], "env", 4)))
+	if (*(token->args) && (!ft_strncmp(token->args[0], "cd", 3) || \
+	!ft_strncmp(token->args[0], "echo", 5) || !ft_strncmp(token->args[0], "pwd"\
+	, 4) || !ft_strncmp(token->args[0], "export", 7) || \
+	!ft_strncmp(token->args[0], "unset", 6) || !ft_strncmp(token->args[0], \
+	"exit", 5) || !ft_strncmp(token->args[0], "env", 4)))
 	{
 		if (in_and_out_hdl_fork(token, pipes, redir, exec) == 1)
 			return (EXIT_FAILURE);
@@ -84,11 +84,11 @@ int	is_builtin(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 int	is_builtin_no_fork(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 {
 	token->args = expander_array(token->args, exec);
-	if (*(token->args) && (!ft_strncmp(token->args[0], "cd", 3) || !ft_strncmp\
-	(token->args[0],"echo", 5) || !ft_strncmp(token->args[0], "pwd", 4) || \
-		!ft_strncmp(token->args[0], "export", 7) || !ft_strncmp(token->args[0], \
-		"unset", 6) || !ft_strncmp(token->args[0], "exit", 5) || \
-		!ft_strncmp(token->args[0], "env", 4)))
+	if (*(token->args) && (!ft_strncmp(token->args[0], "cd", 3) || \
+	!ft_strncmp(token->args[0], "echo", 5) || !ft_strncmp(token->args[0], "pwd"\
+	, 4) || !ft_strncmp(token->args[0], "export", 7) || \
+	!ft_strncmp(token->args[0], "unset", 6) || !ft_strncmp(token->args[0], \
+	"exit", 5) || !ft_strncmp(token->args[0], "env", 4)))
 	{
 		if (in_and_out_hdl_no_fork(token, pipes, redir, exec) == 1)
 			return (EXIT_FAILURE);
@@ -112,7 +112,7 @@ int	is_builtin_no_fork(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 
 int	error_message_permission(char *cmd_path, int exit_status)
 {
-	DIR *folder;
+	DIR	*folder;
 	int	file;
 
 	folder = opendir(cmd_path);
@@ -125,7 +125,7 @@ int	error_message_permission(char *cmd_path, int exit_status)
 		if (!folder && errno != EACCES)
 			exit_status = 127;
 	}
-	else if(access(cmd_path, X_OK))
+	else if (access(cmd_path, X_OK))
 	{
 		ft_putstr_fd("minishell: ", 2);
 		perror(cmd_path);
@@ -141,7 +141,6 @@ int	error_message(char *cmd_path)
 	int	exit_status;
 
 	exit_status = 0;
-
 	if (!ft_strncmp(cmd_path, ".", 2))
 	{
 		ft_putendl_fd("minishell: .: filename argument required", 2);
@@ -160,7 +159,8 @@ int	error_message(char *cmd_path)
 	return (exit_status);
 }
 
-void	execute_without_path(char **cmd_arg, t_exec *exec, int no_exec, char *cmd_path)
+void	execute_without_path(char **cmd_arg, t_exec *exec, \
+	int no_exec, char *cmd_path)
 {
 	int	exit_status;
 

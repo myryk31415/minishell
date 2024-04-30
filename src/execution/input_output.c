@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/30 15:33:58 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 16:00:13 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ int	handle_both_permission(int *redir, t_cmd *tk, t_exec *exec, int i)
 		{
 			if (redir[1])
 				close(redir[1]);
-			redir[1] = output_permission(tk->redirects[i], tk->redirect_type[i]);
+			redir[1] = output_permission(tk->redirects[i], \
+				tk->redirect_type[i]);
 		}
 		else
 		{
@@ -66,6 +67,7 @@ int	handle_both_permission(int *redir, t_cmd *tk, t_exec *exec, int i)
 	}
 	return (0);
 }
+
 int	handle_both(int *redir, t_cmd *tk, t_exec *exec)
 {
 	int		i;

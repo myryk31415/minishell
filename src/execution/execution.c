@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:09 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/30 15:54:26 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 15:57:29 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,35 @@ int	create_tree(int *pre_fd, t_node *token, t_exec *tmp, int **redir_pipes)
 	return (tmp->exit_status);
 }
 
+void	pipe_right(t_exec *exec, int **pipes, int **redir_pipes, t_node *token)
+{
+	t_exec	exec_tmp;
+
+	exec_tmp = *exec;
+	if (!exec->sub_process)
+	{
+		free(exec);
+		exec_tmp.sub_process = 1;
+	}
+	close_pipe(pipes[1]);
+	pipes[1] = pipes[0];
+	close(pipes[1][1]);
+	if (redir_pipes && redir_pipes[0])
+		pipes[0] = redir_pipes[0];
+	else
+		pipes[0] = NULL;
+	free(redir_pipes);
+	if (token->type_right == CMD)
+		command((t_cmd *)token->right, pipes, 0, &exec_tmp);
+	else if (token->type_right == REDIR)
+		redirect((t_redir *)token->right, pipes, 1, &exec_tmp);
+}
+
 void	run_tree(t_node *token, int **pipes, t_exec *exec, int **redir_pipes)
 {
 	int		id;
 	int		*tmp;
-	t_exec	exec_tmp;
 
-	exec_tmp = *exec;
 	id = 1;
 	if (token->type_right != PIPE)
 	{
@@ -74,25 +96,7 @@ void	run_tree(t_node *token, int **pipes, t_exec *exec, int **redir_pipes)
 		if (id == -1)
 			perror("Fork");
 		if (!id)
-		{
-			if (!exec->sub_process)
-			{
-				free(exec);
-				exec_tmp.sub_process = 1;
-			}
-			close_pipe(pipes[1]);
-			pipes[1] = pipes[0];
-			close(pipes[1][1]);
-			if (redir_pipes && redir_pipes[0])
-				pipes[0] = redir_pipes[0];
-			else
-				pipes[0] = NULL;
-			free(redir_pipes);
-			if (token->type_right == CMD)
-				command((t_cmd *)token->right, pipes, 0, &exec_tmp);
-			else if (token->type_right == REDIR)
-				redirect((t_redir *)token->right, pipes, 1, &exec_tmp);
-		}
+			pipe_right(exec, pipes, redir_pipes, token);
 	}
 	if (id && token->type_right == PIPE)
 	{

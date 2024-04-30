@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 00:09:23 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 14:57:41 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/30 15:59:17 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,13 @@ unsigned int	ft_u_atoi(const char *str)
 	return ((unsigned int)(number * negative));
 }
 
-
 int	exit_shell(t_exec *exec, char **arg, int status)
 {
 	int	exit_status;
 
 	exit_status = status;
 	if (status == -1)
-		exit_status=exec->exit_status;
-	// ft_putstr_fd("exit\n", 2);
+		exit_status = exec->exit_status;
 	if (arg && arg[1] && !ft_isnumber(arg[1]))
 	{
 		exit_status = 2;
@@ -61,7 +59,7 @@ int	exit_shell(t_exec *exec, char **arg, int status)
 numeric argument required\n", 2);
 	}
 	else if (arg && arg[1] && arg[2])
-		return(ft_putstr_fd("minishell: exit: \
+		return (ft_putstr_fd("minishell: exit: \
 too many arguments\n", 2), 1);
 	else if (arg && arg[1] && ft_isnumber(arg[1]))
 	{

@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 21:00:56 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/30 02:30:53 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 16:00:54 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,6 @@ int	new_waitpid(int id)
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
-		return(128 + WTERMSIG(status));
+		return (128 + WTERMSIG(status));
 	return (status);
 }
