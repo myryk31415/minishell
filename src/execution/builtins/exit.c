@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 00:09:23 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 02:01:08 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/30 03:10:20 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,5 +72,6 @@ too many arguments\n", 2);
 	if (!exec->sub_process)
 		free(exec);
 	rl_clear_history();
+	// ft_putstr_fd("exit", 2);
 	exit(exit_status);
 }

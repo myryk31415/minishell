@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 02:15:17 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/30 03:10:36 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ char	*new_prompt(char **env)
 		free(prompt_tmp);
 		rl_on_new_line();
 		command = readline(prompt);
+		// ft_putstr_fd(prompt, 1);
 		free(prompt);
 	}
 	else

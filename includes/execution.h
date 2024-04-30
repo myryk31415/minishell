@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:43:29 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/27 19:39:31 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/30 02:31:07 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,5 @@ void	close_in_out_file_nofork(int input, int output, \
 void	close_in_out_files_fork(int **pipes);
 void	free_env(char ***env);
 int		builtin(t_cmd *token, int **pipes, int *redir, t_exec *exec);
-int		new_waitpid(int status, int id);
+int		new_waitpid(int id);
 #endif

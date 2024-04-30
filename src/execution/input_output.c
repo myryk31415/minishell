@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/27 21:13:32 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 02:38:53 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,9 +176,7 @@ int	redirect(t_redir *token, int **pipes, int status, t_exec *exec)
 	else
 	{
 		close_pipes(pipes);
-		waitpid(pid, &status, 0);
-		if (WIFEXITED(status))
-			exec->exit_status = WEXITSTATUS(status);
+		exec->exit_status = new_waitpid(pid);
 		if (pipe_exit)
 		{
 			free(pipes);
