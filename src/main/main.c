@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 23:16:36 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 11:27:48 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 16:28:41 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,25 @@ char	*get_env(char **environ, char *var)
 		i++;
 	}
 	return (NULL);
+}
+
+void	execution(void *tree, t_node_type type, t_exec *exec)
+{
+	signal(SIGINT, execution_handler);
+	signal(SIGQUIT, execution_handler);
+	if (type == CMD)
+		command((t_cmd *)tree, NULL, 2, exec);
+	else if (type == AND)
+		and_execute((t_node *)tree, NULL, exec);
+	else if (type == OR)
+		or_execute((t_node *)tree, NULL, exec);
+	else if (type == PIPE)
+		exec->exit_status = create_tree(0, (t_node *)tree, exec, NULL);
+	else if (type == REDIR)
+		exec->exit_status = redirect((t_redir *)tree, NULL, 0, exec);
+	if (exec->exit_status == 256)
+		exec->exit_status = 1;
+	return ;
 }
 
 char	**fill_env(void)

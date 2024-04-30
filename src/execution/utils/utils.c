@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 21:00:56 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/30 16:00:54 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 16:26:03 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,24 +88,6 @@ void	display_env(char **env, int export)
 			ft_printf("%s\n", env[i++]);
 }
 
-int	builtin(t_cmd *token, int **pipes, int *redir, t_exec *exec)
-{
-	int		old_stdin;
-	int		old_stdout;
-
-	old_stdin = dup(STDIN_FILENO);
-	old_stdout = dup(STDOUT_FILENO);
-	exec->exit_status = is_builtin(token, pipes, redir, exec);
-	dup2(old_stdin, STDIN_FILENO);
-	dup2(old_stdout, STDOUT_FILENO);
-	if (exec->exit_status == -1)
-	{
-		exec->exit_status = 0;
-		return (-1);
-	}
-	return (exec->exit_status);
-}
-
 int	new_waitpid(int id)
 {
 	int	status;
@@ -116,4 +98,23 @@ int	new_waitpid(int id)
 	else if (WIFSIGNALED(status))
 		return (128 + WTERMSIG(status));
 	return (status);
+}
+
+void	oldpwd_save(char ***env, char *path_to_dir, char *arg)
+{
+	char		*var;
+	char		*tmp;
+
+	var = getcwd(NULL, PATH_MAX);
+	tmp = ft_strjoin("OLDPWD=", var);
+	pwd_export(tmp, env, 0);
+	free(tmp);
+	free(var);
+	chdir(path_to_dir);
+	tmp = ft_strjoin("PWD=", path_to_dir);
+	pwd_export(tmp, env, 1);
+	free(tmp);
+	if (arg && arg[0] == '-')
+		pwd();
+	free (path_to_dir);
 }
