@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:13:35 by padam             #+#    #+#             */
-/*   Updated: 2024/04/25 15:49:22 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/30 15:33:40 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,12 +91,3 @@ char *expand_variables(char *command, t_exec *exec)
 	return (command);
 }
 
-// char	*expand_variables(char *command, t_exec *exec)
-// {
-// 	char	*tmp;
-
-// 	tmp = command;
-// 	command = get_expansion(command, 0, exec, 0);
-// 	free(tmp);
-// 	return (command);
-// }
