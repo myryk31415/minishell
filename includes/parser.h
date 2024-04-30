@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:14:04 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 15:41:16 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/30 18:09:31 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ char	*check_unclosed(char *command, t_exec *exec);
 
 ///BIN_TREE
 // node_struct
+t_node_type	split_by_operator(t_token *token_last, void **head);
 t_node_type	tokens_to_tree(t_token *tokens, void **head);
 
 // node_utils
@@ -73,7 +74,7 @@ int			climb_tree(void *ptr, t_node_type type);
 ///REST
 //cleanup
 t_node_type	err_pars(char *message, t_cmd *redirects, t_token **tokens);
-void		print_syntax_err(t_token *token);
+void		syntax_and_tree(t_token *token, void **node, t_node_type type);
 
 // debug
 void		debug_print_token_array(t_token *token_first);
