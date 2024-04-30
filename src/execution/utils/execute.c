@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/30 22:22:05 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/30 22:44:53 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,10 @@ void	execute(char **cmd_arg, t_exec *exec, int no_exec)
 
 	cmd_path = NULL;
 	if (*cmd_arg == NULL)
+	{
+		free_str_array(cmd_arg);
 		exit_shell(exec, NULL, EXIT_SUCCESS);
+	}
 	if (ft_strchr(*cmd_arg, '/') || !ft_strncmp(*cmd_arg, "~", 2) \
 		|| !ft_strncmp(*cmd_arg, ".", 2) || !ft_strncmp(*cmd_arg, "..", 3))
 	{
