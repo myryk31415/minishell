@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:47:36 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 15:05:46 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/30 16:36:52 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,23 @@
 
 extern int	g_signal;
 
+char	*get_line(void)
+{
+	char	*line;
+	char	*tmp;
+
+	if (isatty(fileno(stdin)) && !DEBUG)
+		line = readline(">");
+	else
+	{
+		tmp = get_next_line(STDIN_FILENO);
+		line = ft_strtrim(tmp, "\n");
+	}
+	return (line);
+}
+
 int	here_doc(char *limiter)
 {
-	char	*str;
 	int		fd[2];
 	char	*line;
 
@@ -24,77 +38,21 @@ int	here_doc(char *limiter)
 		return(perror("minishell: Pipe:"), -1);
 	while (1)
 	{
-		if (isatty(fileno(stdin)) && !DEBUG) //debug
-			str = readline(">");
-		else
+		line = get_line();
+		if (line && *line)
 		{
-			line = get_next_line(STDIN_FILENO);
-			str = ft_strtrim(line, "\n");
-			free(line);
-		}
-		if (str && *str)
-		{
-			if (!ft_strncmp(str, limiter, ft_strlen(limiter) + 1))
+			if (!ft_strncmp(line, limiter, ft_strlen(limiter) + 1))
 			{
-				free(str);
+				free(line);
 				break ;
 			}
-			write(fd[1], str, ft_strlen(str));
-			free(str);
+			write(fd[1], line, ft_strlen(line));
+			free(line);
 		}
 		write(fd[1], "\n", 1);
 	}
 	close(fd[1]);
 	return (fd[0]);
-}
-
-char *extract_test(char *old_string, char *string)
-{
-	char *output;
-
-	output = ft_strjoin(old_string, string);
-	free(old_string);
-	free(string);
-	return (output);
-}
-
-char *expander_test(char *arg)
-{
-	char *output;
-	char *tmp;
-	int i;
-
-	tmp = arg;
-	output = NULL;
-	while (*arg)
-	{
-		i = 0;
-		if (*arg == '\'')
-		{
-			arg++;
-			while (arg[i] != '\'')
-				i++;
-			output = extract_test(output, ft_substr(arg, 0, i));
-			i++;
-		}
-		else if (*arg == '"')
-		{
-			arg++;
-			while (arg[i] != '"')
-				i++;
-			output = extract_test(output, ft_substr(arg, 0, i));
-			i++;
-		}
-		else
-		{
-			while (arg[i] && arg[i] != '\'' && arg[i] != '"')
-				i++;
-			output = extract_test(output, ft_substr(arg, 0, i));
-		}
-		arg += i;
-	}
-	free(tmp);
-	return (output);
 }
 
 int	handle_cmd(t_cmd *cmd)
@@ -106,7 +64,7 @@ int	handle_cmd(t_cmd *cmd)
 	{
 		if (cmd->redirect_type[i] >= 3)
 		{
-			cmd->redirects[i] = expander_test(cmd->redirects[i]);
+			cmd->redirects[i] = expander(cmd->redirects[i]);
 			if (cmd->redirect_type[i] == 4)
 				cmd->redirect_type[i] = here_doc(cmd->redirects[i]);
 			else
@@ -132,7 +90,7 @@ int	handle_redir(t_redir *redir)
 	{
 		if (cmd->redirect_type[i] >= 3)
 		{
-			cmd->redirects[i] = expander_test(cmd->redirects[i]);
+			cmd->redirects[i] = expander(cmd->redirects[i]);
 			if (cmd->redirect_type[i] == 4)
 				cmd->redirect_type[i] = here_doc(cmd->redirects[i]);
 			else

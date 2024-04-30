@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 14:48:01 by padam             #+#    #+#             */
-/*   Updated: 2024/04/25 15:55:00 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/30 16:32:11 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,6 @@ char	*var_expand(char *old_string, char *string, int quotes, t_exec *exec)
 	string = expand_variables(string, exec);
 	if (!string && !old_string && !quotes)
 		return (NULL);
-	output = ft_strjoin(old_string, string);
-	free(old_string);
-	free(string);
-	return (output);
-}
-
-char *extract(char *old_string, char *string)
-{
-	char *output;
-
 	output = ft_strjoin(old_string, string);
 	free(old_string);
 	free(string);
@@ -70,39 +60,27 @@ char	**word_split(char const *s, char *c, char quotes)
 	return (split_words);
 }
 
-char *expander(char *arg)
+char	*expander(char *arg)
 {
-	char *output;
-	char *tmp;
-	int i;
+	char	*output;
+	char	*tmp;
+	int		i;
+	char	quote;
 
 	tmp = arg;
 	output = NULL;
-	while (arg && *arg)
+	while (*arg)
 	{
 		i = 0;
-		if (*arg == '\'')
-		{
-			arg++;
-			while (arg[i] != '\'')
-				i++;
-			output = extract(output, ft_substr(arg, 0, i));
+		quote = 0;
+		if (*arg == '\'' || *arg == '"')
+			quote = *arg++;
+		while (arg[i] && ((arg[i] != '\'' && arg[i] != '"') || \
+			(quote && arg[i] != quote)))
 			i++;
-		}
-		else if (*arg == '"')
-		{
-			arg++;
-			while (arg[i] != '"')
-				i++;
-			output = extract(output, ft_substr(arg, 0, i));
+		output = ft_strjoin_free(output, ft_substr(arg, 0, i));
+		if (quote)
 			i++;
-		}
-		else
-		{
-			while (arg[i] && arg[i] != '\'' && arg[i] != '"')
-				i++;
-			output = extract(output, ft_substr(arg, 0, i));
-		}
 		arg += i;
 	}
 	free(tmp);
