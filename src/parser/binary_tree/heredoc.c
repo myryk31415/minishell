@@ -6,13 +6,20 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:47:36 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 02:07:57 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/30 03:48:42 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
 extern int	g_signal;
+
+static void	ft_heredoc_handler(int sig)
+{
+	ft_printf("\n");
+	rl_replace_line(NULL, 0);
+	(void)sig;
+}
 
 int	here_doc(char *limiter)
 {
@@ -26,8 +33,10 @@ int	here_doc(char *limiter)
 	{
 		if (isatty(fileno(stdin)) && !DEBUG) //debug
 		{
-			rl_on_new_line();
-			str = readline(">");
+			signal(SIGINT, ft_heredoc_handler);
+			str = readline(ft_substr(">");
+			signal(SIGINT, signal_handler);
+			ft_putstr_fd("AFSAFAFAF\n", 1);
 		}
 		else
 		{
