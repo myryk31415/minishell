@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/30 15:45:36 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 15:48:56 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,11 +160,32 @@ int	error_message(char *cmd_path)
 	return (exit_status);
 }
 
+void	execute_without_path(char **cmd_arg, t_exec *exec, int no_exec, char *cmd_path)
+{
+	int	exit_status;
+
+	if (!*cmd_arg)
+		exit_shell(exec, NULL, EXIT_SUCCESS);
+	cmd_path = get_path(*cmd_arg, *(exec->env), "PATH");
+	if (!cmd_path)
+		cmd_path = *cmd_arg;
+	node_tree_delete(exec->tree, exec->type);
+	if (ft_strchr(cmd_path, '/') && **cmd_arg != '.')
+		execve(cmd_path, cmd_arg, *(exec->env));
+	exit_status = error_message(cmd_path);
+	free_env(exec->env);
+	free_str_array(cmd_arg);
+	if (!no_exec)
+		free(exec);
+	exit(exit_status);
+}
+
 void	execute(char **cmd_arg, t_exec *exec, int no_exec)
 {
 	char		*cmd_path;
 	int			exit_status;
 
+	cmd_path = NULL;
 	if (*cmd_arg == NULL)
 		exit_shell(exec, NULL, EXIT_SUCCESS);
 	if (ft_strchr(*cmd_arg, '/') || !ft_strncmp(*cmd_arg, "~", 2) \
@@ -181,20 +202,5 @@ void	execute(char **cmd_arg, t_exec *exec, int no_exec)
 		exit(exit_status);
 	}
 	else
-	{
-		if (!*cmd_arg)
-			exit_shell(exec, NULL, EXIT_SUCCESS);
-		cmd_path = get_path(*cmd_arg, *(exec->env), "PATH");
-		if (!cmd_path)
-			cmd_path = *cmd_arg;
-		node_tree_delete(exec->tree, exec->type);
-		if (ft_strchr(cmd_path, '/') && **cmd_arg != '.')
-			execve(cmd_path, cmd_arg, *(exec->env));
-		exit_status = error_message(cmd_path);
-		free_env(exec->env);
-		free_str_array(cmd_arg);
-		if (!no_exec)
-			free(exec);
-		exit(exit_status);
-	}
+		execute_without_path(cmd_arg, exec, no_exec, cmd_path);
 }
