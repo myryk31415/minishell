@@ -6,13 +6,12 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:38:13 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 18:47:52 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 18:48:55 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-t_node_type	split_by_operator(t_token *token_last, void **head);
 
 t_node_type	get_cmd(t_token *token_first, void **head, t_cmd *redirects)
 {
