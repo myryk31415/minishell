@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:25:42 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/30 15:33:58 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 16:21:55 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ int	handle_both_permission(int *redir, t_cmd *tk, t_exec *exec, int i)
 		{
 			if (redir[1])
 				close(redir[1]);
-			redir[1] = output_permission(tk->redirects[i], tk->redirect_type[i]);
+			redir[1] = output_permission(tk->redirects[i], \
+				tk->redirect_type[i]);
 		}
 		else
 		{
@@ -66,6 +67,7 @@ int	handle_both_permission(int *redir, t_cmd *tk, t_exec *exec, int i)
 	}
 	return (0);
 }
+
 int	handle_both(int *redir, t_cmd *tk, t_exec *exec)
 {
 	int		i;
@@ -83,58 +85,4 @@ int	handle_both(int *redir, t_cmd *tk, t_exec *exec)
 	if (handle_both_permission(redir, tk, exec, i) == -1)
 		return (-1);
 	return (0);
-}
-
-void	redirect_nodes(t_redir *token, int **pipes, t_exec *exec)
-{
-	command(token->redirects, pipes, 1, exec);
-	if (token->type == CMD)
-		command((t_cmd *)token->next, pipes, 0, exec);
-	else if (token->type == OR)
-		or_execute((t_node *)token->next, pipes, exec);
-	else if (token->type == AND)
-		and_execute((t_node *)token->next, pipes, exec);
-	else if (token->type == PIPE)
-		exec->exit_status = create_tree(0, (t_node *)token->next, exec, pipes);
-	else if (token->type == REDIR)
-		redirect((t_redir *)token->next, pipes, 1, exec);
-	free(pipes);
-}
-
-int	redirect(t_redir *token, int **pipes, int status, t_exec *exec)
-{
-	int	pid;
-	int	pipe_exit;
-
-	pipe_exit = 0;
-	if (status == 1)
-		pipe_exit = 1;
-	pid = fork();
-	if (pid == -1)
-		perror("Fork");
-	if (!pid)
-	{
-		redirect_nodes(token, pipes, exec);
-		exit_shell(exec, NULL, exec->exit_status);
-	}
-	else
-	{
-		close_pipes(pipes);
-		exec->exit_status = new_waitpid(pid);
-		if (pipe_exit)
-		{
-			free(pipes);
-			exit_shell(exec, NULL, exec->exit_status);
-		}
-	}
-	return (exec->exit_status);
-}
-
-void	error_msg(char *cmd, char *file)
-{
-	char	*tmp;
-
-	tmp = ft_strjoin(cmd, file);
-	perror(tmp);
-	free(tmp);
 }

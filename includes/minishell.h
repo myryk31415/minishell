@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:09:25 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 12:07:10 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/30 16:17:16 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,11 @@ typedef struct s_exec
 	int			exit_status;
 }	t_exec;
 
+// commands
 t_node_type	parser(void **token_tree, t_exec *exec);
-
 char		*get_env(char **environ, char *var);
+void		execution(void *tree, t_node_type type, t_exec *exec);
+int			exit_shell(t_exec *exec, char **arg, int status);
 
 // variable_expansion
 char		*expand_tilde(char *arg, char **env);
@@ -79,10 +81,10 @@ int			heredoc_expand(int heredoc, t_exec *exec);
 
 //signal
 void		parser_handler(int signal);
-void		set_signal_action(void);
 void		execution_handler(int signal);
 void		ft_restore_terminal(int	i);
 void		ft_configure_terminal(void);
+
 //cleanup
 void		free_str_array(char **arr);
 void		cmd_free(t_cmd *cmd);

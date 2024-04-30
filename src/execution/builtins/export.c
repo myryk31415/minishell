@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 09:47:35 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/26 23:17:54 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/30 15:58:37 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+
 void	*print_error(char *arg)
 {
 	ft_putstr_fd("minishell: export: `", 2);
