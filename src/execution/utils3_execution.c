@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 21:00:56 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/30 02:27:02 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 02:30:53 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,9 @@ int	builtin(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 	return (exec->exit_status);
 }
 
-int	new_waitpid(int status, int id)
+int	new_waitpid(int id)
 {
+	int	status;
 
 	waitpid(id, &status, 0);
 	if (WIFEXITED(status))

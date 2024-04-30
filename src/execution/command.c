@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 23:38:37 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/30 02:15:40 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 02:30:36 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,9 @@ void	command_fork(t_cmd *token, t_exec *exec, int **pipes, int *redir)
 {
 	int			id;
 	char		**tmp;
-	int			status;
 
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, signal_handler);
-	status = 0;
 	if (builtin(token, pipes, redir, exec) == -1)
 	{
 		id = fork();
@@ -36,7 +34,7 @@ void	command_fork(t_cmd *token, t_exec *exec, int **pipes, int *redir)
 			execute(tmp, exec, exec->sub_process);
 		}
 		else
-			exec->exit_status = new_waitpid(status, id);
+			exec->exit_status = new_waitpid(id);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:15:56 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 02:09:36 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 02:34:28 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,31 +56,32 @@ char	*get_current_folder(void)
 
 char	*new_prompt(char **env)
 {
-	// char	*prompt;
-	// char	*prompt_tmp;
-	// char	*folder;
+	char	*prompt;
+	char	*prompt_tmp;
+	char	*folder;
 	char	*command;
 	char	*line;
 
 	(void)env;
 	// if (isatty(STDIN_FILENO) && !DEBUG) //debug
 	// {
-	// 	folder = get_current_folder();
-	// 	prompt_tmp = get_env(env, "USER");
-	// 	prompt = ft_strjoin(prompt_tmp, "@minishell:");
-	// 	free(prompt_tmp);
-	// 	prompt_tmp = ft_strjoin(prompt, CYAN);
-	// 	free(prompt);
-	// 	prompt = ft_strjoin(prompt_tmp, folder);
-	// 	free(folder);
-	// 	free(prompt_tmp);
-	// 	prompt_tmp = ft_strjoin(prompt, RESET);
-	// 	free(prompt);
-	// 	prompt = ft_strjoin(prompt_tmp, "$ ");
-	// 	free(prompt_tmp);
-	// 	rl_on_new_line();
-	// 	command = readline(prompt);
-	// 	free(prompt);
+		folder = get_current_folder();
+		prompt_tmp = get_env(env, "USER");
+		prompt = ft_strjoin(prompt_tmp, "@minishell:");
+		free(prompt_tmp);
+		prompt_tmp = ft_strjoin(prompt, CYAN);
+		free(prompt);
+		prompt = ft_strjoin(prompt_tmp, folder);
+		free(folder);
+		free(prompt_tmp);
+		prompt_tmp = ft_strjoin(prompt, RESET);
+		free(prompt);
+		prompt = ft_strjoin(prompt_tmp, "$ ");
+		free(prompt_tmp);
+		// rl_on_new_line();
+		// command = readline(prompt);
+		ft_putstr_fd(prompt, 1);
+		free(prompt);
 	// }
 	// else
 	// {
