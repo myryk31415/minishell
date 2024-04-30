@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:14:04 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 18:46:26 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 19:38:18 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ t_node_type		tokens_to_tree(t_token *tokens, void **head);
 // node_utils
 t_node			*new_node(void);
 t_redir			*new_redir_node(void);
+t_token			*delete_parens(t_token *token_first);
 
 // pipeline
 int				count_words(t_token *tokens);

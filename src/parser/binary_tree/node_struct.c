@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   node_struct.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:38:13 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 18:48:55 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 21:44:16 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
 
 t_node_type	get_cmd(t_token *token_first, void **head, t_cmd *redirects)
 {
@@ -98,6 +97,28 @@ t_node_type	split_by_pipe(t_token *token_first, void **head)
 	return (check_parens(token_first, head));
 }
 
+t_node_type	dies_das(t_token *token, void **head)
+{
+	t_node_type	return_value;
+
+	if (!token->prev || !token->next)
+	{
+		print_syntax_err(token);
+		return (ERROR);
+	}
+	*head = new_node();
+	if (!head)
+	{
+		token_delete_all(&token);
+		return (err_pars("malloc", NULL, &token));
+	}
+	if (token->type == T_AND)
+		return_value = AND;
+	else
+		return_value = OR;
+	return (return_value);
+}
+
 t_node_type	split_by_operator(t_token *token_last, void **head)
 {
 	t_token		*token_first;
@@ -109,16 +130,10 @@ t_node_type	split_by_operator(t_token *token_last, void **head)
 		return (ERROR);
 	if (token_first->type == T_AND || token_first->type == T_OR)
 	{
-		node = new_node();
-		if (!node)
-			return (err_pars("malloc", NULL, &token_first));
-		*head = node;
-		if (token_first->type == T_AND)
-			return_value = AND;
-		else
-			return_value = OR;
-		if (!token_first->prev || !token_first->next)
-			return (print_syntax_err(token_first), free(node), ERROR);
+		return_value = dies_das(token_first, head);
+		if (return_value == ERROR)
+			return (ERROR);
+		node = *head;
 		token_delete(&token_first);
 		node->type_left = split_by_operator(token_split(token_first, -1),
 				&node->left);
