@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/30 02:11:33 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 03:42:48 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	is_builtin(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 		else if (!ft_strncmp(token->args[0], "export", 7))
 			return (export(token->args, exec->env, 0));
 		else if (!ft_strncmp(token->args[0], "exit", 5))
-			exit_shell(exec, token->args, 0);
+			return (exit_shell(exec, token->args, -1));
 		else if (!ft_strncmp(token->args[0], "unset", 6))
 			return (unset(token->args, exec->env));
 		else if (!ft_strncmp(token->args[0], "env", 4))
@@ -100,7 +100,7 @@ int	is_builtin_no_fork(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 		else if (!ft_strncmp(token->args[0], "export", 7))
 			return (export(token->args, exec->env, 0));
 		else if (!ft_strncmp(token->args[0], "exit", 5))
-			exit_shell(exec, token->args, 0);
+			return (exit_shell(exec, token->args, -1));
 		else if (!ft_strncmp(token->args[0], "unset", 6))
 			return (unset(token->args, exec->env));
 		else if (!ft_strncmp(token->args[0], "env", 4))

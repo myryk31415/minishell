@@ -6,7 +6,7 @@
 #    By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/04/30 03:07:48 by antonweizma      ###   ########.fr        #
+#    Updated: 2024/04/30 03:12:08 by antonweizma      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -113,7 +113,7 @@ M::::::M               M::::::Mi::::::i  n::::n    n::::ni::::::iS::::::SSSSSS::
 M::::::M               M::::::Mi::::::i  n::::n    n::::ni::::::iS:::::::::::::::SS  h:::::h     h:::::h  ee:::::::::::::e  l::::::ll::::::l \n\
 MMMMMMMM               MMMMMMMMiiiiiiii  nnnnnn    nnnnnniiiiiiii SSSSSSSSSSSSSSS    hhhhhhh     hhhhhhh    eeeeeeeeeeeeee  llllllllllllllll \n\
                                                                                                                                              \n\
-                                                                                                                     $(RED)by: padam && aweizman$(RESET) \n\
+                                                                                                                     $(BLUE)by: padam && aweizman$(RESET) \n\
                                                                                                                                              \n"
 
 .PHONY: all, $(NAME), $(LIBFT_DIR)/libft.a, $(OBJ_PATH), $(OBJ_PATH), clean, fclean, re
