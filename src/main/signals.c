@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 23:26:49 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 15:37:52 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/30 15:45:44 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	parser_handler(int signal)
 		if (!DEBUG)
 		{
 			rl_on_new_line();
-			rl_replace_line("", 0);
+			// rl_replace_line("", 0);
 			rl_redisplay();
 		}
 	}

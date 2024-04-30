@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 16:30:12 by aweizman          #+#    #+#             */
-/*   Updated: 2024/04/30 15:41:28 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 15:45:36 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,15 +110,38 @@ int	is_builtin_no_fork(t_cmd *token, int **pipes, int *redir, t_exec *exec)
 	return (-1);
 }
 
-int	error_message(char *cmd_path)
+int	error_message_permission(char *cmd_path, int exit_status)
 {
 	DIR *folder;
 	int	file;
+
+	folder = opendir(cmd_path);
+	file = open(cmd_path, O_RDWR);
+	if (file == -1)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		perror(cmd_path);
+		exit_status = 126;
+		if (!folder && errno != EACCES)
+			exit_status = 127;
+	}
+	else if(access(cmd_path, X_OK))
+	{
+		ft_putstr_fd("minishell: ", 2);
+		perror(cmd_path);
+		exit_status = 126;
+	}
+	if (file)
+		close(file);
+	return (exit_status);
+}
+
+int	error_message(char *cmd_path)
+{
 	int	exit_status;
 
-	file = 0;
 	exit_status = 0;
-	folder = NULL;
+
 	if (!ft_strncmp(cmd_path, ".", 2))
 	{
 		ft_putendl_fd("minishell: .: filename argument required", 2);
@@ -133,26 +156,7 @@ int	error_message(char *cmd_path)
 		exit_status = 127;
 	}
 	else
-	{
-		folder = opendir(cmd_path);
-		file = open(cmd_path, O_RDWR);
-		if (file == -1)
-		{
-			ft_putstr_fd("minishell: ", 2);
-			perror(cmd_path);
-			exit_status = 126;
-			if (!folder && errno != EACCES)
-				exit_status = 127;
-		}
-		else if(access(cmd_path, X_OK))
-		{
-			ft_putstr_fd("minishell: ", 2);
-			perror(cmd_path);
-			exit_status = 126;
-		}
-	}
-	if (file)
-		close(file);
+		exit_status = error_message_permission(cmd_path, exit_status);
 	return (exit_status);
 }
 
