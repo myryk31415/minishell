@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:11:07 by padam             #+#    #+#             */
-/*   Updated: 2024/03/27 18:21:53 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/30 21:58:29 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,7 @@ void	token_delete_all(t_token **tokens)
 		{
 			tmp = *tokens;
 			*tokens = (*tokens)->next;
-			free(tmp->value);
-			free(tmp);
+			token_delete(&tmp);
 		}
 	}
 	else
@@ -55,14 +54,14 @@ void	token_delete_all(t_token **tokens)
 		{
 			tmp = *tokens;
 			*tokens = (*tokens)->prev;
-			free(tmp->value);
-			free(tmp);
+			token_delete(&tmp);
 		}
 	}
 }
 
 /*
  * @brief adds a token to the end of the linked list
+ * @return new last token of the list
 */
 t_token	*token_add(t_token *token_last, t_token_type token_type)
 {
@@ -80,7 +79,7 @@ t_token	*token_add(t_token *token_last, t_token_type token_type)
 	new_token->prev = token_last;
 	new_token->type = token_type;
 	new_token->value = NULL;
-	new_token->quote = 1;
+	new_token->quote = 0;
 	if (token_last)
 		token_last->next = new_token;
 	return (new_token);
@@ -130,12 +129,6 @@ t_token	*skip_parens(t_token *tokens, int direction)
 			tokens = tokens->next;
 		else
 			tokens = tokens->prev;
-		if (!tokens)
-		{
-			printf("minishell: unclosed parenthesis\n");
-			token_delete_all(&tokens);
-			return (NULL);
-		}
 		if (tokens->type == T_LPAREN)
 			level += direction;
 		else if (tokens->type == T_RPAREN)

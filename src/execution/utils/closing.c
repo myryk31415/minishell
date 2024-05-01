@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils2_execution.c                                 :+:      :+:    :+:   */
+/*   closing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 14:57:38 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/03/27 17:57:51 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 16:26:00 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,34 +35,33 @@ void	close_pipe(int *pipe)
 	}
 }
 
-void	oldpwd_save(char ***env, char *path_to_dir, char *arg)
+void	close_in_out_file_nofork(int input, int output, int *redir, int **pipes)
 {
-	char		*var;
-
-	var = getcwd(NULL, PATH_MAX);
-	pwd_export(ft_strjoin("OLDPWD=", var), env);
-	free(var);
-	chdir(path_to_dir);
-	if (arg && arg[0] == '-')
-		pwd();
-	free (path_to_dir);
-}
-
-void	close_in_and_out_files(int input, int output, int *redir, int **pipes)
-{
+	if (pipes && pipes[1])
+	{
+		close(pipes[1][0]);
+		close(pipes[1][1]);
+	}
+	if (pipes && pipes[0])
+	{
+		close(pipes[0][0]);
+		close(pipes[0][1]);
+	}
 	if (output != 1 && (!redir || (redir && !redir[1])))
 		close(output);
 	if (input)
 		close(input);
-	close_pipes(pipes);
-
+	free(pipes);
 }
 
-void	display_env(char **env)
+void	close_in_out_files_fork(int **pipes)
 {
-	int	i;
-
-	i = 0;
-	while (env[i])
-		ft_printf("%s\n", env[i++]);
+	if (pipes && pipes[1])
+	{
+		close(pipes[1][1]);
+	}
+	if (pipes && pipes[0])
+	{
+		close(pipes[0][0]);
+	}
 }

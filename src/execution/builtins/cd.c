@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 10:14:07 by aweizman          #+#    #+#             */
-/*   Updated: 2024/03/28 10:39:23 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/05/01 12:43:53 by aweizman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,17 @@ char	*cd_copy_path(char *path, char *arg, int i, int j)
 		j = 1;
 		while (arg[i + j] && arg[i + j] != '/')
 			j++;
-		tmp = ft_calloc(sizeof(char), j);
+		tmp = ft_calloc(sizeof(char), j + 1);
 		ft_strlcpy(tmp, arg + i, j + 1);
 		if (!ft_strncmp(tmp, "..", 2))
+		{
 			path = get_up_dir(path);
+			free(tmp);
+		}
 		else if (ft_strncmp(tmp, ".", 2))
 			path = add_path(path, tmp);
+		else
+			free(tmp);
 		arg = arg + j;
 	}
 	return (path);
@@ -86,31 +91,28 @@ char	*cd_path(char *arg, char **env)
 	return (path);
 }
 
-int	cd(char	*arg, char ***env)
+int	cd(char	**arg, char ***env)
 {
-	char	*path_to_dir;
+	char	*path;
 
-	if (!arg || !ft_strncmp(arg, "~", 2))
+	if (!*arg || !ft_strncmp(*arg, "~", 2))
 	{
-		path_to_dir = get_env(*env, "HOME");
-		if (!path_to_dir)
+		path = get_env(*env, "HOME");
+		if (!path)
 			return (ft_putstr_fd("minishell: cd: \
 HOME not set\n", 2), EXIT_FAILURE);
 	}
-	else if (arg[0] == '-')
+	else if ((*arg)[0] == '-')
 	{
-		path_to_dir = get_env(*env, "OLDPWD");
-		if (!path_to_dir)
+		path = get_env(*env, "OLDPWD");
+		if (!path)
 			return (ft_putstr_fd("minishell: cd: \
 OLDPWD not set\n", 2), EXIT_FAILURE);
 	}
 	else
-		path_to_dir = cd_path(arg, *env);
-	if (!path_to_dir)
-		return (error_msg("minishell: cd: ", arg), EXIT_FAILURE);
-	if (access(path_to_dir, F_OK | X_OK))
-		return (error_msg("minishell: cd: ", arg), \
-			free(path_to_dir), EXIT_FAILURE);
-	oldpwd_save(env, path_to_dir, arg);
+		path = cd_path(*arg, *env);
+	if (!path || access(path, F_OK | X_OK))
+		return (error_msg("minishell: cd: ", *arg), free(path), EXIT_FAILURE);
+	oldpwd_save(env, path, *arg);
 	return (0);
 }

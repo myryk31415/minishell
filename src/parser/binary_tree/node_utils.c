@@ -6,7 +6,7 @@
 /*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:44:23 by padam             #+#    #+#             */
-/*   Updated: 2024/03/21 22:33:26 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/04/30 18:47:54 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,39 +35,23 @@ t_redir	*new_redir_node(void)
 	return (node);
 }
 
-// /*
-//  * @brief Counts "T_AND" and "T_OR" tokens in the token list
-// */
-// int	count_operators(t_token *tokens)
-// {
-// 	int	operator_count;
+t_token	*delete_parens(t_token *token_first)
+{
+	t_token	*token_last;
 
-// 	operator_count = 0;
-// 	while (tokens)
-// 	{
-// 		if (is_operator(tokens->type))
-// 			operator_count++;
-// 		else if (tokens->type == T_LPAREN)
-// 			tokens = skip_parens(tokens, 1);
-// 		tokens = tokens->next;
-// 	}
-// 	return (operator_count);
-// }
-
-// t_token	*get_paren(t_token *tokens, t_token **paren)
-// {
-// 	//make cleaner, maybe dont need token_first
-// 	while (tokens && tokens->prev && tokens->prev->type != T_OR
-// 		&& tokens->prev->type != T_AND)
-// 	{
-// 		if (tokens->type == T_RPAREN)
-// 		{
-// 			*paren = tokens;
-// 			tokens = skip_parens(*paren, -1);
-// 		}
-// 		if (tokens->prev && tokens->prev->type != T_OR
-// 			&& tokens->prev->type != T_AND)
-// 			tokens = tokens->prev;
-// 	}
-// 	return (tokens);
-// }
+	token_last = skip_parens(token_first, 1);
+	if (token_last->next)
+	{
+		print_syntax_err(token_last);
+		return (NULL);
+	}
+	token_last = token_last->prev;
+	token_delete(&token_last->next);
+	token_delete(&token_first);
+	if (!token_first)
+	{
+		print_syntax_err(NULL);
+		return (NULL);
+	}
+	return (token_last);
+}

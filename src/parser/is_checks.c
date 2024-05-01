@@ -6,7 +6,7 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 17:48:38 by padam             #+#    #+#             */
-/*   Updated: 2024/03/22 17:40:07 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/25 15:40:33 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	is_operator(t_token_type type)
 	return (type == T_AND || type == T_OR);
 }
 
-int is_variable(char c)
+int	is_variable(char c)
 {
 	return (ft_isalnum(c) || c == '_');
 }

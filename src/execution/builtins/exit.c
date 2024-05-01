@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 00:09:23 by padam             #+#    #+#             */
-/*   Updated: 2024/03/28 14:27:56 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/05/01 12:31:18 by aweizman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,19 +45,30 @@ unsigned int	ft_u_atoi(const char *str)
 	return ((unsigned int)(number * negative));
 }
 
-
-void	exit_shell(t_exec *exec, char **arg, unsigned int status)
+int	exit_shell(t_exec *exec, char **arg, int status)
 {
-	unsigned int	exit_status;
+	int	exit_status;
 
 	exit_status = status;
-	if (arg && arg[1])
+	if (status == -1)
+		exit_status = exec->exit_status;
+	if (arg && arg[1] && !ft_isnumber(arg[1]))
+	{
+		exit_status = 255;
+		ft_putstr_fd("minishell: exit: \
+numeric argument required\n", 2);
+	}
+	else if (arg && arg[1] && arg[2])
+		return (ft_putstr_fd("minishell: exit: \
+too many arguments\n", 2), 1);
+	else if (arg && arg[1] && ft_isnumber(arg[1]))
+	{
 		exit_status = ft_u_atoi(arg[1]);
-
+	}
 	free_env(exec->env);
-	// rl_clear_history();
 	node_tree_delete(exec->tree, exec->type);
-	if (arg)
+	if (!exec->sub_process)
 		free(exec);
+	rl_clear_history();
 	exit(exit_status);
 }

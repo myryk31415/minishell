@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 12:18:20 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/03/28 16:03:25 by padam            ###   ########.fr       */
+/*   Updated: 2024/05/01 12:41:01 by aweizman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,52 @@ char	**allocate_smaller_env(char **env, int i)
 	return (new_env);
 }
 
+int	check_valid(char **args, char *str)
+{
+	int		i;
+	int		j;
+	char	*tmp;
+	char	*out;
+
+	i = 0;
+	while (args[i])
+	{
+		j = -1;
+		while (args[i][++j] || !args[i][0])
+		{
+			if (!args[i][0] || (args[i][j] && !ft_isalnum(args[i][j]) && args[i][j] != '_'))
+			{
+				tmp = ft_strjoin("`", args[i]);
+				out = ft_strjoin(tmp, "'");
+				ft_putstr_fd(str, 2);
+				ft_putstr_fd(out, 2);
+				ft_putendl_fd(": not a valid identifier", 2);
+				return (free(tmp), 1);
+			}
+		}
+		i++;
+	}
+	return (0);
+}
+
+int	print_option(char *str)
+{
+	ft_putstr_fd("minishell: unset: ", 2);
+	ft_putchar_fd(str[0], 2);
+	ft_putchar_fd(str[1], 2);
+	ft_putstr_fd(": invalid option\n", 2);
+	ft_putstr_fd("unset: usage: unset [name ...]\n", 1);
+	return (2);
+}
+
 int	unset(char **args, char ***env)
 {
-	int	i;
+	int		i;
 
-	if (!args | !*args)
+	if (!args || !*args || check_valid(args, "minishell: "))
 		return (EXIT_FAILURE);
+	if (args[1] && args[1][0] == '-')
+		return (print_option(args[1]));
 	args++;
 	while (*args)
 	{

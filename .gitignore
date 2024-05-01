@@ -2,6 +2,10 @@ minishell
 minishell_grammar.txt
 *test*
 .vscode
+vgcore.*
+lol.*
+output
+teeest
 
 # Prerequisites
 *.d

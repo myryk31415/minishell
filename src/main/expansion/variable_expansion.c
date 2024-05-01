@@ -6,19 +6,34 @@
 /*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 15:13:35 by padam             #+#    #+#             */
-/*   Updated: 2024/03/28 16:32:32 by padam            ###   ########.fr       */
+/*   Updated: 2024/04/30 18:15:05 by padam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-char	*get_variable(char **command, t_exec *exec)
+char	*get_variable_env(char **command, char *tmp, int i, t_exec *exec)
+{
+	char	*variable;
+
+	variable = NULL;
+	while ((*command)[i] && is_variable((*command)[i]))
+		i++;
+	tmp = ft_substr(*command, 0, i);
+	variable = get_env(*exec->env, tmp);
+	free(tmp);
+	(*command) += i;
+	return (variable);
+}
+
+char	*get_variable(char **command, t_exec *exec, int quotes)
 {
 	char	*variable;
 	char	*tmp;
 	int		i;
 
 	i = 0;
+	tmp = NULL;
 	variable = NULL;
 	if (!*command)
 	{
@@ -32,31 +47,21 @@ char	*get_variable(char **command, t_exec *exec)
 	}
 	else if (!**command || !is_variable(**command))
 	{
-		if (!**command || !is_quote(**command))
+		if (!**command || !is_quote(**command) || quotes)
 			variable = ft_strdup("$");
 	}
 	else
-	{
-		while ((*command)[i] && is_variable((*command)[i]))
-			i++;
-		tmp = ft_substr(*command, 0, i);
-		variable = get_env(*exec->env, tmp);
-		free(tmp);
-		(*command) += i;
-	}
+		variable = get_variable_env(command, tmp, i, exec);
 	return (variable);
 }
 
-char	*get_expansion(char *command, int len, t_exec *exec)
+int	count_quotes(char *command, int i, int *quotes)
 {
-	char	*tmp;
-	int		i;
-	char	*variable;
-
-	i = 0;
-	while (command[i] && command[i] != '$')
+	while (command && command[i] && command[i] != '$')
 	{
-		if (command[i] == '\'')
+		if (command[i] == '"')
+			*quotes = !*quotes;
+		if (command[i] == '\'' && !*quotes)
 		{
 			i++;
 			while (command[i] && command[i] != '\'')
@@ -65,11 +70,21 @@ char	*get_expansion(char *command, int len, t_exec *exec)
 		if (command[i])
 			i++;
 	}
-	if (command[i] == '$')
+	return (i);
+}
+
+char	*get_expansion(char *command, int len, t_exec *exec, int quotes)
+{
+	char	*tmp;
+	int		i;
+	char	*variable;
+
+	i = count_quotes(command, 0, &quotes);
+	if (command && command[i] == '$')
 	{
 		tmp = &command[i + 1];
-		variable = get_variable(&tmp, exec);
-		tmp = get_expansion(tmp, len + i + ft_strlen(variable), exec);
+		variable = get_variable(&tmp, exec, quotes);
+		tmp = get_expansion(tmp, len + i + ft_strlen(variable), exec, quotes);
 		ft_memcpy(tmp + len + i, variable, ft_strlen(variable));
 		free(variable);
 	}
@@ -84,7 +99,7 @@ char	*expand_variables(char *command, t_exec *exec)
 	char	*tmp;
 
 	tmp = command;
-	command = get_expansion(command, 0, exec);
+	command = get_expansion(command, 0, exec, 0);
 	free(tmp);
 	return (command);
 }
