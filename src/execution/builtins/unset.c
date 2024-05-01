@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+        */
+/*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 12:18:20 by antonweizma       #+#    #+#             */
-/*   Updated: 2024/04/25 02:59:29 by padam            ###   ########.fr       */
+/*   Updated: 2024/05/01 12:41:01 by aweizman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ int	check_valid(char **args, char *str)
 	while (args[i])
 	{
 		j = -1;
-		while (args[i][++j])
+		while (args[i][++j] || !args[i][0])
 		{
-			if (args[i][j] && !ft_isalnum(args[i][j]) && args[i][j] != '_')
+			if (!args[i][0] || (args[i][j] && !ft_isalnum(args[i][j]) && args[i][j] != '_'))
 			{
 				tmp = ft_strjoin("`", args[i]);
 				out = ft_strjoin(tmp, "'");
@@ -81,7 +81,7 @@ int	unset(char **args, char ***env)
 {
 	int		i;
 
-	if (!args || !*args)
+	if (!args || !*args || check_valid(args, "minishell: "))
 		return (EXIT_FAILURE);
 	if (args[1] && args[1][0] == '-')
 		return (print_option(args[1]));

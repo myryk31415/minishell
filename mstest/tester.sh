@@ -3,7 +3,7 @@
 # Change if you store the tester in another PATH
 export MINISHELL_PATH=./
 export EXECUTABLE=minishell
-RUNDIR=$HOME/42_minishell_tester
+RUNDIR=/Users/aweizman/Desktop/Projects/Third_Ring/Minishell/mstest
 
 NL=$'\n'
 TAB=$'\t'
@@ -139,7 +139,7 @@ test_bonus() {
 	do
 		if [[ $file != */1_wildcard* ]] ; then
 			test_from_file $file
-		fi	
+		fi
 	done
 }
 
@@ -264,7 +264,7 @@ test_from_file() {
 			fi
 			if (( FAILED_TMP < FAILED )) ;
 			then
-			  echo -ne "$INPUT" | sed 's/^/\t/' 
+			  echo -ne "$INPUT" | sed 's/^/	/'
 			fi
 		  	INPUT=""
 		fi
@@ -375,7 +375,7 @@ test_leaks() {
 			fi
 			if (( FAILED_TMP < FAILED || LEAKS_TMP < LEAKS )) ;
 			then
-			  echo -ne "$INPUT" | sed 's/^/\t/' 
+			  echo -ne "$INPUT" | sed 's/^/\t/'
 			fi
 		  	INPUT=""
 		fi

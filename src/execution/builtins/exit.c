@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
+/*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 00:09:23 by padam             #+#    #+#             */
-/*   Updated: 2024/04/30 17:18:46 by antonweizma      ###   ########.fr       */
+/*   Updated: 2024/05/01 12:31:18 by aweizman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	exit_shell(t_exec *exec, char **arg, int status)
 		exit_status = exec->exit_status;
 	if (arg && arg[1] && !ft_isnumber(arg[1]))
 	{
-		exit_status = 2;
+		exit_status = 255;
 		ft_putstr_fd("minishell: exit: \
 numeric argument required\n", 2);
 	}
