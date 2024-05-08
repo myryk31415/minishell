@@ -6,6 +6,7 @@ vgcore.*
 lol.*
 output
 teeest
+*tmp*
 
 # Prerequisites
 *.d

@@ -1,5 +1,5 @@
 # Minishell
-This project is our own (@antonweizmann) little shell written completely in C.
+This project is our [(@antonweizmann)](https://github.com/antonweizmann) own little shell written completely in C.
 While it is not as feature complete as bash or zsh, it provides most features typically used.
 
 ## Installation
@@ -38,3 +38,11 @@ to return back to your original shell press ctrl-D or run "exit".
   - A command node with a double character array for the command arguments and another one for redirects for this specific command
 - All heredoc redirects get resolved after parsing the tree to avoid issues where input from the user was read even though the syntax of the command was incorrect.
 ### Execution
+
+## Tester
+The tester is a modivied version of [this](https://github.com/zstenger93/42_minishell_tester) one, so props to [@zstenger93](https://github.com/zstenger93). We added some tests, commented some out that are not in the scope of the subject and rewrote the valgrind test so it also checks for "still reachable" and added 'valgrand bonus' and 'valgrind all' tests.
+
+For more infos have a look at the `README.md` in the `mstest` folder.
+You can either copy the whole mstest folder into your project or change the `MINISHELL_PATH` at the top of `tester.sh`.
+To execute go into the project folder and type `bash ./mstest/tester.sh`.
+
