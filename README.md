@@ -23,6 +23,7 @@ to return back to your original shell press ctrl-D or run "exit".
 - built-ins: cd, pwd, echo, env, export, unset, exit
 
 ## Structure of the shell
+### Parsing
 - We read input using readline to display the prompt and get the input unless stdin is not a tty in which case we use get_next_line from [libft](https://github.com/myryk31415/libft).
 - The input string gets tokenized into a double linked list made up of these tokens:
 ```
@@ -36,3 +37,4 @@ to return back to your original shell press ctrl-D or run "exit".
   - A redirect node, with one pointer to a new subtree, for storing redirect information outside of brackets and starting a new subshell - `cd .. && pwd` vs  `(cd ..) && pwd`
   - A command node with a double character array for the command arguments and another one for redirects for this specific command
 - All heredoc redirects get resolved after parsing the tree to avoid issues where input from the user was read even though the syntax of the command was incorrect.
+### Execution
