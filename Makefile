@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+         #
+#    By: padam <padam@student.42heilbronn.com>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/09 15:34:56 by padam             #+#    #+#              #
-#    Updated: 2024/04/30 18:44:35 by antonweizma      ###   ########.fr        #
+#    Updated: 2024/05/08 22:45:41 by padam            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -94,28 +94,28 @@ fclean: clean
 re: fclean all
 
 ascii_art:
-# 	@clear
-# 	@printf "$(GREEN)	                                                                                                                                         \n\
-# 	                                                                                                                                         \n\
-#                                                                                                                                              \n\
-# MMMMMMMM               MMMMMMMM  iiii                      iiii     SSSSSSSSSSSSSSS hhhhhhh                                 lllllll lllllll  \n\
-# M:::::::M             M:::::::M i::::i                    i::::i  SS:::::::::::::::Sh:::::h                                 l:::::l l:::::l  \n\
-# M::::::::M           M::::::::M  iiii                      iiii  S:::::SSSSSS::::::Sh:::::h                                 l:::::l l:::::l  \n\
-# M:::::::::M         M:::::::::M                                  S:::::S     SSSSSSSh:::::h                                 l:::::l l:::::l  \n\
-# M::::::::::M       M::::::::::Miiiiiii nnnn  nnnnnnnn    iiiiiii S:::::S             h::::h hhhhh           eeeeeeeeeeee     l::::l  l::::l  \n\
-# M:::::::::::M     M:::::::::::Mi:::::i n:::nn::::::::nn  i:::::i S:::::S             h::::hh:::::hhh      ee::::::::::::ee   l::::l  l::::l  \n\
-# M:::::::M::::M   M::::M:::::::M i::::i n::::::::::::::nn  i::::i  S::::SSSS          h::::::::::::::hh   e::::::eeeee:::::ee l::::l  l::::l  \n\
-# M::::::M M::::M M::::M M::::::M i::::i nn:::::::::::::::n i::::i   SS::::::SSSSS     h:::::::hhh::::::h e::::::e     e:::::e l::::l  l::::l  \n\
-# M::::::M  M::::M::::M  M::::::M i::::i   n:::::nnnn:::::n i::::i     SSS::::::::SS   h::::::h   h::::::he:::::::eeeee::::::e l::::l  l::::l  \n\
-# M::::::M   M:::::::M   M::::::M i::::i   n::::n    n::::n i::::i        SSSSSS::::S  h:::::h     h:::::he:::::::::::::::::e  l::::l  l::::l  \n\
-# M::::::M    M:::::M    M::::::M i::::i   n::::n    n::::n i::::i             S:::::S h:::::h     h:::::he::::::eeeeeeeeeee   l::::l  l::::l  \n\
-# M::::::M     MMMMM     M::::::M i::::i   n::::n    n::::n i::::i             S:::::S h:::::h     h:::::he:::::::e            l::::l  l::::l  \n\
-# M::::::M               M::::::Mi::::::i  n::::n    n::::ni::::::iSSSSSSS     S:::::S h:::::h     h:::::he::::::::e          l::::::ll::::::l \n\
-# M::::::M               M::::::Mi::::::i  n::::n    n::::ni::::::iS::::::SSSSSS:::::S h:::::h     h:::::h e::::::::eeeeeeee  l::::::ll::::::l \n\
-# M::::::M               M::::::Mi::::::i  n::::n    n::::ni::::::iS:::::::::::::::SS  h:::::h     h:::::h  ee:::::::::::::e  l::::::ll::::::l \n\
-# MMMMMMMM               MMMMMMMMiiiiiiii  nnnnnn    nnnnnniiiiiiii SSSSSSSSSSSSSSS    hhhhhhh     hhhhhhh    eeeeeeeeeeeeee  llllllllllllllll \n\
-#                                                                                                                                              \n\
-#                                                                                                                      $(BLUE)by: padam && aweizman$(RESET) \n\
-#                                                                                                                                              \n"
+	@clear
+	@printf "$(GREEN)	                                                                                                                                         \n\
+	                                                                                                                                         \n\
+                                                                                                                                             \n\
+MMMMMMMM               MMMMMMMM  iiii                      iiii     SSSSSSSSSSSSSSS hhhhhhh                                 lllllll lllllll  \n\
+M:::::::M             M:::::::M i::::i                    i::::i  SS:::::::::::::::Sh:::::h                                 l:::::l l:::::l  \n\
+M::::::::M           M::::::::M  iiii                      iiii  S:::::SSSSSS::::::Sh:::::h                                 l:::::l l:::::l  \n\
+M:::::::::M         M:::::::::M                                  S:::::S     SSSSSSSh:::::h                                 l:::::l l:::::l  \n\
+M::::::::::M       M::::::::::Miiiiiii nnnn  nnnnnnnn    iiiiiii S:::::S             h::::h hhhhh           eeeeeeeeeeee     l::::l  l::::l  \n\
+M:::::::::::M     M:::::::::::Mi:::::i n:::nn::::::::nn  i:::::i S:::::S             h::::hh:::::hhh      ee::::::::::::ee   l::::l  l::::l  \n\
+M:::::::M::::M   M::::M:::::::M i::::i n::::::::::::::nn  i::::i  S::::SSSS          h::::::::::::::hh   e::::::eeeee:::::ee l::::l  l::::l  \n\
+M::::::M M::::M M::::M M::::::M i::::i nn:::::::::::::::n i::::i   SS::::::SSSSS     h:::::::hhh::::::h e::::::e     e:::::e l::::l  l::::l  \n\
+M::::::M  M::::M::::M  M::::::M i::::i   n:::::nnnn:::::n i::::i     SSS::::::::SS   h::::::h   h::::::he:::::::eeeee::::::e l::::l  l::::l  \n\
+M::::::M   M:::::::M   M::::::M i::::i   n::::n    n::::n i::::i        SSSSSS::::S  h:::::h     h:::::he:::::::::::::::::e  l::::l  l::::l  \n\
+M::::::M    M:::::M    M::::::M i::::i   n::::n    n::::n i::::i             S:::::S h:::::h     h:::::he::::::eeeeeeeeeee   l::::l  l::::l  \n\
+M::::::M     MMMMM     M::::::M i::::i   n::::n    n::::n i::::i             S:::::S h:::::h     h:::::he:::::::e            l::::l  l::::l  \n\
+M::::::M               M::::::Mi::::::i  n::::n    n::::ni::::::iSSSSSSS     S:::::S h:::::h     h:::::he::::::::e          l::::::ll::::::l \n\
+M::::::M               M::::::Mi::::::i  n::::n    n::::ni::::::iS::::::SSSSSS:::::S h:::::h     h:::::h e::::::::eeeeeeee  l::::::ll::::::l \n\
+M::::::M               M::::::Mi::::::i  n::::n    n::::ni::::::iS:::::::::::::::SS  h:::::h     h:::::h  ee:::::::::::::e  l::::::ll::::::l \n\
+MMMMMMMM               MMMMMMMMiiiiiiii  nnnnnn    nnnnnniiiiiiii SSSSSSSSSSSSSSS    hhhhhhh     hhhhhhh    eeeeeeeeeeeeee  llllllllllllllll \n\
+                                                                                                                                             \n\
+                                                                                                                     $(BLUE)by: padam && aweizman$(RESET) \n\
+                                                                                                                                             \n"
 
 .PHONY: all, $(NAME), $(LIBFT_DIR)/libft.a, $(OBJ_PATH), $(OBJ_PATH), clean, fclean, re
