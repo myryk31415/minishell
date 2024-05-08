@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aweizman <aweizman@student.42.fr>          +#+  +:+       +#+        */
+/*   By: antonweizmann <antonweizmann@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 00:09:23 by padam             #+#    #+#             */
-/*   Updated: 2024/05/01 12:31:18 by aweizman         ###   ########.fr       */
+/*   Updated: 2024/05/08 01:21:22 by antonweizma      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int	exit_shell(t_exec *exec, char **arg, int status)
 	int	exit_status;
 
 	exit_status = status;
+	if (!arg && status == -1)
+		ft_putstr_fd("exit\n", 1);
 	if (status == -1)
 		exit_status = exec->exit_status;
 	if (arg && arg[1] && !ft_isnumber(arg[1]))
@@ -62,9 +64,7 @@ numeric argument required\n", 2);
 		return (ft_putstr_fd("minishell: exit: \
 too many arguments\n", 2), 1);
 	else if (arg && arg[1] && ft_isnumber(arg[1]))
-	{
 		exit_status = ft_u_atoi(arg[1]);
-	}
 	free_env(exec->env);
 	node_tree_delete(exec->tree, exec->type);
 	if (!exec->sub_process)
