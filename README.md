@@ -37,7 +37,7 @@ to return back to your original shell press ctrl-D or run "exit".
   - `T_REDIR_OUT`
   - `T_REDIR_APPEND`
   - `T_REDIR_HEREDOC`
-- **Recursive decent:** The token list is recursively converted into a binary tree by splitting it into smaller parts and removing already used tokens.
+- **Recursive descent:** The token list is recursively converted into a binary tree by splitting it into smaller parts and removing already used tokens.
 - The tree consists of the following nodes, each with a `type` variable to identify it:
   - **Basic Binary Node**: With two pointers to the next nodes, used for `AND`, `OR`, and `PIPE`.
   - **Redirect Node**: With one pointer to a new subtree, used for storing redirect information outside of brackets and starting a new subshell. Example: `cd .. && pwd` vs `(cd ..) && pwd`.
